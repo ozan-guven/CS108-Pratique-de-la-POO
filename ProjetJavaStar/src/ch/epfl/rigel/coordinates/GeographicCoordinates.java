@@ -8,6 +8,11 @@ import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Locale;
 
+/**
+ * Geographic representation of coordinates
+ *
+ * @author Robin Goumaz (301420)
+ */
 public final class GeographicCoordinates extends SphericalCoordinates {
 
     private GeographicCoordinates(double lon, double lat) {
@@ -18,13 +23,10 @@ public final class GeographicCoordinates extends SphericalCoordinates {
         Interval lonInterval = RightOpenInterval.symmetric(180);
         Interval latInterval = ClosedInterval.symmetric(90);
 
-        Preconditions.checkInInterval(lonInterval, lonDeg);
-        Preconditions.checkInInterval(latInterval, latDeg);
+        System.out.println(lonInterval.high()+"   " + lonInterval.low());
+        System.out.println(latInterval.high()+"    " + latInterval.low());
 
-        //TODO
-        //Ca serait pas mieux de directement mettre Preconditions.checkInInterval(lonInterval, lonDeg);
-        //dans le return vu que checkInInterval retourne la valeur ?
-        return new GeographicCoordinates(Angle.ofDeg(lonDeg), Angle.ofDeg(latDeg));
+        return new GeographicCoordinates(Angle.ofDeg(Preconditions.checkInInterval(lonInterval, lonDeg)), Angle.ofDeg(Preconditions.checkInInterval(latInterval, latDeg)));
     }
 
     public static boolean isValidLonDeg(double lonDeg) {

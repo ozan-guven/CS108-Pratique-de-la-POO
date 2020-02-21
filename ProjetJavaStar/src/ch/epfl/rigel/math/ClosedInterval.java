@@ -36,7 +36,7 @@ public class ClosedInterval extends Interval {
      */
     public static ClosedInterval symmetric(double size) {
         checkArgument(size > 0);
-        return new ClosedInterval(-size / 2, size / 2);
+        return new ClosedInterval(-size, size);
     }
 
     /**
@@ -59,10 +59,8 @@ public class ClosedInterval extends Interval {
     public double clip(double v) {
         if (v <= low()) {
             return low();
-        } else if (v >= high()) {
-            return high();
         } else {
-            return v;
+            return Math.min(v, high());
         }
     }
 
