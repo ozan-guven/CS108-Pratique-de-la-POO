@@ -10,21 +10,13 @@ abstract class SphericalCoordinates {
         latitude = lat;
     }
 
-    double lon(){
-        return longitude;
-    }
+    abstract double lon();
 
-    double lonDeg(){
-        return Angle.toDeg(longitude);
-    }
+    abstract double lonDeg();
 
-    double lat(){
-        return latitude;
-    }
+    abstract double lat();
 
-    double latDeg(){
-        return Angle.toDeg(latitude);
-    }
+    abstract double latDeg();
 
     @Override
     public final int hashCode() {
