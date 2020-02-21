@@ -20,8 +20,8 @@ public final class GeographicCoordinates extends SphericalCoordinates {
     }
 
     public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
-        Interval lonInterval = RightOpenInterval.symmetric(180);
-        Interval latInterval = ClosedInterval.symmetric(90);
+        Interval lonInterval = RightOpenInterval.symmetric(360);
+        Interval latInterval = ClosedInterval.symmetric(180);
 
         System.out.println(lonInterval.high()+"   " + lonInterval.low());
         System.out.println(latInterval.high()+"    " + latInterval.low());
@@ -30,13 +30,13 @@ public final class GeographicCoordinates extends SphericalCoordinates {
     }
 
     public static boolean isValidLonDeg(double lonDeg) {
-        Interval lonInterval = RightOpenInterval.symmetric(180);
+        Interval lonInterval = RightOpenInterval.symmetric(360);
 
         return lonInterval.contains(lonDeg);
     }
 
     public static boolean isValidLatDeg(double latDeg) {
-        Interval latInterval = ClosedInterval.symmetric(90);
+        Interval latInterval = ClosedInterval.symmetric(180);
 
         return latInterval.contains(latDeg);
     }

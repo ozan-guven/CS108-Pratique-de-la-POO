@@ -48,7 +48,7 @@ class GeographicCoordinatesTest {
     @Test
     void latReturnsCorrect() {
         SphericalCoordinates coord = GeographicCoordinates.ofDeg(124.124, 67.8543);
-        assertEquals(1.169370599, coord.lat(), 1e-8);
+        assertEquals(1.18428094, coord.lat(), 1e-8);
     }
 
     @Test
@@ -60,7 +60,6 @@ class GeographicCoordinatesTest {
     @Test
     void toStringWorks() {
         SphericalCoordinates coord = GeographicCoordinates.ofDeg(6.57, 46.52);
-        System.out.println(coord.toString());
         assertEquals("(lon=6.5700°, lat=46.5200°)", coord.toString());
     }
 
