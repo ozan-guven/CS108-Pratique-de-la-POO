@@ -22,11 +22,11 @@ public class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
-     * Creates a horizonzal coordinates from radian values
+     * Creates a horizontal coordinates from radian values
      *
-     * @param az  the azimute in radians (must be in [0, 2*pi[)
+     * @param az  the azimuth in radians (must be in [0, 2*pi[)
      * @param alt the altitude in radians (must be in [-(pi/2), (pi/2)])
-     * @return the horizonal coordinates
+     * @return the horizontal coordinates
      * @throws IllegalArgumentException
      */
     public static HorizontalCoordinates of(double az, double alt) {
@@ -126,7 +126,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
     @Override
     public String toString() {
         return String.format(Locale.ROOT,
-                "(az=%.4f, alt=%.4f)",
+                "(az=%.4f°, alt=%.4f°)",
                 az(),
                 alt());
     }
