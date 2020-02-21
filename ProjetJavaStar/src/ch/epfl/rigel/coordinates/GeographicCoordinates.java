@@ -23,9 +23,6 @@ public final class GeographicCoordinates extends SphericalCoordinates {
         Interval lonInterval = RightOpenInterval.symmetric(360);
         Interval latInterval = ClosedInterval.symmetric(180);
 
-        System.out.println(lonInterval.high()+"   " + lonInterval.low());
-        System.out.println(latInterval.high()+"    " + latInterval.low());
-
         return new GeographicCoordinates(Angle.ofDeg(Preconditions.checkInInterval(lonInterval, lonDeg)), Angle.ofDeg(Preconditions.checkInInterval(latInterval, latDeg)));
     }
 
