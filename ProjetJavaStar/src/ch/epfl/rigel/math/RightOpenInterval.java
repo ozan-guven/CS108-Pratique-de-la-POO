@@ -36,7 +36,7 @@ public final class RightOpenInterval extends Interval {
      */
     public static RightOpenInterval symmetric(double size) {
         checkArgument(size > 0);
-        return new RightOpenInterval(-size/2, size/2);
+        return new RightOpenInterval(-size / 2, size / 2);
     }
 
     /**
