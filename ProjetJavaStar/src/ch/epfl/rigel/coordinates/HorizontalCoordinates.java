@@ -37,11 +37,11 @@ public class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
-     * Creates a horizonzal coordinates from degree values
+     * Creates a horizontal coordinates from degree values
      *
-     * @param az  the azimute in degrees (must be in [0, 360°[)
+     * @param az  the azimuth in degrees (must be in [0, 360°[)
      * @param alt the altitude in radians (must be in [90°, 90°])
-     * @return the horizonal coordinates
+     * @return the horizontal coordinates
      * @throws IllegalArgumentException
      */
     public static HorizontalCoordinates ofDeg(double az, double alt) {
@@ -75,24 +75,27 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @return the octant name in which the azimuth is
      */
     public String azOctantName(String n, String e, String s, String w) {
-        //TODO
-        int index = 0;
         StringBuilder builder = null;
-        builder.append(n);
+        Interval nord1 = RightOpenInterval.of(292.5, 360);
+        Interval nord2 = RightOpenInterval.of(0, 67.5);
+        Interval south = RightOpenInterval.of(112.5, 247.5);
+        Interval east = RightOpenInterval.of(22.5, 157.5);
+        Interval west = RightOpenInterval.of(202.5, 337.5);
 
-        /*
-        switch (index) {
-            case 0:
-                builder.append(n);
-            case 1:
-                builder.append(e);
-            case 2:
-                builder.append(s);
-            case 3:
-                builder.append(w);
-        }*/
+        if (nord1.contains(azDeg()) || nord2.contains(azDeg())) {
+            builder.append(n);
+        }
+        if (south.contains(azDeg())) {
+            builder.append(s);
+        }
+        if (east.contains(azDeg())) {
+            builder.append(e);
+        }
+        if (west.contains(azDeg())) {
+            builder.append(w);
+        }
 
-        return null;
+        return builder.toString();
     }
 
     /**

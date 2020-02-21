@@ -42,6 +42,12 @@ public abstract class Interval {
         return UPBOUND - LOWBOUND;
     }
 
+    /**
+     * Checks if a given value is contained in the interval
+     *
+     * @param v the value that needs to be checked
+     * @return true if v is in the interval and false otherwise
+     */
     public abstract boolean contains(double v);
 
     @Override

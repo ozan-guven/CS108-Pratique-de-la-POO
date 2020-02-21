@@ -21,7 +21,7 @@ public final class RightOpenInterval extends Interval {
      *
      * @param low  the lower bound
      * @param high the upper bound
-     * @return a closed interval
+     * @return a right open interval
      */
     public static RightOpenInterval of(double low, double high) {
         checkArgument(low < high);
