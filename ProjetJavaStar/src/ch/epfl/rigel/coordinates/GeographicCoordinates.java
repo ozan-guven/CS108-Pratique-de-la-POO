@@ -14,7 +14,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
         super(lon, lat);
     }
 
-    public GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
+    public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
         Interval lonInterval = RightOpenInterval.symmetric(180);
         Interval latInterval = ClosedInterval.symmetric(90);
 
