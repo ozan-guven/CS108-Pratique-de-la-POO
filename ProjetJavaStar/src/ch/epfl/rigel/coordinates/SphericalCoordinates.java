@@ -1,7 +1,10 @@
 package ch.epfl.rigel.coordinates;
 
-import ch.epfl.rigel.math.Angle;
-
+/**
+ * Basis spherical representation of coordinates
+ *
+ * @author Robin Goumaz (301420)
+ */
 abstract class SphericalCoordinates {
     double longitude, latitude;
 
@@ -10,12 +13,32 @@ abstract class SphericalCoordinates {
         latitude = lat;
     }
 
+    /**
+     * Returns the longitude in radians
+     *
+     * @return longitude
+     */
     abstract double lon();
 
+    /**
+     * Returns the longitude in degrees
+     *
+     * @return longitude
+     */
     abstract double lonDeg();
 
+    /**
+     * Returns the latitude in radians
+     *
+     * @return latitude
+     */
     abstract double lat();
 
+    /**
+     * Returns the latitude in degrees
+     *
+     * @return latitude
+     */
     abstract double latDeg();
 
     @Override
