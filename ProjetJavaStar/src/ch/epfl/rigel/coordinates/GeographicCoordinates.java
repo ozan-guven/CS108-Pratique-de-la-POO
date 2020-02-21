@@ -8,29 +8,32 @@ import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Locale;
 
-public final class GeographicCoordinates extends SphericalCoordinates{
+public final class GeographicCoordinates extends SphericalCoordinates {
 
     private GeographicCoordinates(double lon, double lat) {
         super(lon, lat);
     }
 
-    public GeographicCoordinates ofDeg(double lonDeg, double latDeg){
+    public GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
         Interval lonInterval = RightOpenInterval.symmetric(180);
         Interval latInterval = ClosedInterval.symmetric(90);
 
         Preconditions.checkInInterval(lonInterval, lonDeg);
         Preconditions.checkInInterval(latInterval, latDeg);
 
+        //TODO
+        //Ca serait pas mieux de directement mettre Preconditions.checkInInterval(lonInterval, lonDeg);
+        //dans le return vu que checkInInterval retourne la valeur ?
         return new GeographicCoordinates(Angle.ofDeg(lonDeg), Angle.ofDeg(latDeg));
     }
 
-    public static boolean isValidLonDeg(double lonDeg){
+    public static boolean isValidLonDeg(double lonDeg) {
         Interval lonInterval = RightOpenInterval.symmetric(180);
 
         return lonInterval.contains(lonDeg);
     }
 
-    public static boolean isValidLatDeg(double latDeg){
+    public static boolean isValidLatDeg(double latDeg) {
         Interval latInterval = ClosedInterval.symmetric(90);
 
         return latInterval.contains(latDeg);
@@ -59,7 +62,7 @@ public final class GeographicCoordinates extends SphericalCoordinates{
     @Override
     public String toString() {
         return String.format(Locale.ROOT,
-                "(lon=%.4f, lat=%.4f[",
+                "(lon=%.4f, lat=%.4f)",
                 lonDeg(),
                 latDeg()
         );

@@ -5,7 +5,7 @@ import ch.epfl.rigel.math.Angle;
 abstract class SphericalCoordinates {
     double longitude, latitude;
 
-    SphericalCoordinates(double lon, double lat){
+    SphericalCoordinates(double lon, double lat) {
         longitude = lon;
         latitude = lat;
     }
