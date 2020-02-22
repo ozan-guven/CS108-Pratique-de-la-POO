@@ -50,7 +50,7 @@ class EquatorialCoordinatesTest {
     @Test
     void decDegReturnsCorrect() {
         EquatorialCoordinates coord = EquatorialCoordinates.of(0.785398, 1.48353);
-        assertEquals(1.48353, coord.decDeg());
+        assertEquals(85.00000778, coord.decDeg(), 1e-8);
     }
 
     @Test
