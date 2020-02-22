@@ -13,20 +13,22 @@ import java.util.Locale;
  *
  * @author Robin Goumaz (301420)
  */
-public final class EquatorialCoordinates extends SphericalCoordinates{
+public final class EquatorialCoordinates extends SphericalCoordinates {
 
     private EquatorialCoordinates(double lon, double lat) {
         super(lon, lat);
     }
 
+    //TODO T'avais oublier de mettre static je crois sinon on peux pas tester
     /**
-     * Methode to construct equatorial coordinates from the right ascension and the declination
+     * Method to construct equatorial coordinates from the right ascension and the declination
      *
-     * @param ra The right ascension in hour
+     * @param ra  The right ascension in hour
      * @param dec The declination in degrees
      * @return The coordinates in equatorial representation
+     * @throws IllegalArgumentException
      */
-    public EquatorialCoordinates of(double ra, double dec){
+    public static EquatorialCoordinates of(double ra, double dec) {
         Interval intervalRa = RightOpenInterval.of(0, 24);
         Interval intervalDec = ClosedInterval.symmetric(180);
 
@@ -38,7 +40,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates{
      *
      * @return the right ascension in radian
      */
-    public double ra(){
+    public double ra() {
         return lon();
     }
 
@@ -47,7 +49,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates{
      *
      * @return the right ascension in degree
      */
-    public double raDeg(){
+    public double raDeg() {
         return lonDeg();
     }
 
@@ -56,7 +58,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates{
      *
      * @return the right ascension in hour
      */
-    public double raHr(){
+    public double raHr() {
         return Angle.toHr(lon());
     }
 
@@ -65,7 +67,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates{
      *
      * @return the declination in radian
      */
-    public double dec(){
+    public double dec() {
         return lat();
     }
 
@@ -74,7 +76,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates{
      *
      * @return the declination in degrees
      */
-    public double decDeg(){
+    public double decDeg() {
         return latDeg();
     }
 
