@@ -19,6 +19,13 @@ public final class GeographicCoordinates extends SphericalCoordinates {
         super(lon, lat);
     }
 
+    /**
+     * Method to create geographic coordinates for longitude and latitude in degrees
+     *
+     * @param lonDeg The longitude in degrees
+     * @param latDeg The latitude in degrees
+     * @return The coordinates in geographic representation
+     */
     public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
         Interval lonInterval = RightOpenInterval.symmetric(360);
         Interval latInterval = ClosedInterval.symmetric(180);
@@ -26,33 +33,65 @@ public final class GeographicCoordinates extends SphericalCoordinates {
         return new GeographicCoordinates(Angle.ofDeg(Preconditions.checkInInterval(lonInterval, lonDeg)), Angle.ofDeg(Preconditions.checkInInterval(latInterval, latDeg)));
     }
 
+    /**
+     * Checks if the longitude is valid
+     *
+     * @param lonDeg The longitude in degrees
+     * @return boolean value of the check
+     */
     public static boolean isValidLonDeg(double lonDeg) {
         Interval lonInterval = RightOpenInterval.symmetric(360);
 
         return lonInterval.contains(lonDeg);
     }
 
+    /**
+     * Checks if the latitude is valid
+     *
+     * @param latDeg The latitude in degrees
+     * @return boolean value of the check
+     */
     public static boolean isValidLatDeg(double latDeg) {
         Interval latInterval = ClosedInterval.symmetric(180);
 
         return latInterval.contains(latDeg);
     }
 
+    /**
+     * Getter for the longitude
+     *
+     * @return the longitude in radians
+     */
     @Override
     public double lon() {
         return super.longitude;
     }
 
+    /**
+     * Getter for the longitude
+     *
+     * @return the longitude in degrees
+     */
     @Override
     public double lonDeg() {
         return Angle.toDeg(super.longitude);
     }
 
+    /**
+     * Getter for the latitude
+     *
+     * @return the latitude in radians
+     */
     @Override
     public double lat() {
         return super.latitude;
     }
 
+    /**
+     * Getter for the latitude
+     *
+     * @return the latitude in degrees
+     */
     @Override
     public double latDeg() {
         return Angle.toDeg(super.latitude);

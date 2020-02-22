@@ -134,6 +134,9 @@ public class HorizontalCoordinates extends SphericalCoordinates {
                 alt());
     }
 
+    //TODO
+    // Tu as oublié de les mettre en public
+
     @Override
     double lon() {
         return super.longitude;
