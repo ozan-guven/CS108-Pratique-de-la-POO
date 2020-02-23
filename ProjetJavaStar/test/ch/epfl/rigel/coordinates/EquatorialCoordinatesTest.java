@@ -32,7 +32,7 @@ class EquatorialCoordinatesTest {
     @Test
     void raDegReturnsCorrect() {
         EquatorialCoordinates coord = EquatorialCoordinates.of(0.523599, 0.112);
-        assertEquals(30.0022227, coord.raDeg(), 1e-8);
+        assertEquals(30.000012857, coord.raDeg(), 1e-8);
     }
 
     @Test
