@@ -112,6 +112,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
         return latDeg();
     }
 
+    //TODO
+    // tu devrais pas juste écrire return blblbl au lieu de faire une variable ?
     /**
      * Computes the angular distance between the coordinates and another given coordinates
      *
@@ -133,9 +135,6 @@ public class HorizontalCoordinates extends SphericalCoordinates {
                 az(),
                 alt());
     }
-
-    //TODO
-    // Tu as oublié de les mettre en public
 
     @Override
     double lon() {

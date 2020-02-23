@@ -29,10 +29,10 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException
      */
     public static EquatorialCoordinates of(double ra, double dec) {
-        Interval intervalRa = RightOpenInterval.of(0, 24);
-        Interval intervalDec = ClosedInterval.symmetric(180);
+        Interval intervalRa = RightOpenInterval.of(0, Angle.TAU);
+        Interval intervalDec = ClosedInterval.symmetric(Angle.TAU/2);
 
-        return new EquatorialCoordinates(Angle.ofHr(Preconditions.checkInInterval(intervalRa, ra)), Angle.ofDeg(Preconditions.checkInInterval(intervalDec, dec)));
+        return new EquatorialCoordinates(Preconditions.checkInInterval(intervalRa, ra), Preconditions.checkInInterval(intervalDec, dec));
     }
 
     /**
