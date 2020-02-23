@@ -30,25 +30,25 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException
      */
     public static HorizontalCoordinates of(double az, double alt) {
-        Interval intervalOfAz = RightOpenInterval.of(0, TAU);
-        Interval intervalOfAlt = ClosedInterval.symmetric(TAU / 4);
+        Interval intervalOfAz = RightOpenInterval.of(0, Math.PI*2);
+        Interval intervalOfAlt = ClosedInterval.symmetric(TAU/2);
 
-        return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, Angle.toDeg(az)), Preconditions.checkInInterval(intervalOfAlt, Angle.toDeg(alt)));
+        return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, az), Preconditions.checkInInterval(intervalOfAlt, alt));
     }
 
     /**
      * Creates a horizontal coordinates from degree values
      *
-     * @param az  the azimuth in degrees (must be in [0, 360°[)
-     * @param alt the altitude in radians (must be in [90°, 90°])
+     * @param azDeg  the azimuth in degrees (must be in [0, 360°[)
+     * @param altDeg the altitude in radians (must be in [90°, 90°])
      * @return the horizontal coordinates
      * @throws IllegalArgumentException
      */
-    public static HorizontalCoordinates ofDeg(double az, double alt) {
+    public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {
         Interval intervalOfAz = RightOpenInterval.of(0, 360);
-        Interval intervalOfAlt = ClosedInterval.symmetric(90);
+        Interval intervalOfAlt = ClosedInterval.symmetric(180);
 
-        return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, az), Preconditions.checkInInterval(intervalOfAlt, az));
+        return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, azDeg), Preconditions.checkInInterval(intervalOfAlt, altDeg));
     }
 
     /**
@@ -75,7 +75,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @return the octant name in which the azimuth is
      */
     public String azOctantName(String n, String e, String s, String w) {
-        StringBuilder builder = null;
+        StringBuilder builder = new StringBuilder();
         Interval nord1 = RightOpenInterval.of(292.5, 360);
         Interval nord2 = RightOpenInterval.of(0, 67.5);
         Interval south = RightOpenInterval.of(112.5, 247.5);
@@ -132,8 +132,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
     public String toString() {
         return String.format(Locale.ROOT,
                 "(az=%.4f°, alt=%.4f°)",
-                az(),
-                alt());
+                azDeg(),
+                altDeg());
     }
 
     @Override
@@ -153,6 +153,6 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 
     @Override
     double latDeg() {
-        return Angle.toDeg(super.latitude);
+        return toDeg(super.latitude);
     }
 }
