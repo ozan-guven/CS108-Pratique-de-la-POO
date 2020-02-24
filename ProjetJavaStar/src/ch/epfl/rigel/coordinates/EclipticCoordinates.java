@@ -2,6 +2,7 @@ package ch.epfl.rigel.coordinates;
 
 import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.math.Angle;
+import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.Interval;
 import ch.epfl.rigel.math.RightOpenInterval;
 
@@ -29,7 +30,7 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      */
     public static EclipticCoordinates of(double lon, double lat) {
         Interval intervalOfLon = RightOpenInterval.of(0, TAU);
-        Interval intervalOfLat = RightOpenInterval.symmetric(Math.PI);
+        Interval intervalOfLat = ClosedInterval.symmetric(TAU/2);
 
         return new EclipticCoordinates(Preconditions.checkInInterval(intervalOfLon, lon), Preconditions.checkInInterval(intervalOfLat, lat));
     }
