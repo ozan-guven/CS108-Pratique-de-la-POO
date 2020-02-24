@@ -30,7 +30,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException
      */
     public static HorizontalCoordinates of(double az, double alt) {
-        Interval intervalOfAz = RightOpenInterval.of(0, Math.PI * 2);
+        Interval intervalOfAz = RightOpenInterval.of(0, TAU);
         Interval intervalOfAlt = ClosedInterval.symmetric(TAU / 2);
 
         return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, az), Preconditions.checkInInterval(intervalOfAlt, alt));

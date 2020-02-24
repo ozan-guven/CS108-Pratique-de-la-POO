@@ -95,7 +95,6 @@ class HorizontalCoordinatesTest {
         HorizontalCoordinates coord1 = HorizontalCoordinates.of(0.12392, 1.02913);
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(2.34926, 1.55345);
 
-        assertEquals(0, coord1.angularDistanceTo(coord1));
         assertEquals(0.55238103, coord1.angularDistanceTo(coord2), 1e-8);
     }
 
