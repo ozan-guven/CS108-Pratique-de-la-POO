@@ -104,7 +104,7 @@ class HorizontalCoordinatesTest {
         HorizontalCoordinates coord1 = HorizontalCoordinates.of(0.12392, 1.02913);
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(2.34926, 1.55345);
 
-        assertEquals("(az=7.1000°, alt=58.9648°)", coord1.toString());
+        assertEquals("(az=7.1001°, alt=58.9648°)", coord1.toString());
         assertEquals("(az=134.6026°, alt=89.0061°)", coord2.toString());
     }
 }
