@@ -67,9 +67,11 @@ class HorizontalCoordinatesTest {
     void azOctantName() {
         HorizontalCoordinates coord1 = HorizontalCoordinates.of(0.12392, 1.0291);
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(2.34926, 0);
+        HorizontalCoordinates coord3 = HorizontalCoordinates.of(3.9619, 1.4421);
 
         assertEquals("N", coord1.azOctantName("N", "E", "S", "W"));
         assertEquals("SE", coord2.azOctantName("N", "E", "S", "W"));
+        assertEquals("SW", coord3.azOctantName("N", "E", "S", "W"));
     }
 
     @Test
