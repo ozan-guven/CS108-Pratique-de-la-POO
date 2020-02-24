@@ -19,7 +19,6 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
         super(lon, lat);
     }
 
-    //TODO T'avais oublier de mettre static je crois sinon on peux pas tester
     /**
      * Method to construct equatorial coordinates from the right ascension and the declination
      *
