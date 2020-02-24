@@ -30,8 +30,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException
      */
     public static HorizontalCoordinates of(double az, double alt) {
-        Interval intervalOfAz = RightOpenInterval.of(0, Math.PI*2);
-        Interval intervalOfAlt = ClosedInterval.symmetric(TAU/2);
+        Interval intervalOfAz = RightOpenInterval.of(0, Math.PI * 2);
+        Interval intervalOfAlt = ClosedInterval.symmetric(TAU / 2);
 
         return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, az), Preconditions.checkInInterval(intervalOfAlt, alt));
     }
@@ -48,7 +48,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
         Interval intervalOfAz = RightOpenInterval.of(0, 360);
         Interval intervalOfAlt = ClosedInterval.symmetric(180);
 
-        return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, azDeg), Preconditions.checkInInterval(intervalOfAlt, altDeg));
+        return new HorizontalCoordinates(Angle.ofDeg(Preconditions.checkInInterval(intervalOfAz, azDeg)), Angle.ofDeg(Preconditions.checkInInterval(intervalOfAlt, altDeg)));
     }
 
     /**
@@ -112,8 +112,6 @@ public class HorizontalCoordinates extends SphericalCoordinates {
         return latDeg();
     }
 
-    //TODO
-    // tu devrais pas juste écrire return blblbl au lieu de faire une variable ?
     /**
      * Computes the angular distance between the coordinates and another given coordinates
      *
@@ -121,11 +119,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @return the angular distance in radians
      */
     public double angularDistanceTo(HorizontalCoordinates that) {
-        double delta = 0;
-
-        delta = Math.acos(Math.sin(this.alt()) * Math.sin(that.alt()) + Math.cos(this.alt()) * Math.cos(that.alt()) * Math.cos(this.az() - that.az()));
-
-        return delta;
+        return Math.acos(Math.sin(this.alt()) * Math.sin(that.alt()) + Math.cos(this.alt()) * Math.cos(that.alt()) * Math.cos(this.az() - that.az()));
     }
 
     @Override
@@ -143,7 +137,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 
     @Override
     double lonDeg() {
-        return Angle.ofDeg(super.longitude);
+        return Angle.toDeg(super.longitude);
     }
 
     @Override

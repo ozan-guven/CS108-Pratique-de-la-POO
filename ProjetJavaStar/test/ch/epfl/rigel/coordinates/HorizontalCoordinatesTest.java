@@ -14,8 +14,8 @@ class HorizontalCoordinatesTest {
         assertEquals(0, coord1.latitude);
 
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(4.13452, 1.08210);
-        assertEquals(4.13452, coord1.longitude, 1e-8);
-        assertEquals(1.08210, coord1.latitude, 1e-8);
+        assertEquals(4.13452, coord2.longitude, 1e-8);
+        assertEquals(1.08210, coord2.latitude, 1e-8);
     }
 
     @Test
@@ -33,8 +33,8 @@ class HorizontalCoordinatesTest {
         assertEquals(0, coord1.latDeg());
 
         HorizontalCoordinates coord2 = HorizontalCoordinates.ofDeg(250.234, 78.327);
-        assertEquals(250.234, coord2.lonDeg(), 1e-8);
-        assertEquals(78.327, coord2.latDeg(), 1e-8);
+        assertEquals(250.234, coord2.azDeg(), 1e-8);
+        assertEquals(78.327, coord2.altDeg(), 1e-8);
     }
 
     @Test
