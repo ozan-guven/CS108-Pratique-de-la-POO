@@ -14,8 +14,8 @@ class HorizontalCoordinatesTest {
         assertEquals(0, coord1.latitude);
 
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(4.13452, 1.08210);
-        assertEquals(1.08210, coord1.longitude, 1e-8);
-        assertEquals(4.13452, coord1.latitude, 1e-8);
+        assertEquals(4.13452, coord1.longitude, 1e-8);
+        assertEquals(1.08210, coord1.latitude, 1e-8);
     }
 
     @Test
@@ -29,12 +29,12 @@ class HorizontalCoordinatesTest {
     @Test
     void ofDegWorksOnNonTrivialCoords() {
         HorizontalCoordinates coord1 = HorizontalCoordinates.ofDeg(0, 0);
-        assertEquals(0, coord1.longitude);
-        assertEquals(0, coord1.latitude);
+        assertEquals(0, coord1.lonDeg());
+        assertEquals(0, coord1.latDeg());
 
         HorizontalCoordinates coord2 = HorizontalCoordinates.ofDeg(250.234, 78.327);
-        assertEquals(250.234, coord1.longitude, 1e-8);
-        assertEquals(78.327, coord1.latitude, 1e-8);
+        assertEquals(250.234, coord2.lonDeg(), 1e-8);
+        assertEquals(78.327, coord2.latDeg(), 1e-8);
     }
 
     @Test
@@ -104,7 +104,7 @@ class HorizontalCoordinatesTest {
         HorizontalCoordinates coord1 = HorizontalCoordinates.of(0.12392, 1.02913);
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(2.34926, 1.55345);
 
-        assertEquals("(az=0.1239°, alt=1.0291°)", coord1.toString());
-        assertEquals("(az=2.3492°, alt=1.5534°)", coord2.toString());
+        assertEquals("(az=7.1000°, alt=58.9648°)", coord1.toString());
+        assertEquals("(az=134.6026°, alt=89.0061°)", coord2.toString());
     }
 }
