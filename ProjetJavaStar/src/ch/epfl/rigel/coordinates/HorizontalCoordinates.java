@@ -15,7 +15,7 @@ import static ch.epfl.rigel.math.Angle.*;
  *
  * @author Ozan Güven (297076)
  */
-public class HorizontalCoordinates extends SphericalCoordinates {
+public final class HorizontalCoordinates extends SphericalCoordinates {
 
     private HorizontalCoordinates(double az, double alt) {
         super(az, alt);
