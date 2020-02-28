@@ -54,7 +54,7 @@ public enum Epoch {
     }
 
     /**
-     * Computews the number of Julian centuries between the selected epoch (J2000 or J2010)
+     * Computes the number of Julian centuries between the selected epoch (J2000 or J2010)
      * and the given date (ZonedDateTime)
      *
      * @param when the date to which the number of days is wanted (ZonedDateTime)
