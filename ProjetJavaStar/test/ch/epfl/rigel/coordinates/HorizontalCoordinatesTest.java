@@ -68,10 +68,20 @@ class HorizontalCoordinatesTest {
         HorizontalCoordinates coord1 = HorizontalCoordinates.of(0.12392, 1.0291);
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(2.34926, 0);
         HorizontalCoordinates coord3 = HorizontalCoordinates.of(3.9619, 1.4421);
+        HorizontalCoordinates coord4 = HorizontalCoordinates.ofDeg(247.5, 20);
+        HorizontalCoordinates coord5 = HorizontalCoordinates.ofDeg(157.5, 20);
+        HorizontalCoordinates coord6 = HorizontalCoordinates.ofDeg(359.9999, 20);
+        HorizontalCoordinates coord7 = HorizontalCoordinates.ofDeg(45, 20);
+        HorizontalCoordinates coord8 = HorizontalCoordinates.ofDeg(317, 20);
 
         assertEquals("N", coord1.azOctantName("N", "E", "S", "W"));
         assertEquals("SE", coord2.azOctantName("N", "E", "S", "W"));
         assertEquals("SW", coord3.azOctantName("N", "E", "S", "W"));
+        assertEquals("W", coord4.azOctantName("N","E","S","W"));
+        assertEquals("S", coord5.azOctantName("N","E","S","W"));
+        assertEquals("N", coord6.azOctantName("N","E","S","W"));
+        assertEquals("NE", coord7.azOctantName("N","E","S","W"));
+        assertEquals("NW", coord8.azOctantName("N","E","S","W"));
     }
 
     @Test

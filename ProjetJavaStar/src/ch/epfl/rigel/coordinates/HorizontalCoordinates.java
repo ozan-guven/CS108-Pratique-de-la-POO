@@ -22,7 +22,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
-     * Creates a horizontal coordinates from radian values
+     * Creates horizontal coordinates from radian values
      *
      * @param az  the azimuth in radians (must be in [0, 2*pi[)
      * @param alt the altitude in radians (must be in [-(pi/2), (pi/2)])
@@ -76,13 +76,13 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      */
     public String azOctantName(String n, String e, String s, String w) {
         StringBuilder builder = new StringBuilder();
-        Interval nord1 = RightOpenInterval.of(292.5, 360);
-        Interval nord2 = RightOpenInterval.of(0, 67.5);
+        Interval north1 = RightOpenInterval.of(292.5, 360);
+        Interval north2 = RightOpenInterval.of(0, 67.5);
         Interval south = RightOpenInterval.of(112.5, 247.5);
         Interval east = RightOpenInterval.of(22.5, 157.5);
         Interval west = RightOpenInterval.of(202.5, 337.5);
 
-        if (nord1.contains(azDeg()) || nord2.contains(azDeg())) {
+        if (north1.contains(azDeg()) || north2.contains(azDeg())) {
             builder.append(n);
         }
         if (south.contains(azDeg())) {
