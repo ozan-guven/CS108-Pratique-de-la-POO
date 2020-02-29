@@ -24,10 +24,10 @@ public final class SiderealTime {
     }
 
     /**
-     * Gives the Greenwich sidereal time for the given date/time couple (ZonedDateTime)
+     * Gives the Greenwich sidereal time (in radians) for the given date/time couple (ZonedDateTime)
      *
      * @param when the date for which the Greenwich sidereal time wants to be known
-     * @return the greenwich sidereal time at the date when
+     * @return the greenwich sidereal time (in radians) at the date when
      */
     public static double greenwich(ZonedDateTime when) {
         RightOpenInterval interval = RightOpenInterval.of(0, TAU);
@@ -46,13 +46,13 @@ public final class SiderealTime {
     }
 
     /**
-     * Gives the sidereal time for the given place at the given date/time couple (ZonedDateTime)
+     * Gives the sidereal time (in radians) for the given place at the given date/time couple (ZonedDateTime)
      *
      * @param when  the date for which the sidereal time is wanted
      * @param where the place for which the sidereal time is wanted
-     * @return the sidereal time at the date when for the given place where
+     * @return the sidereal time (in radians) at the date when for the given place where
      */
-    public double local(ZonedDateTime when, GeographicCoordinates where) {
+    public static double local(ZonedDateTime when, GeographicCoordinates where) {
         RightOpenInterval interval = RightOpenInterval.of(0, TAU);
 
         double siderealL = Angle.toHr(greenwich(when)) + Angle.toHr(where.lon());
