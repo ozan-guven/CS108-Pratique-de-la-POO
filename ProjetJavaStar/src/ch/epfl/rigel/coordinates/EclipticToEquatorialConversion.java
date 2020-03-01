@@ -44,10 +44,11 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
      */
     @Override
     public EquatorialCoordinates apply(EclipticCoordinates ecl) {
-        double argtan = (Math.sin(ecl.lon()) * Math.cos(eclipticObliquity) - Math.tan(ecl.lat()) * Math.sin(eclipticObliquity)) / Math.cos(ecl.lon());
+        //double argtan = (Math.sin(ecl.lon()) * Math.cos(eclipticObliquity) - Math.tan(ecl.lat()) * Math.sin(eclipticObliquity)) / Math.cos(ecl.lon());
         double argsin = Math.sin(ecl.lat()) * Math.cos(eclipticObliquity) + Math.cos(ecl.lat()) * Math.sin(eclipticObliquity) * Math.sin(ecl.lon());
 
-        alphaEqu = Math.atan2(argtan, 1);
+        //alphaEqu = Math.atan2(argtan, 1);
+        alphaEqu = Math.atan2(Math.sin(ecl.lon()) * Math.cos(eclipticObliquity) - Math.tan(ecl.lat()) * Math.sin(eclipticObliquity), Math.cos(ecl.lon()));
         deltaEqu = Math.asin(argsin);
 
         return EquatorialCoordinates.of(alphaEqu, deltaEqu);
