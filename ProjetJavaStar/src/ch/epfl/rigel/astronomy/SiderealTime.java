@@ -2,6 +2,7 @@ package ch.epfl.rigel.astronomy;
 
 import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.math.Angle;
+import ch.epfl.rigel.math.Polynomial;
 import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.time.LocalTime;
@@ -37,7 +38,8 @@ public final class SiderealTime {
         double julCentToWhenZero = Epoch.J2000.julianCenturiesUntil(whenInGreenwichAtZero);
         double hrsFromZeroToWhen = whenInGreenwichAtZero.until(whenInGreenwich, ChronoUnit.MILLIS) / (1000.0 * 60.0 * 60.0);
 
-        double sidereal0 = (julCentToWhenZero * ((0.000025862 * julCentToWhenZero) + 2400.051336)) + 6.697374558;
+        //double sidereal0 = (julCentToWhenZero * ((0.000025862 * julCentToWhenZero) + 2400.051336)) + 6.697374558;
+        double sidereal0 = Polynomial.of(0.000025862, 2400.051336, 6.697374558).at(julCentToWhenZero);
         double sidereal1 = 1.002737909 * hrsFromZeroToWhen;
 
         double siderealG = sidereal0 + sidereal1; //Sidereal time in Greenwich in hours
