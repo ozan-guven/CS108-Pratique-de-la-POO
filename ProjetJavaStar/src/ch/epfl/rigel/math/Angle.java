@@ -56,11 +56,11 @@ public final class Angle {
     /**
      * Gives the radian value of a given angle in degrees
      *
-     * @param deg the angle in degreees
+     * @param deg the angle in degrees
      * @return the translated angle in radians
      */
     public static double ofDeg(double deg) {
-        return normalizePositive(Math.toRadians(deg));
+        return Math.toRadians(deg);
     }
 
     /**

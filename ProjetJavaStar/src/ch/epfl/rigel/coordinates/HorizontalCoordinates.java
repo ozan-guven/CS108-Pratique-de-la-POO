@@ -52,20 +52,6 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
-     * @return the azimuth
-     */
-    public double az() {
-        return lon();
-    }
-
-    /**
-     * @return the azimuth in degrees
-     */
-    public double azDeg() {
-        return lonDeg();
-    }
-
-    /**
      * Shows the octant in which the azimuth is
      *
      * @param n the north
@@ -99,6 +85,30 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Computes the angular distance between the coordinates and another given coordinates
+     *
+     * @param that the horizontal coordinates to calculate the distance to
+     * @return the angular distance in radians
+     */
+    public double angularDistanceTo(HorizontalCoordinates that) {
+        return Math.acos(Math.sin(this.alt()) * Math.sin(that.alt()) + Math.cos(this.alt()) * Math.cos(that.alt()) * Math.cos(this.az() - that.az()));
+    }
+
+    /**
+     * @return the azimuth
+     */
+    public double az() {
+        return lon();
+    }
+
+    /**
+     * @return the azimuth in degrees
+     */
+    public double azDeg() {
+        return lonDeg();
+    }
+
+    /**
      * @return the altitude
      */
     public double alt() {
@@ -112,41 +122,11 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
         return latDeg();
     }
 
-    /**
-     * Computes the angular distance between the coordinates and another given coordinates
-     *
-     * @param that the horizontal coordinates to calculate the distance to
-     * @return the angular distance in radians
-     */
-    public double angularDistanceTo(HorizontalCoordinates that) {
-        return Math.acos(Math.sin(this.alt()) * Math.sin(that.alt()) + Math.cos(this.alt()) * Math.cos(that.alt()) * Math.cos(this.az() - that.az()));
-    }
-
     @Override
     public String toString() {
         return String.format(Locale.ROOT,
                 "(az=%.4f°, alt=%.4f°)",
                 azDeg(),
                 altDeg());
-    }
-
-    @Override
-    double lon() {
-        return super.longitude;
-    }
-
-    @Override
-    double lonDeg() {
-        return Angle.toDeg(super.longitude);
-    }
-
-    @Override
-    double lat() {
-        return super.latitude;
-    }
-
-    @Override
-    double latDeg() {
-        return toDeg(super.latitude);
     }
 }

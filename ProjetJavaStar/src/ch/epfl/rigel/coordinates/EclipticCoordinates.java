@@ -40,7 +40,7 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      */
     @Override
     public double lon() {
-        return super.longitude;
+        return super.lon();
     }
 
     /**
@@ -48,7 +48,7 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      */
     @Override
     public double lonDeg() {
-        return Angle.toDeg(super.longitude);
+        return super.lonDeg();
     }
 
     /**
@@ -56,7 +56,7 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      */
     @Override
     public double lat() {
-        return super.latitude;
+        return super.lat();
     }
 
     /**
@@ -64,7 +64,7 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      */
     @Override
     public double latDeg() {
-        return Angle.toDeg(super.latitude);
+        return super.latDeg();
     }
 
     @Override

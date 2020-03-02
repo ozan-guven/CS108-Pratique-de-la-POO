@@ -79,46 +79,6 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
         return latDeg();
     }
 
-    /**
-     * Getter for the longitude
-     *
-     * @return the longitude in radian
-     */
-    @Override
-    public double lon() {
-        return longitude;
-    }
-
-    /**
-     * Getter for the longitude
-     *
-     * @return the longitude in degrees
-     */
-    @Override
-    public double lonDeg() {
-        return Angle.toDeg(longitude);
-    }
-
-    /**
-     * Getter for the latitude
-     *
-     * @return the latitude in radian
-     */
-    @Override
-    public double lat() {
-        return latitude;
-    }
-
-    /**
-     * Getter for the latitude
-     *
-     * @return the latitude in degrees
-     */
-    @Override
-    public double latDeg() {
-        return Angle.toDeg(latitude);
-    }
-
     @Override
     public String toString() {
         return String.format(Locale.ROOT,
