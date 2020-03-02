@@ -22,14 +22,14 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
     /**
      * Method to construct equatorial coordinates from the right ascension and the declination
      *
-     * @param ra  The right ascension in hour
-     * @param dec The declination in degrees
+     * @param ra  The right ascension in degrees (must be in [0, 2*pi[)
+     * @param dec The declination in degrees (must be in [-(pi/2), (pi/2)])
      * @return The coordinates in equatorial representation
      * @throws IllegalArgumentException
      */
     public static EquatorialCoordinates of(double ra, double dec) {
         Interval intervalRa = RightOpenInterval.of(0, Angle.TAU);
-        Interval intervalDec = ClosedInterval.symmetric(Angle.TAU/2);
+        Interval intervalDec = ClosedInterval.symmetric(Angle.TAU / 2);
 
         return new EquatorialCoordinates(Preconditions.checkInInterval(intervalRa, ra), Preconditions.checkInInterval(intervalDec, dec));
     }

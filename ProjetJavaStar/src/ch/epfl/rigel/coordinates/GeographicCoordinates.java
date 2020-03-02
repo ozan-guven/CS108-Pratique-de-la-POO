@@ -22,8 +22,8 @@ public final class GeographicCoordinates extends SphericalCoordinates {
     /**
      * Method to create geographic coordinates for longitude and latitude in degrees
      *
-     * @param lonDeg The longitude in degrees
-     * @param latDeg The latitude in degrees
+     * @param lonDeg The longitude in degrees (must be in [0°, 360°[)
+     * @param latDeg The latitude in degrees (must be in [-90°, 90°])
      * @return The coordinates in geographic representation
      */
     public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
