@@ -1,75 +1,65 @@
 package ch.epfl.rigel.coordinates;
 
-import ch.epfl.rigel.math.Angle;
+import ch.epfl.test.TestRandomizer;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.Math.PI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EclipticCoordinatesTest {
-
     @Test
-    void ofWorks() {
-        EclipticCoordinates coord1 = EclipticCoordinates.of(3.120391, 1.235248);
-        EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, 0.123891);
-
-        assertEquals(3.120391, coord1.lon());
-        assertEquals(1.235248, coord1.lat());
-        assertEquals(2.301934, coord2.lon());
-        assertEquals(0.123891, coord2.lat());
+    void eclOfWorksWithValidCoordinates() {
+        var rng = TestRandomizer.newRandom();
+        for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
+            var lon = rng.nextDouble(0, 2d * PI);
+            var lat = rng.nextDouble(-PI / 2d, PI / 2d);
+            var c = EclipticCoordinates.of(lon, lat);
+            assertEquals(lon, c.lon(), 1e-8);
+            assertEquals(lat, c.lat(), 1e-8);
+        }
     }
 
     @Test
-    void ofFails() {
-        assertThrows(IllegalArgumentException.class, () ->{
-            EclipticCoordinates coord1 = EclipticCoordinates.of(10, 1.235248);
-            EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, Angle.TAU);
+    void eclOfFailsWithInvalidCoordinates() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            EclipticCoordinates.of(2d * PI + 1e-8, 0);
         });
-
+        assertThrows(IllegalArgumentException.class, () -> {
+            EclipticCoordinates.of(-1e-8, 0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            EclipticCoordinates.of(0, PI + 1e-8);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            EclipticCoordinates.of(0, -(PI + 1e-8));
+        });
     }
 
     @Test
-    void lon() {
-        EclipticCoordinates coord1 = EclipticCoordinates.of(3.120391, 1.235248);
-        EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, 0.123891);
-
-        assertEquals(3.120391, coord1.lon());
-        assertEquals(2.301934, coord2.lon());
+    void lonDegAndLatDegReturnCoordinatesInDegrees() {
+        var rng = TestRandomizer.newRandom();
+        for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
+            var lon = rng.nextDouble(0, 2d * PI);
+            var lat = rng.nextDouble(-PI / 2d, PI / 2d);
+            var c = EclipticCoordinates.of(lon, lat);
+            assertEquals(Math.toDegrees(lon), c.lonDeg(), 1e-8);
+            assertEquals(Math.toDegrees(lat), c.latDeg(), 1e-8);
+        }
     }
 
     @Test
-    void lonDeg() {
-        EclipticCoordinates coord1 = EclipticCoordinates.of(3.120391, 1.235248);
-        EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, 0.123891);
-
-        assertEquals(178.78523473, coord1.lonDeg(), 1e-8);
-        assertEquals(131.89110292, coord2.lonDeg(), 1e-8);
+    void ecEqualsThrowsUOE() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            var c = EclipticCoordinates.of(0, 0);
+            c.equals(c);
+        });
     }
 
     @Test
-    void lat() {
-        EclipticCoordinates coord1 = EclipticCoordinates.of(3.120391, 1.235248);
-        EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, 0.123891);
-
-        assertEquals(1.235248, coord1.lat(), 1e-8);
-        assertEquals(0.123891, coord2.lat(), 1e-8);
-    }
-
-    @Test
-    void latDeg() {
-        EclipticCoordinates coord1 = EclipticCoordinates.of(3.120391, 1.235248);
-        EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, 0.123891);
-
-        assertEquals(70.774497052, coord1.latDeg(), 1e-8);
-        assertEquals(7.0984314197, coord2.latDeg(), 1e-8);
-    }
-
-    @Test
-    void testToString() {
-        EclipticCoordinates coord1 = EclipticCoordinates.of(3.120391, 1.235248);
-        EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, 0.123891);
-
-        assertEquals("(λ=178.7852°, β=70.7745°)", coord1.toString());
-        assertEquals("(λ=131.8911°, β=7.0984°)", coord2.toString());
+    void ecHashCodeThrowsUOE() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            EclipticCoordinates.of(0, 0).hashCode();
+        });
     }
 }
