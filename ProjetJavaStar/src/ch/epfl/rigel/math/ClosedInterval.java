@@ -10,7 +10,7 @@ import static ch.epfl.rigel.Preconditions.*;
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
-public class ClosedInterval extends Interval {
+public final class ClosedInterval extends Interval {
 
     private ClosedInterval(double lowBound, double upBound) {
         super(lowBound, upBound);
