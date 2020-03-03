@@ -25,7 +25,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
      * @param ra  The right ascension in degrees (must be in [0, 2*pi[)
      * @param dec The declination in degrees (must be in [-(pi/2), (pi/2)])
      * @return The coordinates in equatorial representation
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if angles are not in the interval
      */
     public static EquatorialCoordinates of(double ra, double dec) {
         Interval intervalRa = RightOpenInterval.of(0, Angle.TAU);

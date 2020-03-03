@@ -27,7 +27,7 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
      * @param az  the azimuth in radians (must be in [0, 2*pi[)
      * @param alt the altitude in radians (must be in [-(pi/2), (pi/2)])
      * @return the horizontal coordinates
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if angles are not in the interval
      */
     public static HorizontalCoordinates of(double az, double alt) {
         Interval intervalOfAz = RightOpenInterval.of(0, TAU);
@@ -42,7 +42,7 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
      * @param azDeg  the azimuth in degrees (must be in [0, 360°[)
      * @param altDeg the altitude in radians (must be in [90°, 90°])
      * @return the horizontal coordinates
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if angles are not in the interval
      */
     public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {
         Interval intervalOfAz = RightOpenInterval.of(0, 360);
