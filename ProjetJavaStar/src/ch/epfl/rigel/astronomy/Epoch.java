@@ -31,11 +31,6 @@ public enum Epoch {
         this.epochDate = epochDate;
     }
 
-    //TODO : Je ne suis pas sur si l'on peut directement retourner la date comme ça ou si y'a même besoin de faire ça
-    public ZonedDateTime getEpochDate() {
-        return epochDate;
-    }
-
     /**
      * Computes the number of days between the selected epoch (J2000 or J2010)
      * and the given date (ZonedDateTime)
@@ -46,9 +41,7 @@ public enum Epoch {
     public double daysUntil(ZonedDateTime when) {
         double timeToWhen;
 
-        //TODO : JE ne sais pas lequels des deux utiliser
         timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
-        //timeToWhen = this.getEpochDate().until(when, ChronoUnit.MILLIS);
 
         return timeToWhen / MILLIS_PER_DAY;
     }
@@ -65,7 +58,6 @@ public enum Epoch {
         double timeToWhen;
 
         timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
-        //timeToWhen = this.getEpochDate().until(when, ChronoUnit.MILLIS);
 
         return timeToWhen / MILLIS_PER_JULIAN_CENTURIES;
     }
