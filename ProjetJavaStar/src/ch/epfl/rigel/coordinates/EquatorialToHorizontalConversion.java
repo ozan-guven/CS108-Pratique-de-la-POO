@@ -16,7 +16,7 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
     private double lat; //The latitude of the observer
 
     private double azimuth;
-    private double heigth;
+    private double altitude;
 
     private double cosLat;
     private double sinLat;
@@ -46,14 +46,11 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
     public HorizontalCoordinates apply(EquatorialCoordinates equ) {
         double hourAngle = localSidereal - equ.ra();
 
-        double argsin = (Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle));
-        heigth = Math.asin(argsin);
+        altitude = Math.asin(Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle));
 
-        //double argtan = (-Math.cos(equ.dec()) * Math.cos(lat) * Math.sin(hourAngle)) / (Math.sin(equ.dec()) - (Math.sin(lat) * Math.sin(altitude)));
-        //azimuth = Math.atan2(argtan, 1);
-        azimuth = Math.atan2(-Math.cos(equ.dec()) * cosLat * Math.sin(hourAngle), Math.sin(equ.dec()) - (sinLat * Math.sin(heigth)));
+        azimuth = Math.atan2(-Math.cos(equ.dec()) * cosLat * Math.sin(hourAngle), Math.sin(equ.dec()) - (sinLat * Math.sin(altitude)));
 
-        return HorizontalCoordinates.of(azimuth, heigth);
+        return HorizontalCoordinates.of(azimuth, altitude);
     }
 
     @Override
