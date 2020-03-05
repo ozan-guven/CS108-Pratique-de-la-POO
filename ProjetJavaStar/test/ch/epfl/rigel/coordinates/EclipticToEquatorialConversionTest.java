@@ -25,12 +25,4 @@ class EclipticToEquatorialConversionTest {
         assertEquals(Angle.ofHr(9.5814777777778), newCoord.ra(), 1e-6);
         assertEquals(Angle.ofDMS(19,32,6.01), newCoord.dec(), 1e-7);
     }
-
-    @Test
-    void testHashCode() {
-    }
-
-    @Test
-    void testEquals() {
-    }
 }
