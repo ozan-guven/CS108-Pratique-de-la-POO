@@ -7,7 +7,7 @@ import java.time.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EclipticToEquatorialConversionTest {
+class MyEclipticToEquatorialConversionTest {
 
     @Test
     void apply() {

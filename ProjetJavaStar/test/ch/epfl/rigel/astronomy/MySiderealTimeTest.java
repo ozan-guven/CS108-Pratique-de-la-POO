@@ -8,7 +8,7 @@ import java.time.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SiderealTimeTest {
+class MySiderealTimeTest {
 
     @Test
     void greenwichWorksOnGivenExample() {
