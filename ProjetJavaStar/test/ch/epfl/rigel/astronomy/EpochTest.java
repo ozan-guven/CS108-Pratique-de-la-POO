@@ -49,29 +49,4 @@ class EpochTest {
         assertEquals(-3677.039583, Epoch.J2010.daysUntil(e), 1e-6);
 
     }
-
-    @Test
-    void julianCenturiesUntil() {
-        ZonedDateTime a = ZonedDateTime.of(
-                LocalDate.of(0, Month.JULY, 30),
-                LocalTime.of(15, 0),
-                ZoneOffset.UTC);
-        ZonedDateTime b = ZonedDateTime.of(
-                LocalDate.of(3020, Month.MARCH, 20),
-                LocalTime.of(0, 0),
-                ZoneOffset.UTC);
-        ZonedDateTime c = ZonedDateTime.of(
-                LocalDate.of(2006, Month.JUNE, 16),
-                LocalTime.of(18, 13),
-                ZoneOffset.UTC);
-
-        assertEquals(1, Epoch.J2000.julianCenturiesUntil(a));
-        assertEquals(1, Epoch.J2000.julianCenturiesUntil(b));
-        assertEquals(1, Epoch.J2000.julianCenturiesUntil(c));
-
-        assertEquals(1, Epoch.J2010.julianCenturiesUntil(a));
-        assertEquals(1, Epoch.J2010.julianCenturiesUntil(b));
-        assertEquals(1, Epoch.J2010.julianCenturiesUntil(c));
-
-    }
 }

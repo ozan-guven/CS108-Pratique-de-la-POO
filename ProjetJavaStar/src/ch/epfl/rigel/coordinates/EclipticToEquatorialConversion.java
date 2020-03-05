@@ -20,6 +20,9 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
     private double alphaEqu;
     private double deltaEqu;
 
+    private double cosObli;
+    private double sinObli;
+
     /**
      * Constructs the conversion system from Ecliptic to Equatorial coordinates
      * at the given date (when)
@@ -34,6 +37,9 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
                 Angle.ofArcsec(-46.815),
                 Angle.ofDMS(23, 26, 21.45))
                 .at(julianCentToJ2000);
+
+        cosObli = Math.cos(eclipticObliquity);
+        sinObli = Math.sin(eclipticObliquity);
     }
 
     /**
@@ -45,10 +51,10 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
     @Override
     public EquatorialCoordinates apply(EclipticCoordinates ecl) {
         //double argtan = (Math.sin(ecl.lon()) * Math.cos(eclipticObliquity) - Math.tan(ecl.lat()) * Math.sin(eclipticObliquity)) / Math.cos(ecl.lon());
-        double argsin = Math.sin(ecl.lat()) * Math.cos(eclipticObliquity) + Math.cos(ecl.lat()) * Math.sin(eclipticObliquity) * Math.sin(ecl.lon());
+        double argsin = Math.sin(ecl.lat()) * cosObli + Math.cos(ecl.lat()) * sinObli * Math.sin(ecl.lon());
 
         //alphaEqu = Math.atan2(argtan, 1);
-        alphaEqu = Math.atan2(Math.sin(ecl.lon()) * Math.cos(eclipticObliquity) - Math.tan(ecl.lat()) * Math.sin(eclipticObliquity), Math.cos(ecl.lon()));
+        alphaEqu = Math.atan2(Math.sin(ecl.lon()) * cosObli - Math.tan(ecl.lat()) * sinObli, Math.cos(ecl.lon()));
         deltaEqu = Math.asin(argsin);
 
         return EquatorialCoordinates.of(alphaEqu, deltaEqu);
