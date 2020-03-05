@@ -14,12 +14,6 @@ import java.util.function.Function;
  */
 public final class EclipticToEquatorialConversion implements Function<EclipticCoordinates, EquatorialCoordinates> {
 
-    private double julianCentToJ2000;
-    private double eclipticObliquity;
-
-    private double alphaEqu;
-    private double deltaEqu;
-
     private double cosObli;
     private double sinObli;
 
@@ -30,13 +24,12 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
      * @param when the date for which the conversion must hold
      */
     public EclipticToEquatorialConversion(ZonedDateTime when) {
-        julianCentToJ2000 = Epoch.J2000.julianCenturiesUntil(when);
-        eclipticObliquity = Polynomial.of(
+        double eclipticObliquity = Polynomial.of(
                 Angle.ofArcsec(0.00181),
                 Angle.ofArcsec(-0.0006),
                 Angle.ofArcsec(-46.815),
                 Angle.ofDMS(23, 26, 21.45))
-                .at(julianCentToJ2000);
+                .at(Epoch.J2000.julianCenturiesUntil(when));
 
         cosObli = Math.cos(eclipticObliquity);
         sinObli = Math.sin(eclipticObliquity);
@@ -50,8 +43,8 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
      */
     @Override
     public EquatorialCoordinates apply(EclipticCoordinates ecl) {
-        alphaEqu = Math.atan2(Math.sin(ecl.lon()) * cosObli - Math.tan(ecl.lat()) * sinObli, Math.cos(ecl.lon()));
-        deltaEqu = Math.asin(Math.sin(ecl.lat()) * cosObli + Math.cos(ecl.lat()) * sinObli * Math.sin(ecl.lon()));
+        double alphaEqu = Math.atan2(Math.sin(ecl.lon()) * cosObli - Math.tan(ecl.lat()) * sinObli, Math.cos(ecl.lon()));
+        double deltaEqu = Math.asin(Math.sin(ecl.lat()) * cosObli + Math.cos(ecl.lat()) * sinObli * Math.sin(ecl.lon()));
 
         return EquatorialCoordinates.of(alphaEqu, deltaEqu);
     }
