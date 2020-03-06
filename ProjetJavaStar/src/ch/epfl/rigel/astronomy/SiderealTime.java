@@ -54,9 +54,9 @@ public final class SiderealTime {
     public static double local(ZonedDateTime when, GeographicCoordinates where) {
         RightOpenInterval interval = RightOpenInterval.of(0, TAU);
 
-        double siderealL = Angle.toHr(greenwich(when)) + Angle.toHr(where.lon());
+        double siderealL = greenwich(when) + where.lon();
 
-        return interval.reduce(Angle.ofHr(siderealL));
+        return interval.reduce(siderealL);
     }
 
 }
