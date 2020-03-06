@@ -24,11 +24,15 @@ class MySiderealTimeTest {
                 LocalDate.of(1994, Month.JUNE, 16),
                 LocalTime.of(18, 0),
                 ZoneOffset.UTC);
+        ZonedDateTime d3 = ZonedDateTime.of(
+                LocalDate.of(2000, Month.JANUARY, 1),
+                LocalTime.of(12, 0),
+                ZoneOffset.UTC);
 
         assertEquals(8.679071, Angle.toHr(SiderealTime.greenwich(d)), 1e-6); //Precision of 10^-6
         assertEquals(7.3023135494, Angle.toHr(SiderealTime.greenwich(d1)), 1e-7); //Precision of 10^-7
-        assertEquals(175.771113474402, Angle.toDeg(SiderealTime.greenwich(d2)), 1e-5);
-
+        //assertEquals(175.771113474402, Angle.toDeg(SiderealTime.greenwich(d2)), 1e-5);
+        assertEquals(18.697374558, Angle.toHr(SiderealTime.greenwich(d3)), 1e-7); //Precision of 10^-7
 
         /*ZonedDateTime d1 = ZonedDateTime.of(
                 LocalDate.of(2001,Month.JANUARY, 27),

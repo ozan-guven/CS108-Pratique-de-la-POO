@@ -9,11 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MyEpochTest {
 
     @Test
-    void getEpochDate() {
-
-    }
-
-    @Test
     void daysUntil() {
         ZonedDateTime a = ZonedDateTime.of(
                 LocalDate.of(2003, Month.JULY, 30),
@@ -47,6 +42,15 @@ class MyEpochTest {
         assertEquals(-1293.240972, Epoch.J2010.daysUntil(c), 1e-6);
         assertEquals(-3649.25, Epoch.J2010.daysUntil(d), 1e-6);
         assertEquals(-3677.039583, Epoch.J2010.daysUntil(e), 1e-6);
+    }
 
+    @Test
+    void julianCenturiesUntil() {
+        ZonedDateTime d = ZonedDateTime.of(
+                LocalDate.of(2000, Month.JANUARY, 1),
+                LocalTime.of(12, 0),
+                ZoneOffset.UTC);
+
+        assertEquals(0, Epoch.J2000.julianCenturiesUntil(d));
     }
 }
