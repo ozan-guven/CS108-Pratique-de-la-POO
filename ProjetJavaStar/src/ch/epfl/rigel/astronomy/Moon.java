@@ -25,7 +25,7 @@ public final class Moon extends CelestialObject {
      * @param magnitude     the magnitude of the Moon
      * @param phase         the phase of the Moon (must be in [0, 1])
      * @throws IllegalArgumentException if the angularSize is negative
-     * @throws IllegalArgumentException if the phase is negative
+     * @throws IllegalArgumentException if the phase is not in the interval [0, 1]
      * @throws NullPointerException     if the equatorialPos is null
      */
     public Moon(EquatorialCoordinates equatorialPos, float angularSize, float magnitude, float phase) {
@@ -33,7 +33,7 @@ public final class Moon extends CelestialObject {
 
         ClosedInterval interval = ClosedInterval.of(0, 1);
 
-        //TODO : C'est la meilleure des solutions ou on fait on .checkArgument ?
+        //TODO : C'est la meilleure des solutions ou on fait un .checkArgument ?
         this.phase = (float) Preconditions.checkInInterval(interval, phase);
     }
 
