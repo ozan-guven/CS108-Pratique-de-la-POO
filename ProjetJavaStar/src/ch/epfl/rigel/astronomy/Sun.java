@@ -41,7 +41,7 @@ public final class Sun extends CelestialObject {
      *
      * @return the ecliptic coordinates of the Sun
      */
-    public EclipticCoordinates getEclipticPos() {
+    public EclipticCoordinates eclipticPos() {
         return eclipticPos;
     }
 

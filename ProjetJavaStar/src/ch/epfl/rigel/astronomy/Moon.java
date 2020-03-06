@@ -29,7 +29,7 @@ public final class Moon extends CelestialObject {
      * @throws NullPointerException     if the equatorialPos is null
      */
     public Moon(EquatorialCoordinates equatorialPos, float angularSize, float magnitude, float phase) {
-        super("Lune", equatorialPos, angularSize, magnitude);
+        super(MOON_NAME, equatorialPos, angularSize, magnitude);
 
         ClosedInterval interval = ClosedInterval.of(0, 1);
 
