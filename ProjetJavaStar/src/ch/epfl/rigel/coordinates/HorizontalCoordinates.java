@@ -95,6 +95,8 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Returns the azimuth (in radians)
+     *
      * @return the azimuth
      */
     public double az() {
@@ -102,6 +104,8 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Returns the azimuth (in degrees)
+     *
      * @return the azimuth in degrees
      */
     public double azDeg() {
@@ -109,6 +113,8 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Returns the altitude (in radians)
+     *
      * @return the altitude
      */
     public double alt() {
@@ -116,6 +122,8 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Returns the altitude (in degrees)
+     *
      * @return the altitude in degrees
      */
     public double altDeg() {
