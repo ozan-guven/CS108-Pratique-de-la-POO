@@ -41,8 +41,7 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
      */
     @Override
     public HorizontalCoordinates apply(EquatorialCoordinates equ) {
-        //TODO: A CHANGER !!!!!!!!!!!
-        double hourAngle = 1.53472613074;//localSidereal - equ.ra();
+        double hourAngle = localSidereal - equ.ra();
 
         double sinAltitude = (Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle));
         double altitude = Math.asin((Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle)));
