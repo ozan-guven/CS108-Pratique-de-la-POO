@@ -54,8 +54,6 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      * @return the radius of the circle (may be infinity)
      */
     public double circleRadiusForParallel(HorizontalCoordinates parallel) {
-        //TODO : Le prof nous dit de ne pas traiter le cas ou on a une division par 0
-        //TODO : mais la methode retourne INFINITY seulment si on a des doubles ou des floats
         return Math.cos(parallel.alt()) / (Math.sin(parallel.alt()) + sinPhiCenter);
     }
 
