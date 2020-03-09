@@ -105,8 +105,9 @@ public final class StereographicProjection implements Function<HorizontalCoordin
     public HorizontalCoordinates inverseApply(CartesianCoordinates xy) {
 
         double rho = Math.sqrt(xy.x() * xy.x() + xy.y() * xy.y());
-        double sinC = 2 * rho / (rho * rho + 1); //TODO : On pourrait peut-être créer une varibel rhoSquared vu qu'on le calcule trois fois ?
-        double cosC = (1 - rho * rho) / (rho * rho + 1);
+        double rhoSquared = rho * rho;
+        double sinC = 2 * rho / (rhoSquared + 1);
+        double cosC = (1 - rhoSquared) / (rhoSquared + 1);
 
         double lambda = Math.atan2(xy.x() * sinC, (rho * cosPhiCenter * cosC) - (xy.y() * sinPhiCenter * sinC)) + lambdaZero;
         double phi = Math.asin(cosC * sinPhiCenter + ((xy.y() * sinC * cosPhiCenter) / rho));
@@ -126,7 +127,6 @@ public final class StereographicProjection implements Function<HorizontalCoordin
 
     @Override
     public String toString() {
-        //TODO Je sais pas quoi ajouter d'autres
         return String.format(Locale.ROOT,
                 "StereographicProjection centered at horizontal coordinates %s",
                 centerCoord);

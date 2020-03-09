@@ -12,7 +12,6 @@ import java.util.Objects;
  */
 public abstract class CelestialObject {
 
-    //TODO Je mets final à tout mais je sais pas si c'est utile
     private final String name;
     private final EquatorialCoordinates equatorialPos;
     private final float angularSize;
@@ -32,7 +31,6 @@ public abstract class CelestialObject {
     CelestialObject(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude) {
         Preconditions.checkArgument(angularSize >= 0);
 
-        //TODO : Doit-on faire des copies défesives ?
         this.name = Objects.requireNonNull(name);
         this.equatorialPos = Objects.requireNonNull(equatorialPos);
         this.angularSize = angularSize;
@@ -47,8 +45,6 @@ public abstract class CelestialObject {
     public String name() {
         return name;
     }
-
-    //TODO : On doit faire un typpage de float a double ?
 
     /**
      * Gets the angular size of the celestial object
@@ -74,7 +70,7 @@ public abstract class CelestialObject {
      * @return the equatorial coordinates of the object
      */
     public EquatorialCoordinates equatorialPos() {
-        return equatorialPos; //TODO : Copie défensive ?
+        return equatorialPos;
     }
 
     /**

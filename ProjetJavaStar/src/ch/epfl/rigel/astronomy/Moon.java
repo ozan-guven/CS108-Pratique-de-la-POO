@@ -33,7 +33,6 @@ public final class Moon extends CelestialObject {
 
         ClosedInterval interval = ClosedInterval.of(0, 1);
 
-        //TODO : C'est la meilleure des solutions ou on fait un .checkArgument ?
         this.phase = (float) Preconditions.checkInInterval(interval, phase);
     }
 
