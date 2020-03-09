@@ -8,7 +8,7 @@ import ch.epfl.rigel.math.Angle;
  * @author Robin Goumaz (301420)
  */
 abstract class SphericalCoordinates {
-    double longitude, latitude;
+    final double longitude, latitude;
 
     SphericalCoordinates(double lon, double lat) {
         longitude = lon;

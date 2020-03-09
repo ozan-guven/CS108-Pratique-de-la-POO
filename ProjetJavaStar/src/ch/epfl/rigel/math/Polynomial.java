@@ -10,7 +10,7 @@ import static ch.epfl.rigel.Preconditions.*;
  */
 public final class Polynomial {
 
-    private double[] polynomialCoefficients;
+    private final double[] polynomialCoefficients;
 
     private Polynomial(double coefficientN, double... coefficients) {
         polynomialCoefficients = new double[coefficients.length + 1];
