@@ -18,16 +18,16 @@ class MySunTest {
 
         assertEquals(0, a.meanAnomaly());
         assertEquals(1, b.meanAnomaly());
-        assertEquals(0.234, c.meanAnomaly());
-        assertEquals(-0.123, d.meanAnomaly());
-        assertEquals(1203.123, e.meanAnomaly());
+        assertEquals(0.234f, c.meanAnomaly());
+        assertEquals(-0.123f, d.meanAnomaly());
+        assertEquals(1203.123f, e.meanAnomaly());
     }
 
     @Test
     void magnitude(){
         Sun a = new Sun(EclipticCoordinates.of(0,0), EquatorialCoordinates.of(0,0), 0, 0);
 
-        assertEquals(-26.7, a.magnitude());
+        assertEquals(-26.7f, a.magnitude());
     }
 
     @Test

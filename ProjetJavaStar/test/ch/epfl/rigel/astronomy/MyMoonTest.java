@@ -23,6 +23,14 @@ class MyMoonTest {
     }
 
     @Test
+    void phase(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            Moon a = new Moon(EquatorialCoordinates.of(0,0), 1, 1, -0.3f);
+            Moon b = new Moon(EquatorialCoordinates.of(0,0), 1, 1, 1.3f);
+        });
+    }
+
+    @Test
     void name(){
         Moon a = new Moon(EquatorialCoordinates.of(0,0), 1, 1, 0.3f);
 
@@ -31,17 +39,17 @@ class MyMoonTest {
 
     @Test
     void angularSize(){
-        Moon a = new Moon(EquatorialCoordinates.of(0,0), 0.4f, 1, 0.3f);
+        Moon a = new Moon(EquatorialCoordinates.of(0,0), 0, 1, 0.3f);
         Moon b = new Moon(EquatorialCoordinates.of(0,0), 1, 1, 0.5f);
         Moon c = new Moon(EquatorialCoordinates.of(0,0), 10, 1, 1f);
         Moon d = new Moon(EquatorialCoordinates.of(0,0), 235.345f, 1, 0.003f);
         Moon e = new Moon(EquatorialCoordinates.of(0,0), 0.0000012f, 1, 0.125f);
 
-        assertEquals(0.4, a.angularSize());
+        assertEquals(0, a.angularSize());
         assertEquals(1, b.angularSize());
         assertEquals(10, c.angularSize());
-        assertEquals(235.345, d.angularSize());
-        assertEquals(0.0000012, e.angularSize());
+        assertEquals(235.345f, d.angularSize());
+        assertEquals(0.0000012f, e.angularSize());
     }
 
     @Test
@@ -54,9 +62,9 @@ class MyMoonTest {
 
         assertEquals(0, a.magnitude());
         assertEquals(-121, b.magnitude());
-        assertEquals(11.23409, c.magnitude());
-        assertEquals(-12.845, d.magnitude());
-        assertEquals(0.23847289, e.magnitude());
+        assertEquals(11.23409f, c.magnitude());
+        assertEquals(-12.845f, d.magnitude());
+        assertEquals(0.23847289f, e.magnitude());
     }
 
     @Test
