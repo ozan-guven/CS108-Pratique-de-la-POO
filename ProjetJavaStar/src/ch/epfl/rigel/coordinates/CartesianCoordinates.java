@@ -8,7 +8,7 @@ import java.util.Locale;
  * @author Ozan Güven (297076)
  */
 public final class CartesianCoordinates {
-    private double x, y;
+    private final double x, y;
 
     private CartesianCoordinates(double x, double y) {
         this.x = x;

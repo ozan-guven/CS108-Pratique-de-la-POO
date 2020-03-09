@@ -15,7 +15,7 @@ public final class Moon extends CelestialObject {
 
     private final static String MOON_NAME = "Lune"; //As the name of the Moon does not change from one instances to another
 
-    private float phase;
+    private final float phase;
 
     /**
      * Constructor of the Moon
