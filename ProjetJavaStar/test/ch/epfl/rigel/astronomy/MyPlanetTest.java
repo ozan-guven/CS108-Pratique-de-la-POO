@@ -19,7 +19,7 @@ class MyPlanetTest {
 
         assertEquals("Terre", q.name());
         assertEquals(3.14f, q.angularSize());
-        assertEquals(-100f, q.magnitude());
+        assertEquals(-100f, q.magnitude()); //With float
         assertEquals(EquatorialCoordinates.of(0, 0).toString(), q.equatorialPos().toString());
     }
 
