@@ -51,7 +51,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
      */
     public static List<PlanetModel> ALL = Arrays.asList(PlanetModel.values());
 
-    //TODO : Finaux ?
     private final String frenchName; //The french name of the planet
     private final double orbitalRevolution; //The orbital revolution
     private final double lonAtJ2010; //The longitude of the planet at epoch J2010
@@ -68,7 +67,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
                         double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
                         double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude) {
-
         this.frenchName = frenchName;
         this.orbitalRevolution = orbitalRevolution;
         lonAtJ2010 = Angle.ofDeg(lonAtJ2010Deg);
@@ -79,7 +77,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         this.lonOfAscendingNode = Angle.ofDeg(lonOfAscendingNodeDeg);
         this.angularSize = Angle.ofArcsec(angularSizeArcsec);
         this.magnitude = magnitude;
-
     }
 
     @Override
@@ -114,11 +111,11 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
         double rSinus = radiusE * Math.sin(eclHelioLon - helioLonE);
         if (innerPlanets.contains(this)) {
-            System.out.println("INNER PLAAANEEEEEEETTEEETEEEEEE");
+            System.out.println("INNER PLAAANEEEEEEETTEEETEEEEEE"); //TODO TEST
             lambda = Math.PI + helioLonE + Math.atan2(eclRadius * Math.sin(helioLonE - eclHelioLon),
                     radiusE - eclRadius * Math.cos(helioLonE - eclHelioLon));
         } else {
-            System.out.println("OUTER PLAAAANEEEEEEEEEEEEEETE");
+            System.out.println("OUTER PLAAAANEEEEEEEEEEEEEETE"); //TODO TEST
             lambda = eclHelioLon + Math.atan2(rSinus, eclRadius - radiusE * Math.cos(eclHelioLon - helioLonE));
         }
 
