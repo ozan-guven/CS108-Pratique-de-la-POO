@@ -14,10 +14,10 @@ import java.util.function.Function;
  */
 public final class EquatorialToHorizontalConversion implements Function<EquatorialCoordinates, HorizontalCoordinates> {
 
-    private final double localSidereal; //The local sidereal time
+    private double localSidereal; //The local sidereal time
 
-    private final double cosLat;
-    private final double sinLat;
+    private double cosLat;
+    private double sinLat;
 
     /**
      * Constructs the conversion system from Equatorial to Horizontal coordinates

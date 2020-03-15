@@ -10,12 +10,12 @@ import java.util.function.Function;
  */
 public final class StereographicProjection implements Function<HorizontalCoordinates, CartesianCoordinates> {
 
-    private final double cosPhiCenter; //The cosine of the latitude (altitude) of the center point
-    private final double sinPhiCenter; //The sine of the latitude (altitude) of the center point
+    private double cosPhiCenter; //The cosine of the latitude (altitude) of the center point
+    private double sinPhiCenter; //The sine of the latitude (altitude) of the center point
 
-    private final double lambdaZero; //The longitude (azimuth) of the center point
+    private double lambdaZero; //The longitude (azimuth) of the center point
 
-    private final String centerCoord; //The coordinates of the center of the projection
+    private String centerCoord; //The coordinates of the center of the projection
 
     /**
      * Constructs the stereographic projection centered at the
