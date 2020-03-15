@@ -12,10 +12,10 @@ import java.util.Objects;
  */
 public abstract class CelestialObject {
 
-    private final String name;
-    private final EquatorialCoordinates equatorialPos;
-    private final float angularSize;
-    private final float magnitude;
+    private final String NAME;
+    private final EquatorialCoordinates EQUATORIAL_POS;
+    private final float ANGULAR_SIZE;
+    private final float MAGNITUDE;
 
     /**
      * Constructor of a celestial object
@@ -31,10 +31,10 @@ public abstract class CelestialObject {
     CelestialObject(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude) {
         Preconditions.checkArgument(angularSize >= 0);
 
-        this.name = Objects.requireNonNull(name);
-        this.equatorialPos = Objects.requireNonNull(equatorialPos);
-        this.angularSize = angularSize;
-        this.magnitude = magnitude;
+        NAME = Objects.requireNonNull(name);
+        EQUATORIAL_POS = Objects.requireNonNull(equatorialPos);
+        ANGULAR_SIZE = angularSize;
+        MAGNITUDE = magnitude;
     }
 
     /**
@@ -43,7 +43,7 @@ public abstract class CelestialObject {
      * @return the name of the object
      */
     public String name() {
-        return name;
+        return NAME;
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class CelestialObject {
      * @return the angular size
      */
     public double angularSize() {
-        return angularSize;
+        return ANGULAR_SIZE;
     }
 
     /**
@@ -61,7 +61,7 @@ public abstract class CelestialObject {
      * @return the magnitude of the object
      */
     public double magnitude() {
-        return magnitude;
+        return MAGNITUDE;
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class CelestialObject {
      * @return the equatorial coordinates of the object
      */
     public EquatorialCoordinates equatorialPos() {
-        return equatorialPos;
+        return EQUATORIAL_POS;
     }
 
     /**
