@@ -15,8 +15,8 @@ public final class Sun extends CelestialObject {
     private final static String SUN_NAME = "Soleil"; //As the name of the Sun does not change from instances to another
     private final static float SUN_MAGNITUDE = -26.7f; //As the magnitude of the Sun does not change form instances to another
 
-    private final EclipticCoordinates ECLIPTIC_POS;
-    private final float MEAN_ANOMALY;
+    private final EclipticCoordinates eclipticPos;
+    private final float meanAnomaly;
 
     /**
      * Constructor of the Sun
@@ -32,8 +32,8 @@ public final class Sun extends CelestialObject {
     public Sun(EclipticCoordinates eclipticPos, EquatorialCoordinates equatorialPos, float angularSize, float meanAnomaly) {
         super(SUN_NAME, equatorialPos, angularSize, SUN_MAGNITUDE);
 
-        ECLIPTIC_POS = Objects.requireNonNull(eclipticPos);
-        MEAN_ANOMALY = meanAnomaly;
+        this.eclipticPos = Objects.requireNonNull(eclipticPos);
+        this.meanAnomaly = meanAnomaly;
     }
 
     /**
@@ -42,7 +42,7 @@ public final class Sun extends CelestialObject {
      * @return the ecliptic coordinates of the Sun
      */
     public EclipticCoordinates eclipticPos() {
-        return ECLIPTIC_POS;
+        return eclipticPos;
     }
 
     /**
@@ -51,6 +51,6 @@ public final class Sun extends CelestialObject {
      * @return the mean anomaly of the Sun
      */
     public double meanAnomaly() {
-        return MEAN_ANOMALY;
+        return meanAnomaly;
     }
 }

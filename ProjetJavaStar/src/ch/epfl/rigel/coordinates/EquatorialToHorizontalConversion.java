@@ -14,10 +14,10 @@ import java.util.function.Function;
  */
 public final class EquatorialToHorizontalConversion implements Function<EquatorialCoordinates, HorizontalCoordinates> {
 
-    private final double LOCAL_SIDERAL; //The local sidereal time
+    private final double localSidereal; //The local sidereal time
 
-    private final double COS_LAT;
-    private final double SIN_LAT;
+    private final double cosLat;
+    private final double sinLat;
 
     /**
      * Constructs the conversion system from Equatorial to Horizontal coordinates
@@ -27,10 +27,10 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
      * @param where the place where the conversion must hold
      */
     public EquatorialToHorizontalConversion(ZonedDateTime when, GeographicCoordinates where) {
-        LOCAL_SIDERAL = SiderealTime.local(when, where);
+        localSidereal = SiderealTime.local(when, where);
 
-        COS_LAT = Math.cos(where.lat());
-        SIN_LAT = Math.sin(where.lat());
+        cosLat = Math.cos(where.lat());
+        sinLat = Math.sin(where.lat());
     }
 
     /**
@@ -41,12 +41,12 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
      */
     @Override
     public HorizontalCoordinates apply(EquatorialCoordinates equ) {
-        double hourAngle = LOCAL_SIDERAL - equ.ra();
+        double hourAngle = localSidereal - equ.ra();
 
-        double sinAltitude = (Math.sin(equ.dec()) * SIN_LAT) + (Math.cos(equ.dec()) * COS_LAT * Math.cos(hourAngle));
-        double altitude = Math.asin((Math.sin(equ.dec()) * SIN_LAT) + (Math.cos(equ.dec()) * COS_LAT * Math.cos(hourAngle)));
+        double sinAltitude = (Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle));
+        double altitude = Math.asin((Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle)));
 
-        double azimuth = Math.atan2(-Math.cos(equ.dec()) * COS_LAT * Math.sin(hourAngle), Math.sin(equ.dec()) - (SIN_LAT * sinAltitude));
+        double azimuth = Math.atan2(-Math.cos(equ.dec()) * cosLat * Math.sin(hourAngle), Math.sin(equ.dec()) - (sinLat * sinAltitude));
 
         RightOpenInterval interval = RightOpenInterval.of(0, Angle.TAU);
 

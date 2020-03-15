@@ -8,11 +8,11 @@ import ch.epfl.rigel.math.Angle;
  * @author Robin Goumaz (301420)
  */
 abstract class SphericalCoordinates {
-    final double LONGITUDE, LATITUDE;
+    final double longitude, latitude;
 
     SphericalCoordinates(double lon, double lat) {
-        LONGITUDE = lon;
-        LATITUDE = lat;
+        longitude = lon;
+        latitude = lat;
     }
 
     /**
@@ -21,7 +21,7 @@ abstract class SphericalCoordinates {
      * @return longitude
      */
     double lon() {
-        return LONGITUDE;
+        return longitude;
     }
 
     /**
@@ -30,7 +30,7 @@ abstract class SphericalCoordinates {
      * @return longitude
      */
     double lonDeg() {
-        return Angle.toDeg(LONGITUDE);
+        return Angle.toDeg(longitude);
     }
 
     /**
@@ -39,7 +39,7 @@ abstract class SphericalCoordinates {
      * @return latitude
      */
     double lat() {
-        return LATITUDE;
+        return latitude;
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class SphericalCoordinates {
      * @return latitude
      */
     double latDeg() {
-        return Angle.toDeg(LATITUDE);
+        return Angle.toDeg(latitude);
     }
 
     @Override

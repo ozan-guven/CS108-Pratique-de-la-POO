@@ -15,7 +15,7 @@ public final class Moon extends CelestialObject {
 
     private final static String MOON_NAME = "Lune"; //As the name of the Moon does not change from one instances to another
 
-    private final float PHASE;
+    private final float phase;
 
     /**
      * Constructor of the Moon
@@ -33,13 +33,13 @@ public final class Moon extends CelestialObject {
 
         ClosedInterval interval = ClosedInterval.of(0, 1);
 
-        this.PHASE = (float) Preconditions.checkInInterval(interval, phase);
+        this.phase = (float) Preconditions.checkInInterval(interval, phase);
     }
 
     @Override
     public String info() {
         return String.format(Locale.ROOT,
                 "Lune (%.1f%%)", //We need to put %% to print % and not to see it as a format
-                PHASE * 100);
+                phase * 100);
     }
 }

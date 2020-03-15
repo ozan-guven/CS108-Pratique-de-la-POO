@@ -8,11 +8,11 @@ import java.util.Locale;
  * @author Ozan Güven (297076)
  */
 public final class CartesianCoordinates {
-    private final double X, Y;
+    private final double x, y;
 
     private CartesianCoordinates(double x, double y) {
-        X = x;
-        Y = y;
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -32,7 +32,7 @@ public final class CartesianCoordinates {
      * @return the x coordinate
      */
     public double x() {
-        return X;
+        return x;
     }
 
     /**
@@ -41,7 +41,7 @@ public final class CartesianCoordinates {
      * @return the y coordinate
      */
     public double y() {
-        return Y;
+        return y;
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class CartesianCoordinates {
     public String toString() {
         return String.format(Locale.ROOT,
                 "(x=%.4f, y=%.4f)",
-                X,
-                Y);
+                x,
+                y);
     }
 }

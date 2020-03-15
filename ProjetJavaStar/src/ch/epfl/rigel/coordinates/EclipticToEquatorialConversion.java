@@ -15,8 +15,8 @@ import java.util.function.Function;
  */
 public final class EclipticToEquatorialConversion implements Function<EclipticCoordinates, EquatorialCoordinates> {
 
-    private final double COS_OBLI;
-    private final double SIN_OBLI;
+    private final double cosObli;
+    private final double sinObli;
 
     /**
      * Constructs the conversion system from Ecliptic to Equatorial coordinates
@@ -32,8 +32,8 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
                 Angle.ofDMS(23, 26, 21.45))
                 .at(Epoch.J2000.julianCenturiesUntil(when));
 
-        COS_OBLI = Math.cos(eclipticObliquity);
-        SIN_OBLI = Math.sin(eclipticObliquity);
+        cosObli = Math.cos(eclipticObliquity);
+        sinObli = Math.sin(eclipticObliquity);
     }
 
     /**
@@ -46,8 +46,8 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
     public EquatorialCoordinates apply(EclipticCoordinates ecl) {
         RightOpenInterval interval = RightOpenInterval.of(0, Angle.TAU);
 
-        double alphaEqu = Math.atan2(Math.sin(ecl.lon()) * COS_OBLI - Math.tan(ecl.lat()) * SIN_OBLI, Math.cos(ecl.lon()));
-        double deltaEqu = Math.asin(Math.sin(ecl.lat()) * COS_OBLI + Math.cos(ecl.lat()) * SIN_OBLI * Math.sin(ecl.lon()));
+        double alphaEqu = Math.atan2(Math.sin(ecl.lon()) * cosObli - Math.tan(ecl.lat()) * sinObli, Math.cos(ecl.lon()));
+        double deltaEqu = Math.asin(Math.sin(ecl.lat()) * cosObli + Math.cos(ecl.lat()) * sinObli * Math.sin(ecl.lon()));
 
         return EquatorialCoordinates.of(interval.reduce(alphaEqu), deltaEqu);
     }
