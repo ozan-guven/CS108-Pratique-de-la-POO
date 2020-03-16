@@ -62,7 +62,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double angularSize; //The angular size
     private final double magnitude; //The magnitude
 
-    private static List<PlanetModel> innerPlanets = ALL.subList(0, 2);
+    private static List<PlanetModel> INNER_PLANETS = ALL.subList(0, 2);
 
     private PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
                         double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
@@ -110,7 +110,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         double beta; //Ecliptic lat
 
         double rSinus = radiusE * Math.sin(eclHelioLon - helioLonE);
-        if (innerPlanets.contains(this)) {
+        if (INNER_PLANETS.contains(this)) {
             System.out.println("INNER PLAAANEEEEEEETTEEETEEEEEE"); //TODO TEST
             lambda = Math.PI + helioLonE + Math.atan2(eclRadius * Math.sin(helioLonE - eclHelioLon),
                     radiusE - eclRadius * Math.cos(helioLonE - eclHelioLon));
