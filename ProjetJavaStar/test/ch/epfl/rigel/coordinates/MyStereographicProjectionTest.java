@@ -86,10 +86,19 @@ class MyStereographicProjectionTest {
     void inverseApplyWorksOnExampleGivenByClass() {
         StereographicProjection projection = new StereographicProjection(
                 HorizontalCoordinates.ofDeg(45, 45));
+        StereographicProjection projection1 = new StereographicProjection(
+                HorizontalCoordinates.ofDeg(45, 20));
+
 
         HorizontalCoordinates coord = projection.inverseApply(
                 CartesianCoordinates.of(10, 0));
 
+        HorizontalCoordinates coord1 = projection1.inverseApply(
+                CartesianCoordinates.of(0, 25));
+
         assertEquals(/*3.648704525474978 */3.648704634091643, coord.az(), 1e-10);
+        assertEquals(3.9269908169872414, coord1.az());
+        assertEquals(-0.2691084761522857, coord1.alt());
+
     }
 }
