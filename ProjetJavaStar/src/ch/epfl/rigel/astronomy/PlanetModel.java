@@ -130,7 +130,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         double newAngularSize = angularSize / rho;
 
         //**************** MAGNITUDE ********************************
-        double F = (1 + Math.cos(lambda - helioLon) / 2);
+        double F = (1 + Math.cos(lambda - helioLon)) / 2;
 
         double newMagnitude = magnitude + 5 * Math.log10(radius * rho / Math.sqrt(F));
 
