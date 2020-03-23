@@ -20,6 +20,6 @@ public final class Asterism {
     Asterism(List<Star> stars){
         Preconditions.checkArgument(!stars.isEmpty());
 
-        starList = stars;
+        starList = List.copyOf(stars);
     }
 }
