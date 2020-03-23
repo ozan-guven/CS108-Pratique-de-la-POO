@@ -115,7 +115,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
         double lambda = Math.atan2(xy.x() * sinC, (rho * cosPhiCenter * cosC) - (xy.y() * sinPhiCenter * sinC)) + lambdaZero;
         double phi = Math.asin(cosC * sinPhiCenter + ((xy.y() * sinC * cosPhiCenter) / rho));
 
-        RightOpenInterval interval = RightOpenInterval.of(0, Angle.TAU); //atan2 doesn't give in the right interval
+        RightOpenInterval interval = RightOpenInterval.of(0, Angle.TAU);
 
         return HorizontalCoordinates.of(interval.reduce(lambda), phi);
     }

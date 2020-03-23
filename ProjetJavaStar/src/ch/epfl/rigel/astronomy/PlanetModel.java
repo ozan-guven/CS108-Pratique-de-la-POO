@@ -3,6 +3,8 @@ package ch.epfl.rigel.astronomy;
 import ch.epfl.rigel.coordinates.EclipticCoordinates;
 import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.math.Angle;
+import ch.epfl.rigel.math.ClosedInterval;
+import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Arrays;
 import java.util.List;
@@ -121,7 +123,10 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
         beta = Math.atan2(eclRadius * Math.tan(phi) * Math.sin(lambda - eclHelioLon), rSinus);
 
-        EclipticCoordinates eclipticCoordinates = EclipticCoordinates.of(lambda, beta);
+        RightOpenInterval intervalLambda = RightOpenInterval.of(0, Angle.TAU);
+        ClosedInterval intervalBeta = ClosedInterval.symmetric(Math.PI);
+
+        EclipticCoordinates eclipticCoordinates = EclipticCoordinates.of(intervalLambda.reduce(lambda), intervalBeta.clip(beta));
 
         //**************** ANGULAR SIZE *****************************
         double rho = Math.sqrt(radiusE * radiusE + radius * radius
