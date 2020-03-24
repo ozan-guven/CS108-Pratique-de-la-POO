@@ -17,9 +17,18 @@ public final class Asterism {
      *
      * @param stars list of the stars contained in the asterism
      */
-    Asterism(List<Star> stars){
+    public Asterism(List<Star> stars){
         Preconditions.checkArgument(!stars.isEmpty());
 
         starList = List.copyOf(stars);
+    }
+
+    /**
+     * Getter for the star list
+     *
+     * @return List of the stars
+     */
+    public List<Star> stars(){
+        return List.copyOf(starList);
     }
 }
