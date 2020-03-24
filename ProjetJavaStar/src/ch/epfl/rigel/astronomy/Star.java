@@ -9,7 +9,7 @@ import ch.epfl.rigel.coordinates.EquatorialCoordinates;
  */
 public final class Star extends CelestialObject{
     private final int hipparcosId;
-    private final float colorIndex;
+    private final double colorTemperature;
 
     /**
      * Constructor of a star
@@ -26,7 +26,8 @@ public final class Star extends CelestialObject{
         super(name, equatorialPos, 0, magnitude);
 
         this.hipparcosId = hipparcosId;
-        this.colorIndex = colorIndex;
+
+        colorTemperature = 4600*(1 / (0.92 * colorIndex + 1.7) + 1 / (0.92 * colorIndex + 0.62));
     }
 
     /**
@@ -44,6 +45,6 @@ public final class Star extends CelestialObject{
      * @return the color temperature of the star
      */
     public int colorTemperature() {
-        return (int)colorIndex;
+        return (int)colorTemperature;
     }
 }
