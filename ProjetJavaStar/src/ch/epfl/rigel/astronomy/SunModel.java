@@ -11,31 +11,19 @@ import ch.epfl.rigel.math.Angle;
  * @author Robin Goumaz (301420)
  */
 public enum SunModel implements CelestialObjectModel<Sun> {
-    SUN(279.557208, 283.112438, 0.016705);
+    SUN();
 
-    private final double lonJ2010;
-    private final double lonPer;
-    private final double exSunEarth;
-    private static final double AVERAGE_ANGULAR_SPEED = 360/365.242191;
+    private final double lonJ2010 = Angle.ofDeg(279.557208);
+    private final double lonPer = Angle.ofDeg(283.112438);
+    private final double exSunEarth = Angle.ofArcsec(0.016705);
+    private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU/365.242191;
 
-    /**
-     * Constructor of the sun model
-     *
-     * @param lonJ2010 The longitude of the sun at J2010
-     * @param lonPer The longitude of the sun at the perigee
-     * @param exSunEarth The eccentricity of the orbit Sun/Earth
-     */
-    SunModel(double lonJ2010, double lonPer, double exSunEarth){
-        this.lonJ2010 = Angle.ofDeg(lonJ2010);
-        this.lonPer = Angle.ofDeg(lonPer);
-        this.exSunEarth = Angle.ofArcsec(exSunEarth);
-    }
 
     @Override
     public Sun at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
 
-        double meanAnomaly = AVERAGE_ANGULAR_SPEED * daysSinceJ2010 + lonJ2010 - lonPer;
-        double trueAnomaly = meanAnomaly + 2*exSunEarth*Math.sin(meanAnomaly);
+        double meanAnomaly = (AVERAGE_ANGULAR_SPEED * daysSinceJ2010) + lonJ2010 - lonPer;
+        double trueAnomaly = meanAnomaly + (2 * exSunEarth * Math.sin(meanAnomaly));
 
         double lonEcliptic = trueAnomaly + lonPer;
         double latEcliptic = 0;
