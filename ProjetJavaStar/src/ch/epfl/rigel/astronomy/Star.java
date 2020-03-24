@@ -1,6 +1,8 @@
 package ch.epfl.rigel.astronomy;
 
+import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
+import ch.epfl.rigel.math.ClosedInterval;
 
 /**
  * Class that represent a star
@@ -24,6 +26,11 @@ public final class Star extends CelestialObject{
      */
     public Star(int hipparcosId, String name, EquatorialCoordinates equatorialPos, float magnitude, float colorIndex) {
         super(name, equatorialPos, 0, magnitude);
+
+        ClosedInterval colorIndexInterval = ClosedInterval.of(-0.5, 5.5);
+
+        Preconditions.checkInInterval(colorIndexInterval, colorIndex);
+        Preconditions.checkArgument(hipparcosId >= 0);
 
         this.hipparcosId = hipparcosId;
 
