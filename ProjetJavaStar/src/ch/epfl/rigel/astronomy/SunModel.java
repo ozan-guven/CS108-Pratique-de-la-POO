@@ -15,7 +15,7 @@ public enum SunModel implements CelestialObjectModel<Sun> {
 
     private final double lonJ2010 = Angle.ofDeg(279.557208);
     private final double lonPer = Angle.ofDeg(283.112438);
-    private final double exSunEarth = Angle.ofArcsec(0.016705);
+    private final double exSunEarth = 0.016705;
     private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU/365.242191;
 
 
@@ -28,7 +28,7 @@ public enum SunModel implements CelestialObjectModel<Sun> {
         double lonEcliptic = trueAnomaly + lonPer;
         double latEcliptic = 0;
 
-        EclipticCoordinates coord1 = EclipticCoordinates.of(lonEcliptic, latEcliptic);
+        EclipticCoordinates coord1 = EclipticCoordinates.of(Angle.normalizePositive(lonEcliptic), latEcliptic);
 
         EquatorialCoordinates coord2 = eclipticToEquatorialConversion.apply(coord1);
 
