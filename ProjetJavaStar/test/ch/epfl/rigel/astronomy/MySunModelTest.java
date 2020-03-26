@@ -1,6 +1,7 @@
 package ch.epfl.rigel.astronomy;
 
 import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
+import ch.epfl.rigel.math.Angle;
 import org.junit.jupiter.api.Test;
 
 import java.time.*;
@@ -39,5 +40,18 @@ class MySunModelTest {
                                         LocalTime.of(0, 0, 0, 0),
                                         ZoneOffset.UTC)))
                         .equatorialPos().decDeg(), 1e-14);
+
+        ZonedDateTime date = ZonedDateTime.of(
+                LocalDate.of(1988, Month.JULY, 27),
+                LocalTime.of(0, 0),
+                ZoneOffset.UTC);
+
+        double daySinceJ2010 = Epoch.J2010.daysUntil(date);
+
+        assertEquals((float) Angle.ofDMS(0, 31, 30), SunModel.SUN.at(daySinceJ2010,
+                new EclipticToEquatorialConversion(date)).angularSize());
+
+        assertEquals((float) 3.528210, Angle.normalizePositive(SunModel.SUN.at(daySinceJ2010,
+                new EclipticToEquatorialConversion(date)).meanAnomaly()));
     }
 }
