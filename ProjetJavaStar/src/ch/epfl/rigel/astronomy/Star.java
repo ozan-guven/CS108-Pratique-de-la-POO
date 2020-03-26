@@ -9,7 +9,7 @@ import ch.epfl.rigel.math.ClosedInterval;
  *
  * @author Robin Goumaz (301420)
  */
-public final class Star extends CelestialObject{
+public final class Star extends CelestialObject {
     private final int hipparcosId;
     private final double colorTemperature;
 
@@ -20,7 +20,8 @@ public final class Star extends CelestialObject{
      * @param name          the name of the star
      * @param equatorialPos the equatorial position of the star
      * @param magnitude     the magnitude of the star
-     * @throws IllegalArgumentException if the angularSize is negative
+     * @param colorIndex    the color index of the star
+     * @throws IllegalArgumentException if the colorIndex is not in [-0.5, 5.5]
      * @throws NullPointerException     if the name is null
      * @throws NullPointerException     if the equatorialPos is null
      */
@@ -34,7 +35,7 @@ public final class Star extends CelestialObject{
 
         this.hipparcosId = hipparcosId;
 
-        colorTemperature = 4600*(1 / (0.92 * colorIndex + 1.7) + 1 / (0.92 * colorIndex + 0.62));
+        colorTemperature = 4600 * (1 / (0.92 * colorIndex + 1.7) + 1 / (0.92 * colorIndex + 0.62));
     }
 
     /**
@@ -52,6 +53,6 @@ public final class Star extends CelestialObject{
      * @return the color temperature of the star
      */
     public int colorTemperature() {
-        return (int)colorTemperature;
+        return (int) colorTemperature;
     }
 }
