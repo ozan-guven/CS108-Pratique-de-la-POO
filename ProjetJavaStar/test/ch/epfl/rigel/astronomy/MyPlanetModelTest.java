@@ -45,5 +45,23 @@ class MyPlanetModelTest {
                         ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                                 LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
                 .equatorialPos().decDeg(), 1e-12);
+
+
+        assertEquals("Vénus", PlanetModel.VENUS.at(-2231.0,
+                new EclipticToEquatorialConversion(
+                        ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
+                                LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
+                .name());
+
+        ZonedDateTime date = ZonedDateTime.of(
+                LocalDate.of(2003, Month.NOVEMBER, 22),
+                LocalTime.of(0, 0),
+                ZoneOffset.UTC);
+
+        assertEquals(Angle.ofArcsec(35.1), PlanetModel.JUPITER.at(Epoch.J2010.daysUntil(date),
+                new EclipticToEquatorialConversion(date)).angularSize(), 1e-7);
+
+        assertEquals(-1.9, PlanetModel.JUPITER.at(Epoch.J2010.daysUntil(date),
+                new EclipticToEquatorialConversion(date)).magnitude(), 1e-1);
     }
 }

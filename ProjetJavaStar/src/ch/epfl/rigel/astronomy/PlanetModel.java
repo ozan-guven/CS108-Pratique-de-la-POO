@@ -81,12 +81,15 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         this.magnitude = magnitude;
     }
 
+    /**
+     * @see CelestialObjectModel#at(double, EclipticToEquatorialConversion)
+     */
     @Override
     public Planet at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
 
         //**************** VALUES FOR THE PLANET ********************
-        double M = (Angle.TAU / 365.242191) * (daysSinceJ2010 / orbitalRevolution) + lonAtJ2010 - lonAtPerigee; //Mean anomaly
-        double nu = M + 2 * orbitalEccentricity * Math.sin(M); //True anomaly
+        double meanAnomaly = (Angle.TAU / 365.242191) * (daysSinceJ2010 / orbitalRevolution) + lonAtJ2010 - lonAtPerigee; //Mean anomaly
+        double nu = meanAnomaly + 2 * orbitalEccentricity * Math.sin(meanAnomaly); //True anomaly
 
         double radius = (orbitalSemiMajorAxis * (1 - orbitalEccentricity * orbitalEccentricity))
                 / (1 + orbitalEccentricity * Math.cos(nu));
@@ -99,9 +102,9 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
                 Math.cos(helioLon - lonOfAscendingNode)) + lonOfAscendingNode;
 
         //**************** VALUES FOR THE EARTH *********************
-        double ME = (Angle.TAU / 365.242191) * (daysSinceJ2010 / EARTH.orbitalRevolution)
+        double meanAnomalyE = (Angle.TAU / 365.242191) * (daysSinceJ2010 / EARTH.orbitalRevolution)
                 + EARTH.lonAtJ2010 - EARTH.lonAtPerigee; //Mean anomaly
-        double nuE = ME + 2 * EARTH.orbitalEccentricity * Math.sin(ME); //True anomaly
+        double nuE = meanAnomalyE + 2 * EARTH.orbitalEccentricity * Math.sin(meanAnomalyE); //True anomaly
 
         double radiusE = (EARTH.orbitalSemiMajorAxis * (1 - EARTH.orbitalEccentricity * EARTH.orbitalEccentricity))
                 / (1 + EARTH.orbitalEccentricity * Math.cos(nuE));
@@ -130,9 +133,9 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         double newAngularSize = angularSize / rho;
 
         //**************** MAGNITUDE ********************************
-        double F = (1 + Math.cos(lambda - helioLon)) / 2;
+        double phase = (1 + Math.cos(lambda - helioLon)) / 2;
 
-        double newMagnitude = magnitude + 5 * Math.log10(radius * rho / Math.sqrt(F));
+        double newMagnitude = magnitude + 5 * Math.log10(radius * rho / Math.sqrt(phase));
 
         return new Planet(frenchName, eclipticToEquatorialConversion.apply(eclipticCoordinates), (float) newAngularSize, (float) newMagnitude);
     }
