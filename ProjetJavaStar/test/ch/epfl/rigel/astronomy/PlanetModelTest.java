@@ -38,12 +38,12 @@ class PlanetModelTest {
                 new EclipticToEquatorialConversion(
                         ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                                 LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
-                .equatorialPos().raHr());
+                .equatorialPos().raHr(), 1e-12);
 
         assertEquals(-24.500872462861,PlanetModel.MERCURY.at(-2231.0,
                 new EclipticToEquatorialConversion(
                         ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                                 LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
-                .equatorialPos().decDeg());
+                .equatorialPos().decDeg(), 1e-12);
     }
 }

@@ -29,7 +29,7 @@ class MySunModelTest {
                                         LocalDate.of(2003, Month.JULY, 27),
                                         LocalTime.of(0, 0, 0, 0),
                                         ZoneOffset.UTC)))
-                        .equatorialPos().raHr());
+                        .equatorialPos().raHr(), 1e-13);
 
         assertEquals(19.35288373097352,
                 SunModel.SUN.at(-2349,
@@ -38,6 +38,6 @@ class MySunModelTest {
                                         LocalDate.of(2003, Month.JULY, 27),
                                         LocalTime.of(0, 0, 0, 0),
                                         ZoneOffset.UTC)))
-                        .equatorialPos().decDeg());
+                        .equatorialPos().decDeg(), 1e-14);
     }
 }

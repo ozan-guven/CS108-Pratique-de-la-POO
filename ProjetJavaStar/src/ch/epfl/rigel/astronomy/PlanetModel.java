@@ -113,20 +113,15 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
         double rSinus = radiusE * Math.sin(eclHelioLon - helioLonE);
         if (INNER_PLANETS.contains(this)) {
-            System.out.println("INNER PLAAANEEEEEEETTEEETEEEEEE"); //TODO TEST
             lambda = Math.PI + helioLonE + Math.atan2(eclRadius * Math.sin(helioLonE - eclHelioLon),
                     radiusE - eclRadius * Math.cos(helioLonE - eclHelioLon));
         } else {
-            System.out.println("OUTER PLAAAANEEEEEEEEEEEEEETE"); //TODO TEST
             lambda = eclHelioLon + Math.atan2(rSinus, eclRadius - radiusE * Math.cos(eclHelioLon - helioLonE));
         }
 
-        beta = Math.atan2(eclRadius * Math.tan(phi) * Math.sin(lambda - eclHelioLon), rSinus);
+        beta = Math.atan(eclRadius * Math.tan(phi) * Math.sin(lambda - eclHelioLon) / rSinus);
 
-        RightOpenInterval intervalLambda = RightOpenInterval.of(0, Angle.TAU);
-        ClosedInterval intervalBeta = ClosedInterval.symmetric(Math.PI);
-
-        EclipticCoordinates eclipticCoordinates = EclipticCoordinates.of(intervalLambda.reduce(lambda), intervalBeta.clip(beta));
+        EclipticCoordinates eclipticCoordinates = EclipticCoordinates.of(Angle.normalizePositive(lambda), beta);
 
         //**************** ANGULAR SIZE *****************************
         double rho = Math.sqrt(radiusE * radiusE + radius * radius
