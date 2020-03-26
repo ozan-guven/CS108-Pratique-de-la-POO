@@ -36,6 +36,9 @@ public final class Moon extends CelestialObject {
         this.phase = (float) Preconditions.checkInInterval(interval, phase);
     }
 
+    /**
+     * @see CelestialObject#info()
+     */
     @Override
     public String info() {
         return String.format(Locale.ROOT,

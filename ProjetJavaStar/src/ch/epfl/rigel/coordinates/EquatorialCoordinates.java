@@ -79,6 +79,9 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
         return latDeg();
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         return String.format(Locale.ROOT,

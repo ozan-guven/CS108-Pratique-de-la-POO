@@ -16,9 +16,11 @@ public enum SunModel implements CelestialObjectModel<Sun> {
     private final double lonJ2010 = Angle.ofDeg(279.557208);
     private final double lonPer = Angle.ofDeg(283.112438);
     private final double exSunEarth = 0.016705;
-    private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU/365.242191;
+    private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU / 365.242191;
 
-
+    /**
+     * @see CelestialObjectModel#at(double, EclipticToEquatorialConversion)
+     */
     @Override
     public Sun at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
 
@@ -33,8 +35,8 @@ public enum SunModel implements CelestialObjectModel<Sun> {
         EquatorialCoordinates coord2 = eclipticToEquatorialConversion.apply(coord1);
 
         double angularSizeZero = Angle.ofDeg(0.533128);
-        double angularSize = angularSizeZero *((1 + exSunEarth * Math.cos(trueAnomaly)) / (1 - Math.pow(exSunEarth, 2)));
+        double angularSize = angularSizeZero * ((1 + exSunEarth * Math.cos(trueAnomaly)) / (1 - Math.pow(exSunEarth, 2)));
 
-        return new Sun(coord1, coord2, (float)angularSize, (float) meanAnomaly);
+        return new Sun(coord1, coord2, (float) angularSize, (float) meanAnomaly);
     }
 }

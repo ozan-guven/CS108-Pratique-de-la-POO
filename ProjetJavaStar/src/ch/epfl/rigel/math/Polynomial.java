@@ -45,6 +45,9 @@ public final class Polynomial {
         return total;
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

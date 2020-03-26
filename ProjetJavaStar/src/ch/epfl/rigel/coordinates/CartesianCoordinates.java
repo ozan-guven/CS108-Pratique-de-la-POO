@@ -54,6 +54,9 @@ public final class CartesianCoordinates {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         return String.format(Locale.ROOT,

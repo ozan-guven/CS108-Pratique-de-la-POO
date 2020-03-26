@@ -64,6 +64,9 @@ public final class ClosedInterval extends Interval {
         }
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         return String.format(Locale.ROOT,

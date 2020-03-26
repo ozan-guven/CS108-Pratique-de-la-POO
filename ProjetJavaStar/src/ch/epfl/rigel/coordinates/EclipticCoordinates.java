@@ -66,6 +66,9 @@ public final class EclipticCoordinates extends SphericalCoordinates {
         return super.latDeg();
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         return String.format(Locale.ROOT,

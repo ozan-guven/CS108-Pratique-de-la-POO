@@ -97,6 +97,9 @@ public final class GeographicCoordinates extends SphericalCoordinates {
         return super.latDeg();
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         return String.format(Locale.ROOT,

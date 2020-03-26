@@ -61,6 +61,9 @@ public final class RightOpenInterval extends Interval {
         return low() + x - size() * Math.floor(x / size());
     }
 
+    /**
+     * @see Object#toString()
+     */
     @Override
     public String toString() {
         return String.format(Locale.ROOT,
