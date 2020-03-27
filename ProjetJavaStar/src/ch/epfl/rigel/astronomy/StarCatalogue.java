@@ -1,5 +1,7 @@
 package ch.epfl.rigel.astronomy;
 
+import ch.epfl.rigel.Preconditions;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -16,7 +18,7 @@ public final class StarCatalogue {
     private final List<Star> stars;
     private final List<Asterism> asterisms;
 
-    private Map<Asterism, List<Integer>> asterismIntegerMap;
+    private Map<Asterism, List<Integer>> starIndexMap;
 
     /**
      * Constructor of the star and asterism catalogue
@@ -24,13 +26,26 @@ public final class StarCatalogue {
      * @param stars     list containing all the stars
      * @param asterisms list containing all the asterisims
      * @throws IllegalArgumentException if one of the asterisms
-     * a star that is not in the list of stars
+     * has a star that is not in the list of stars
      */
     public StarCatalogue(List<Star> stars, List<Asterism> asterisms) {
         //TODO
         this.stars = List.copyOf(stars);
         this.asterisms = List.copyOf(asterisms);
 
+        for (Asterism asterism : asterisms) {
+            for (Star star : asterism.stars()) {
+                Preconditions.checkArgument(stars.contains(star)); //Checks if all the stars of all the asterisims are in the list of stars
+            }
+        }
+
+        /*
+        for (List<Integer> index : starIndexMap.values()) {
+            for (Integer integer : index) {
+                Preconditions.checkArgument(stars.contains(integer));
+            }
+        }
+         */
     }
 
     /**
