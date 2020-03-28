@@ -59,6 +59,10 @@ public final class StarCatalogue {
      * Comparator that is used to create the set of asterisms
      */
     private class asterismComparator implements Comparator<Asterism> {
+
+        /**
+         * @see Comparator#compare(Object, Object)
+         */
         @Override
         public int compare(Asterism o1, Asterism o2) {
             List<Integer> l1 = starIndexMap.get(o1);
