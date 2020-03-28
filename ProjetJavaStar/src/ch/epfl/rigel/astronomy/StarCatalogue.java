@@ -4,9 +4,7 @@ import ch.epfl.rigel.Preconditions;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Class representing a catalogue of stars and asterisms
@@ -24,9 +22,9 @@ public final class StarCatalogue {
      * Constructor of the star and asterism catalogue
      *
      * @param stars     list containing all the stars
-     * @param asterisms list containing all the asterisims
+     * @param asterisms list containing all the asterisms
      * @throws IllegalArgumentException if one of the asterisms
-     * has a star that is not in the list of stars
+     *                                  has a star that is not in the list of stars
      */
     public StarCatalogue(List<Star> stars, List<Asterism> asterisms) {
         //TODO
@@ -34,18 +32,15 @@ public final class StarCatalogue {
         this.asterisms = List.copyOf(asterisms);
 
         for (Asterism asterism : asterisms) {
+            List<Integer> listOfIndex = new ArrayList<>(); //TODO : LinkedList/ArrayList ???????????????????????????
+
             for (Star star : asterism.stars()) {
                 Preconditions.checkArgument(stars.contains(star)); //Checks if all the stars of all the asterisims are in the list of stars
+                listOfIndex.add(stars.indexOf(star)); //Adds the index of the current star contained in the list star to the index list
             }
-        }
 
-        /*
-        for (List<Integer> index : starIndexMap.values()) {
-            for (Integer integer : index) {
-                Preconditions.checkArgument(stars.contains(integer));
-            }
+            starIndexMap.put(asterism, listOfIndex);
         }
-         */
     }
 
     /**
@@ -54,8 +49,29 @@ public final class StarCatalogue {
      * @return the list of stars of the catalogue
      */
     public List<Star> stars() {
-        //TODO : Copie défensive ?
+        //TODO : Copie défensive ???????????????????????????????????
         return List.copyOf(stars);
+    }
+
+    //TODO : Vraiment faire ça ??????????????????????????????????????????????????????
+
+    /**
+     * Comparator that is used to create the set of asterisms
+     */
+    private class asterismComparator implements Comparator<Asterism> {
+        @Override
+        public int compare(Asterism o1, Asterism o2) {
+            List<Integer> l1 = starIndexMap.get(o1);
+            List<Integer> l2 = starIndexMap.get(o2);
+
+            if (l1.equals(l2)) {
+                return 0;
+            } else if (l1.size() < l2.size()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
     }
 
     /**
@@ -64,35 +80,44 @@ public final class StarCatalogue {
      * @return the set containing all the asterisims of the catalogue
      */
     public Set<Asterism> asterisms() {
-        //TODO
-        return null;
+        //TODO ??????????????????????????????????????????????????????????????????????????
+        TreeSet<Asterism> set = new TreeSet<>(new asterismComparator());
+        set.addAll(asterisms);
+        return set;
     }
 
     /**
      * Gets the list of the star indexes contained in
      * the catalogue that constitutes the given asterism
      *
-     * @param asterism the asterims for which the star indexes are wanted
+     * @param asterism the asterisms for which the star indexes are wanted
      * @return the list of the star indexes contained in the asterism
      * @throws IllegalArgumentException if the asterism is not in the catalogue
      */
     public List<Integer> asterismIndices(Asterism asterism) {
-        //TODO
-        return null;
+        //TODO : Copie défensive ?
+        Preconditions.checkArgument(asterisms.contains(asterism)); //Can throw the exception
+
+        return List.copyOf(starIndexMap.get(asterism));
     }
 
     /**
-     * Builder for the StarCatalogue
+     * Builder for the StarCatalogue (non immutable StarCatalogue used
+     * to build the catalogue)
      *
      * @author Ozan Güven (297076)
      */
     public final static class Builder {
 
+        private List<Star> starBuild;
+        private List<Asterism> asterismBuild;
+
         /**
          * Default constructor of the builder that initializes the catalogue
          */
         public Builder() {
-            //TODO
+            starBuild = new ArrayList<>();
+            asterismBuild = new ArrayList<>();
         }
 
         /**
@@ -102,8 +127,8 @@ public final class StarCatalogue {
          * @return the new builder
          */
         public Builder addStar(Star star) {
-            //TODO
-            return new Builder();
+            starBuild.add(star);
+            return this;
         }
 
         /**
@@ -113,8 +138,7 @@ public final class StarCatalogue {
          * @return a view of the stars of the catalogue being built
          */
         public List<Star> stars() {
-            //TODO
-            return null;
+            return Collections.unmodifiableList(starBuild); //TODO : UnmodifiableList ??????????????
         }
 
         /**
@@ -124,8 +148,8 @@ public final class StarCatalogue {
          * @return the new builder
          */
         public Builder addAsterism(Asterism asterism) {
-            //TODO
-            return null;
+            asterismBuild.add(asterism);
+            return this;
         }
 
         /**
@@ -135,8 +159,7 @@ public final class StarCatalogue {
          * @return a view of the asterisms of the catalogue being built
          */
         public List<Asterism> asterisms() {
-            //TODO
-            return null;
+            return Collections.unmodifiableList(asterismBuild); //TODO : UnmodifiableList ??????????????
         }
 
         /**
@@ -144,13 +167,16 @@ public final class StarCatalogue {
          * asterisms obtained by the input flow and returns the builder.
          *
          * @param inputStream input stream of the stars and asterisms
-         * @param loader the loader
+         * @param loader      the loader
          * @return the new builder
          * @throws IOException in case of an input/output exception
          */
-        public Builder loadFrom(InputStream inputStream, Loader loader) {
-            //TODO
-            return new Builder();
+        public Builder loadFrom(InputStream inputStream, Loader loader) throws IOException {
+            //TODO ?????????????????????????????????????? Je ne sais pas comment faire ni que faire
+            try (inputStream) {
+                loader.load(inputStream, this);
+            }
+            return this;
         }
 
         /**
@@ -160,8 +186,7 @@ public final class StarCatalogue {
          * @return the completed star catalogue
          */
         public StarCatalogue build() {
-            //TODO
-            return new StarCatalogue(null, null);
+            return new StarCatalogue(starBuild, asterismBuild);
         }
 
     }
@@ -176,7 +201,7 @@ public final class StarCatalogue {
 
         /**
          * Loads the stars or asterisms of the input stream and add them to the catalogue
-         * that is being built by the buider
+         * that is being built by the builder
          *
          * @param inputStream the input stream for the stars and asterisms
          * @param builder     the builder that constructs the star catalogue
