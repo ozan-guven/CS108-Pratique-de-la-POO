@@ -209,7 +209,7 @@ public final class StarCatalogue {
          *
          * @param inputStream the input stream for the stars and asterisms
          * @param builder     the builder that constructs the star catalogue
-         * @throws IOException in case of and input/output exception
+         * @throws IOException in case of an input/output exception
          */
         public abstract void load(InputStream inputStream, Builder builder) throws IOException;
 
