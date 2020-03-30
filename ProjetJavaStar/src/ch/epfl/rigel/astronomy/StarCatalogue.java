@@ -32,7 +32,7 @@ public final class StarCatalogue {
         starIndexMap = new HashMap<>();
 
         for (Asterism asterism : asterisms) {
-            List<Integer> listOfIndex = new ArrayList<>(); //TODO : LinkedList/ArrayList ???????????????????????????
+            List<Integer> listOfIndex = new ArrayList<>();
 
             for (Star star : asterism.stars()) {
                 Preconditions.checkArgument(stars.contains(star)); //Checks if all the stars of all the asterisims are in the list of stars
@@ -49,33 +49,7 @@ public final class StarCatalogue {
      * @return the list of stars of the catalogue
      */
     public List<Star> stars() {
-        //TODO : Copie défensive ???????????????????????????????????
         return List.copyOf(stars);
-    }
-
-    //TODO : Vraiment faire ça ?????????????????????????????????????????????????????? A revoir
-
-    /**
-     * Comparator that is used to create the set of asterisms
-     */
-    private class asterismComparator implements Comparator<Asterism> {
-
-        /**
-         * @see Comparator#compare(Object, Object)
-         */
-        @Override
-        public int compare(Asterism o1, Asterism o2) {
-            List<Integer> l1 = starIndexMap.get(o1);
-            List<Integer> l2 = starIndexMap.get(o2);
-
-            if (l1.equals(l2)) {
-                return 0;
-            } else if (l1.size() < l2.size()) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
     }
 
     /**
@@ -84,9 +58,7 @@ public final class StarCatalogue {
      * @return the set containing all the asterisims of the catalogue
      */
     public Set<Asterism> asterisms() {
-        //TODO ??????????????????????????????????????????????????????????????????????????
-        //TreeSet<Asterism> set = new TreeSet<>(new asterismComparator()); //TODO A Refaire
-        Set<Asterism> set = new HashSet<>(); //TODO A Refaire
+        Set<Asterism> set = new HashSet<>();
         set.addAll(asterisms);
         return set;
     }
