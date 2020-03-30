@@ -49,10 +49,10 @@ class MySunModelTest {
         double daySinceJ2010 = Epoch.J2010.daysUntil(date);
 
         assertEquals(Angle.ofDMS(0, 31, 30), (float)  SunModel.SUN.at(daySinceJ2010,
-                new EclipticToEquatorialConversion(date)).angularSize());
+                new EclipticToEquatorialConversion(date)).angularSize(), 1e-6);
 
         assertEquals(3.528210, (float)  Angle.normalizePositive(SunModel.SUN.at(daySinceJ2010,
-                new EclipticToEquatorialConversion(date)).meanAnomaly()));
+                new EclipticToEquatorialConversion(date)).meanAnomaly()), 1e-2);
 
         ZonedDateTime date1 = ZonedDateTime.of(
                 LocalDate.of(2003, Month.JULY, 27),
@@ -60,6 +60,6 @@ class MySunModelTest {
                 ZoneOffset.UTC);
 
         assertEquals(Angle.ofDeg(201.159131), (float) Angle.normalizePositive(SunModel.SUN.at(-2349,
-                new EclipticToEquatorialConversion(date1)).meanAnomaly()));
+                new EclipticToEquatorialConversion(date1)).meanAnomaly()), 1e-5);
     }
 }
