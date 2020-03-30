@@ -2,34 +2,52 @@ package ch.epfl.rigel.astronomy;
 
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
-public enum HygDatabaseLoader implements StarCatalogue.Loader{
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
+public enum HygDatabaseLoader implements StarCatalogue.Loader {
     INSTANCE;
-
 
     @Override
     public void load(InputStream inputStream, StarCatalogue.Builder builder) throws IOException {
-       try(BufferedReader stream = new BufferedReader(new InputStreamReader(inputStream))){
-           while (stream.readLine() != null){
-               String[] tab = stream.readLine().split(",");
+        try (BufferedReader stream = new BufferedReader(new InputStreamReader(inputStream, US_ASCII))) {
+            stream.readLine();
+            String s;
+            while ((s = stream.readLine()) != null) {
+                String[] tab = s.split(",");
 
-               Integer hypID = !tab[Column.HIP.ordinal()].equals("")  ? Integer.parseInt(tab[Column.HIP.ordinal()]) : 0;
+                int hypID = !tab[Column.HIP.ordinal()].equals("") ? Integer.parseInt(tab[Column.HIP.ordinal()]) : 0;
 
-               String name = !tab[Column.PROPER.ordinal()].equals("")  ? tab[Column.PROPER.ordinal()] : tab[Column.BAYER.ordinal()] + tab[Column.CON.ordinal()];
+                StringBuilder strBuilder = new StringBuilder();
+                if(!tab[Column.PROPER.ordinal()].equals("")){
+                    strBuilder.append(tab[Column.PROPER.ordinal()]);
+                } else {
+                    if(!tab[Column.BAYER.ordinal()].equals("")){
+                        strBuilder.append(tab[Column.BAYER.ordinal()]);
+                    }else{
+                        strBuilder.append("?");
+                    }
+                    strBuilder.append(" ");
+                    strBuilder.append(tab[Column.CON.ordinal()]);
+                }
 
-               EquatorialCoordinates coord = EquatorialCoordinates.of(Double.parseDouble(tab[Column.RARAD.ordinal()]), Double.parseDouble(tab[Column.DECRAD.ordinal()]));
+                EquatorialCoordinates coord = EquatorialCoordinates.of(Double.parseDouble(tab[Column.RARAD.ordinal()]), Double.parseDouble(tab[Column.DECRAD.ordinal()]));
 
-               float magnitude = !tab[Column.MAG.ordinal()].equals("")  ? Float.parseFloat(tab[Column.MAG.ordinal()]) : 0;
+                float magnitude = !tab[Column.MAG.ordinal()].equals("") ? Float.parseFloat(tab[Column.MAG.ordinal()]) : 0;
 
-               float color = !tab[Column.CI.ordinal()].equals("")  ? Float.parseFloat(tab[Column.CI.ordinal()]) : 0;
+                float color = !tab[Column.CI.ordinal()].equals("") ? Float.parseFloat(tab[Column.CI.ordinal()]) : 0;
 
-               System.out.println(name);
+                System.out.println(tab[0]);
 
-               builder.addStar(new Star(hypID, name, coord, magnitude, color));
-           }
+                builder.addStar(new Star(hypID, strBuilder.toString(), coord, magnitude, color));
+            }
         }
     }
+
     private enum Column {
         ID, HIP, HD, HR, GL, BF, PROPER, RA, DEC, DIST, PMRA, PMDEC,
         RV, MAG, ABSMAG, SPECT, CI, X, Y, Z, VX, VY, VZ,

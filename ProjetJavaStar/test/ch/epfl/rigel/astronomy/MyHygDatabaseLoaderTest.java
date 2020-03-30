@@ -32,6 +32,9 @@ class MyHygDatabaseLoaderTest {
                 if (s.name().equalsIgnoreCase("rigel"))
                     rigel = s;
             }
+
+            System.out.println(catalogue.stars().size());
+
             assertNotNull(rigel);
         }
     }

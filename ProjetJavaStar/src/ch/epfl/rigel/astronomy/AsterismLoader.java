@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 public enum AsterismLoader implements StarCatalogue.Loader{
     INSTANCE;
 
@@ -19,7 +21,7 @@ public enum AsterismLoader implements StarCatalogue.Loader{
             map.put(s.hipparcosId(), s);
         }
 
-        try(BufferedReader stream = new BufferedReader(new InputStreamReader(inputStream))){
+        try(BufferedReader stream = new BufferedReader(new InputStreamReader(inputStream, US_ASCII))){
             List<Star> stars = new ArrayList<>();
             while (stream.readLine() != null){
                 String[] tab = stream.readLine().split(",");
