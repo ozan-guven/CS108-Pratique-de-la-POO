@@ -27,7 +27,6 @@ public final class StarCatalogue {
      *                                  has a star that is not in the list of stars
      */
     public StarCatalogue(List<Star> stars, List<Asterism> asterisms) {
-        //TODO
         this.stars = List.copyOf(stars);
         this.asterisms = List.copyOf(asterisms);
         starIndexMap = new HashMap<>();
@@ -86,7 +85,8 @@ public final class StarCatalogue {
      */
     public Set<Asterism> asterisms() {
         //TODO ??????????????????????????????????????????????????????????????????????????
-        TreeSet<Asterism> set = new TreeSet<>(new asterismComparator()); //TODO A Refaire
+        //TreeSet<Asterism> set = new TreeSet<>(new asterismComparator()); //TODO A Refaire
+        Set<Asterism> set = new HashSet<>(); //TODO A Refaire
         set.addAll(asterisms);
         return set;
     }
