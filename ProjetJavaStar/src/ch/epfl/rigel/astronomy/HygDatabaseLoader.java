@@ -23,12 +23,12 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
                 int hypID = !tab[Column.HIP.ordinal()].equals("") ? Integer.parseInt(tab[Column.HIP.ordinal()]) : 0;
 
                 StringBuilder strBuilder = new StringBuilder();
-                if(!tab[Column.PROPER.ordinal()].equals("")){
+                if (!tab[Column.PROPER.ordinal()].equals("")) {
                     strBuilder.append(tab[Column.PROPER.ordinal()]);
                 } else {
-                    if(!tab[Column.BAYER.ordinal()].equals("")){
+                    if (!tab[Column.BAYER.ordinal()].equals("")) {
                         strBuilder.append(tab[Column.BAYER.ordinal()]);
-                    }else{
+                    } else {
                         strBuilder.append("?");
                     }
                     strBuilder.append(" ");
@@ -40,8 +40,6 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
                 float magnitude = !tab[Column.MAG.ordinal()].equals("") ? Float.parseFloat(tab[Column.MAG.ordinal()]) : 0;
 
                 float color = !tab[Column.CI.ordinal()].equals("") ? Float.parseFloat(tab[Column.CI.ordinal()]) : 0;
-
-                System.out.println(tab[0]);
 
                 builder.addStar(new Star(hypID, strBuilder.toString(), coord, magnitude, color));
             }
