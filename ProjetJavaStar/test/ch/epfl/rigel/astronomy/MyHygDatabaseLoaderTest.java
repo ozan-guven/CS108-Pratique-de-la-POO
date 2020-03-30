@@ -49,7 +49,8 @@ class MyHygDatabaseLoaderTest {
             InputStream asterismStream = getClass()
                     .getResourceAsStream(ASTERISM_CATALOGUE_NAME);
             StarCatalogue catalogue = new StarCatalogue.Builder()
-                    .loadFrom(hygStream, HygDatabaseLoader.INSTANCE).loadFrom(asterismStream, AsterismLoader.INSTANCE)
+                    .loadFrom(hygStream, HygDatabaseLoader.INSTANCE)
+                    .loadFrom(asterismStream, AsterismLoader.INSTANCE)
                     .build();
             Star rigel = null;
             for (Star s : catalogue.stars()) {
