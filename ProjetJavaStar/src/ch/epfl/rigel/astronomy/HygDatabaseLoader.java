@@ -14,11 +14,19 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader{
            while (stream.readLine() != null){
                String[] tab = stream.readLine().split(",");
 
+               Integer hypID = !tab[Column.HIP.ordinal()].equals("")  ? Integer.parseInt(tab[Column.HIP.ordinal()]) : 0;
+
                String name = !tab[Column.PROPER.ordinal()].equals("")  ? tab[Column.PROPER.ordinal()] : tab[Column.BAYER.ordinal()] + tab[Column.CON.ordinal()];
 
                EquatorialCoordinates coord = EquatorialCoordinates.of(Double.parseDouble(tab[Column.RARAD.ordinal()]), Double.parseDouble(tab[Column.DECRAD.ordinal()]));
 
-               builder.addStar(new Star(Integer.parseInt(tab[Column.HIP.ordinal()]), name, coord, Float.parseFloat(tab[Column.MAG.ordinal()]), Float.parseFloat(tab[Column.CI.ordinal()])));
+               float magnitude = !tab[Column.MAG.ordinal()].equals("")  ? Float.parseFloat(tab[Column.MAG.ordinal()]) : 0;
+
+               float color = !tab[Column.CI.ordinal()].equals("")  ? Float.parseFloat(tab[Column.CI.ordinal()]) : 0;
+
+               System.out.println(name);
+
+               builder.addStar(new Star(hypID, name, coord, magnitude, color));
            }
         }
     }
