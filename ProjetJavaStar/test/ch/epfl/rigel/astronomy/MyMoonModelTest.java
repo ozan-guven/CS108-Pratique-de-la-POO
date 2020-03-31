@@ -21,7 +21,7 @@ class MyMoonModelTest {
                                         LocalDate.of(2003,  Month.SEPTEMBER, 1),
                                         LocalTime.of(0,0),
                                         ZoneOffset.UTC)))
-                        .equatorialPos().raHr());
+                        .equatorialPos().raHr(), 1e-12);
 
         assertEquals(-0.20114171346019355,
                 MoonModel.MOON.at(
@@ -31,7 +31,7 @@ class MyMoonModelTest {
                                         LocalDate.of(2003,  Month.SEPTEMBER, 1),
                                         LocalTime.of(0,0),
                                         ZoneOffset.UTC)))
-                        .equatorialPos().dec());
+                        .equatorialPos().dec(), 1e-13);
 
         assertEquals(0.009225908666849136,
                 MoonModel.MOON.at(
