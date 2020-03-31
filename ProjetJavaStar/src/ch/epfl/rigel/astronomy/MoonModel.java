@@ -41,10 +41,10 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
         double corrLonNot = meanLonNot - Angle.ofDeg(0.16) * Math.sin(anomalySun);
 
         double eclLon = Math.atan2(Math.sin(trueLonOrb - corrLonNot)* Math.cos(orbIncl), Math.cos(trueLonOrb - corrLonNot)) + corrLonNot;
-        double eclLat = Math.atan(Math.sin(trueLonOrb-corrLonNot)*Math.sin(orbIncl));
+        double eclLat = Math.asin(Math.sin(trueLonOrb-corrLonNot)*Math.sin(orbIncl));
 
         // Calculations for the phase of the moon
-        double phase = (1-Math.cos(trueLonOrb - lonSun)/2);
+        double phase = ((1 - Math.cos(trueLonOrb - lonSun)) / 2);
 
         // Calculations for the angular size of the moon
         double earthMoonDistance = (1-Math.pow(exOrb, 2))/(1 + exOrb * Math.cos(trueAno + corrEC));

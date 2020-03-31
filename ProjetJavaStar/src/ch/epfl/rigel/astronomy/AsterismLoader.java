@@ -23,8 +23,9 @@ public enum AsterismLoader implements StarCatalogue.Loader {
 
         try (BufferedReader stream = new BufferedReader(new InputStreamReader(inputStream, US_ASCII))) {
             List<Star> stars = new ArrayList<>();
-            while (stream.readLine() != null) {
-                String[] tab = stream.readLine().split(",");
+            String d;
+            while ((d = stream.readLine()) != null) {
+                String[] tab = d.split(",");
                 for (String s : tab) {
                     stars.add(map.get(Integer.parseInt(s)));
                 }
