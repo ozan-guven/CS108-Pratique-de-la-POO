@@ -2,7 +2,6 @@ package ch.epfl.rigel.coordinates;
 
 import ch.epfl.rigel.astronomy.SiderealTime;
 import ch.epfl.rigel.math.Angle;
-import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.time.ZonedDateTime;
 import java.util.function.Function;
@@ -48,9 +47,7 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
 
         double azimuth = Math.atan2(-Math.cos(equ.dec()) * cosLat * Math.sin(hourAngle), Math.sin(equ.dec()) - (sinLat * sinAltitude));
 
-        RightOpenInterval interval = RightOpenInterval.of(0, Angle.TAU);
-
-        return HorizontalCoordinates.of(interval.reduce(azimuth), altitude);
+        return HorizontalCoordinates.of(Angle.normalizePositive(azimuth), altitude);
     }
 
     @Override

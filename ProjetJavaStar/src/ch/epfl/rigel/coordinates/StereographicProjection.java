@@ -1,7 +1,6 @@
 package ch.epfl.rigel.coordinates;
 
 import ch.epfl.rigel.math.Angle;
-import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Locale;
 import java.util.function.Function;
@@ -115,9 +114,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
         double lambda = Math.atan2(xy.x() * sinC, (rho * cosPhiCenter * cosC) - (xy.y() * sinPhiCenter * sinC)) + lambdaZero;
         double phi = Math.asin(cosC * sinPhiCenter + ((xy.y() * sinC * cosPhiCenter) / rho));
 
-        RightOpenInterval interval = RightOpenInterval.of(0, Angle.TAU);
-
-        return HorizontalCoordinates.of(interval.reduce(lambda), phi);
+        return HorizontalCoordinates.of(Angle.normalizePositive(lambda), phi);
     }
 
     @Override

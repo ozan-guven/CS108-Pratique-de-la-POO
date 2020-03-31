@@ -3,13 +3,10 @@ package ch.epfl.rigel.astronomy;
 import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.Polynomial;
-import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-
-import static ch.epfl.rigel.math.Angle.TAU;
 
 /**
  * Tools to compute sidereal time of a given place at a given date/time couple
@@ -28,7 +25,6 @@ public final class SiderealTime {
      * @return the greenwich sidereal time (in radians) at the date when
      */
     public static double greenwich(ZonedDateTime when) {
-        RightOpenInterval interval = RightOpenInterval.of(0, TAU);
         ZonedDateTime whenInGreenwich = when.withZoneSameInstant(ZoneOffset.UTC); //Converting when to UTC
         ZonedDateTime whenInGreenwichAtZero = whenInGreenwich.truncatedTo(ChronoUnit.DAYS); //Truncates UTC when at 00:00
 
@@ -41,7 +37,7 @@ public final class SiderealTime {
 
         double siderealG = sidereal0 + sidereal1; //Sidereal time in Greenwich in hours
 
-        return interval.reduce(Angle.ofHr(siderealG));
+        return Angle.normalizePositive(Angle.ofHr(siderealG));
     }
 
     /**
@@ -52,11 +48,10 @@ public final class SiderealTime {
      * @return the sidereal time (in radians) at the date when for the given place where
      */
     public static double local(ZonedDateTime when, GeographicCoordinates where) {
-        RightOpenInterval interval = RightOpenInterval.of(0, TAU);
 
         double siderealL = greenwich(when) + where.lon(); //In radians
 
-        return interval.reduce(siderealL);
+        return Angle.normalizePositive(siderealL);
     }
 
 }
