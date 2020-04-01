@@ -58,9 +58,7 @@ public final class StarCatalogue {
      * @return the set containing all the asterisims of the catalogue
      */
     public Set<Asterism> asterisms() {
-        Set<Asterism> set = new HashSet<>();
-        set.addAll(asterisms);
-        return set;
+        return new HashSet<>(asterisms);
     }
 
     /**
@@ -72,7 +70,6 @@ public final class StarCatalogue {
      * @throws IllegalArgumentException if the asterism is not in the catalogue
      */
     public List<Integer> asterismIndices(Asterism asterism) {
-        //TODO : Copie défensive ?
         Preconditions.checkArgument(asterisms.contains(asterism)); //Can throw the exception
 
         return List.copyOf(starIndexMap.get(asterism));
@@ -115,7 +112,7 @@ public final class StarCatalogue {
          * @return a view of the stars of the catalogue being built
          */
         public List<Star> stars() {
-            return Collections.unmodifiableList(starBuild); //TODO : UnmodifiableList ??????????????
+            return Collections.unmodifiableList(starBuild);
         }
 
         /**
@@ -136,7 +133,7 @@ public final class StarCatalogue {
          * @return a view of the asterisms of the catalogue being built
          */
         public List<Asterism> asterisms() {
-            return Collections.unmodifiableList(asterismBuild); //TODO : UnmodifiableList ??????????????
+            return Collections.unmodifiableList(asterismBuild);
         }
 
         /**
@@ -149,7 +146,6 @@ public final class StarCatalogue {
          * @throws IOException in case of an input/output exception
          */
         public Builder loadFrom(InputStream inputStream, Loader loader) throws IOException {
-            //TODO ?????????????????????????????????????? Je ne sais pas comment faire ni que faire
             try (inputStream) {
                 loader.load(inputStream, this);
             }

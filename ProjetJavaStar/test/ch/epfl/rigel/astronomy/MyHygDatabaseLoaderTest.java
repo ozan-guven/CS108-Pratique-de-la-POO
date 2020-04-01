@@ -44,8 +44,7 @@ class MyHygDatabaseLoaderTest {
             "/asterisms.txt";
     @Test
     void variousTestsAndReadablePrintfOnCompletelyFinishedStarCatalogue() throws IOException {
-        try (InputStream hygStream = getClass()
-                .getResourceAsStream(HYG_CATALOGUE_NAME)) {
+        try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME)) {
             InputStream asterismStream = getClass()
                     .getResourceAsStream(ASTERISM_CATALOGUE_NAME);
             StarCatalogue catalogue = new StarCatalogue.Builder()
