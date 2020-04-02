@@ -1,5 +1,6 @@
 package ch.epfl.rigel.astronomy;
 
+import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,6 +17,23 @@ class MyAsterismLoaderTest {
 
     private static final String ASTERISM_CATALOGUE_NAME =
             "/asterisms.txt";
+
+    @Test
+    void throwsException() {
+        Star star1 = new Star(12, "Rigel", EquatorialCoordinates.of(0, 0), 0, 0);
+        Asterism asterism = new Asterism(List.of(star1));
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME)) {
+                InputStream asterismStream = getClass()
+                        .getResourceAsStream(ASTERISM_CATALOGUE_NAME);
+                StarCatalogue catalogue = new StarCatalogue.Builder()
+                        .loadFrom(hygStream, HygDatabaseLoader.INSTANCE)
+                        .loadFrom(asterismStream, AsterismLoader.INSTANCE)
+                        .addAsterism(asterism)
+                        .build();
+            }
+        });
+    }
 
     //**************** TEST DE LA CLASSE *******************************
 
