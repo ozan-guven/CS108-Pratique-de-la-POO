@@ -1,5 +1,7 @@
 package ch.epfl.rigel.astronomy;
 
+import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,9 +13,17 @@ import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
+/**
+ * Loader that puts all the asterism in the catalogue
+ *
+ * @author Robin Goumaz (301420)
+ */
 public enum AsterismLoader implements StarCatalogue.Loader {
     INSTANCE;
 
+    /**
+     * @see StarCatalogue.Loader#load(InputStream inputStream, StarCatalogue.Builder builder)
+     */
     @Override
     public void load(InputStream inputStream, StarCatalogue.Builder builder) throws IOException {
         Map<Integer, Star> map = new HashMap<>();

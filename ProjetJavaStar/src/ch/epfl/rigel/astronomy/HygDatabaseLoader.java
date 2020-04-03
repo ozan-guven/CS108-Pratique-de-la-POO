@@ -9,9 +9,17 @@ import java.io.InputStreamReader;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
+/**
+ * Loader that puts all the stars in the catalogue
+ *
+ * @author Robin Goumaz (301420)
+ */
 public enum HygDatabaseLoader implements StarCatalogue.Loader {
     INSTANCE;
 
+    /**
+     * @see StarCatalogue.Loader#load(InputStream inputStream, StarCatalogue.Builder builder)
+     */
     @Override
     public void load(InputStream inputStream, StarCatalogue.Builder builder) throws IOException {
         try (BufferedReader stream = new BufferedReader(new InputStreamReader(inputStream, US_ASCII))) {

@@ -5,6 +5,11 @@ import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 import ch.epfl.rigel.math.Angle;
 
+/**
+ * Model representing the moon
+ *
+ * @author Robin Goumaz (301420)
+ */
 public enum MoonModel implements CelestialObjectModel<Moon> {
     MOON();
 
@@ -14,6 +19,9 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
     private final double orbIncl = Angle.ofDeg(5.145396);
     private final double exOrb = 0.0549;
 
+    /**
+     * @see CelestialObjectModel#at(double, EclipticToEquatorialConversion)
+     */
     @Override
     public Moon at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
         Sun sun = SunModel.SUN.at(daysSinceJ2010, eclipticToEquatorialConversion);
