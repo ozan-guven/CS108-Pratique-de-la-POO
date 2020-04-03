@@ -67,8 +67,7 @@ public final class BlackBodyColor {
         ClosedInterval interval = ClosedInterval.of(1000, 40000);
         Preconditions.checkInInterval(interval, temperatureKelvin);
 
-        String rgb = "";
-        int closestTemp = closetHundredMultiple(temperatureKelvin);
+        int closestTemp = closestHundredMultiple(temperatureKelvin);
 
         return kelvinRGB.get(closestTemp);
     }
@@ -79,7 +78,7 @@ public final class BlackBodyColor {
      * @param number the number to be rounded
      * @return the closest multiple of 100
      */
-    private static int closetHundredMultiple(double number) {
+    private static int closestHundredMultiple(double number) {
         int numberRound = (int) Math.floor(number);
         int numberModulo = numberRound % 100;
 
@@ -89,6 +88,19 @@ public final class BlackBodyColor {
             return numberRound + (100 - numberModulo);
         } else {
             return numberRound - numberModulo;
+        }
+    }
+
+    //TODO : On pourrait créer une classe apart avec cette méthode
+    public int closestIntMultipleTo (int multiple, double number) {
+        double numberModulo = number % multiple;
+
+        if (numberModulo == 0) {
+            return (int) number;
+        } else if (numberModulo >= multiple/2d) {
+            return ((int) (number + (multiple - numberModulo)));
+        } else {
+            return ((int) (number - numberModulo));
         }
     }
 }
