@@ -1,5 +1,6 @@
 package ch.epfl.rigel.astronomy;
 
+import ch.epfl.rigel.coordinates.CartesianCoordinates;
 import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
@@ -26,6 +27,8 @@ public final class ObservedSky {
     private ArrayList<Planet> planets;
     private ArrayList<Star> stars;
 
+    private CartesianCoordinates sunCoordinates;
+
     public ObservedSky(ZonedDateTime time, GeographicCoordinates coordinates,
                        StereographicProjection projection, StarCatalogue catalogue) {
         this.time = time;
@@ -46,5 +49,9 @@ public final class ObservedSky {
             }
         }
         //TODO : Et comment on sait la position des étoiles ?
+    }
+
+    public Sun sun(){
+        return sun;
     }
 }

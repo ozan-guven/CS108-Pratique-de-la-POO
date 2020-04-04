@@ -20,7 +20,7 @@ import java.util.Map;
 public final class BlackBodyColor {
 
     private final static String BBR_COLOR_CATALOGUE_NAME = "/bbr_color.txt";
-    private final static Map<Integer, Color> kelvinRGB = initializeMap();
+    private final static Map<Integer, Color> KELVIN_RGB = initializeMap();
 
     private BlackBodyColor() {
     }
@@ -69,7 +69,7 @@ public final class BlackBodyColor {
 
         int closestTemp = closestHundredMultiple(temperatureKelvin);
 
-        return kelvinRGB.get(closestTemp);
+        return KELVIN_RGB.get(closestTemp);
     }
 
     /**
