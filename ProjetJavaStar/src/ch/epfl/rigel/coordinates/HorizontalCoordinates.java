@@ -8,14 +8,18 @@ import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Locale;
 
-import static ch.epfl.rigel.math.Angle.*;
-
 /**
  * Horizontal coordinates system
  *
  * @author Ozan Güven (297076)
  */
 public final class HorizontalCoordinates extends SphericalCoordinates {
+
+    private final static Interval NORTH_1 = RightOpenInterval.of(292.5, 360);
+    private final static Interval NORTH_2 = RightOpenInterval.of(0, 67.5);
+    private final static Interval SOUTH = RightOpenInterval.of(112.5, 247.5);
+    private final static Interval EAST = RightOpenInterval.of(22.5, 157.5);
+    private final static Interval WEST = RightOpenInterval.of(202.5, 337.5);
 
     private HorizontalCoordinates(double az, double alt) {
         super(az, alt);
@@ -30,10 +34,7 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException if angles are not in the interval
      */
     public static HorizontalCoordinates of(double az, double alt) {
-        Interval intervalOfAz = RightOpenInterval.of(0, TAU);
-        Interval intervalOfAlt = ClosedInterval.symmetric(TAU / 2);
-
-        return new HorizontalCoordinates(Preconditions.checkInInterval(intervalOfAz, az), Preconditions.checkInInterval(intervalOfAlt, alt));
+        return new HorizontalCoordinates(Preconditions.checkInInterval(INTERVAL_0_TO_TAU, az), Preconditions.checkInInterval(INTERVAL_SYM_PI, alt));
     }
 
     /**
@@ -62,22 +63,17 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
      */
     public String azOctantName(String n, String e, String s, String w) {
         StringBuilder builder = new StringBuilder();
-        Interval north1 = RightOpenInterval.of(292.5, 360);
-        Interval north2 = RightOpenInterval.of(0, 67.5);
-        Interval south = RightOpenInterval.of(112.5, 247.5);
-        Interval east = RightOpenInterval.of(22.5, 157.5);
-        Interval west = RightOpenInterval.of(202.5, 337.5);
 
-        if (north1.contains(azDeg()) || north2.contains(azDeg())) {
+        if (NORTH_1.contains(azDeg()) || NORTH_2.contains(azDeg())) {
             builder.append(n);
         }
-        if (south.contains(azDeg())) {
+        if (SOUTH.contains(azDeg())) {
             builder.append(s);
         }
-        if (east.contains(azDeg())) {
+        if (EAST.contains(azDeg())) {
             builder.append(e);
         }
-        if (west.contains(azDeg())) {
+        if (WEST.contains(azDeg())) {
             builder.append(w);
         }
 

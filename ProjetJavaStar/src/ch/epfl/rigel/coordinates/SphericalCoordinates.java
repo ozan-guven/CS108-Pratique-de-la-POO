@@ -1,6 +1,9 @@
 package ch.epfl.rigel.coordinates;
 
 import ch.epfl.rigel.math.Angle;
+import ch.epfl.rigel.math.ClosedInterval;
+import ch.epfl.rigel.math.Interval;
+import ch.epfl.rigel.math.RightOpenInterval;
 
 /**
  * Basis spherical representation of coordinates
@@ -9,6 +12,9 @@ import ch.epfl.rigel.math.Angle;
  */
 abstract class SphericalCoordinates {
     final double longitude, latitude;
+
+    protected final static Interval INTERVAL_0_TO_TAU = RightOpenInterval.of(0, Angle.TAU);
+    protected final static Interval INTERVAL_SYM_PI = ClosedInterval.symmetric(Angle.TAU / 2);
 
     SphericalCoordinates(double lon, double lat) {
         longitude = lon;

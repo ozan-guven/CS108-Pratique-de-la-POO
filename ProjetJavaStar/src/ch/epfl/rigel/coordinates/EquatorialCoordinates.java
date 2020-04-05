@@ -2,9 +2,6 @@ package ch.epfl.rigel.coordinates;
 
 import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.math.Angle;
-import ch.epfl.rigel.math.ClosedInterval;
-import ch.epfl.rigel.math.Interval;
-import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Locale;
 
@@ -28,10 +25,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException if angles are not in the interval
      */
     public static EquatorialCoordinates of(double ra, double dec) {
-        Interval intervalRa = RightOpenInterval.of(0, Angle.TAU);
-        Interval intervalDec = ClosedInterval.symmetric(Angle.TAU / 2);
-
-        return new EquatorialCoordinates(Preconditions.checkInInterval(intervalRa, ra), Preconditions.checkInInterval(intervalDec, dec));
+        return new EquatorialCoordinates(Preconditions.checkInInterval(INTERVAL_0_TO_TAU, ra), Preconditions.checkInInterval(INTERVAL_SYM_PI, dec));
     }
 
     /**

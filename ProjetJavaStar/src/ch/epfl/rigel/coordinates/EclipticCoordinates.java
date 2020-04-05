@@ -1,13 +1,8 @@
 package ch.epfl.rigel.coordinates;
 
 import ch.epfl.rigel.Preconditions;
-import ch.epfl.rigel.math.ClosedInterval;
-import ch.epfl.rigel.math.Interval;
-import ch.epfl.rigel.math.RightOpenInterval;
 
 import java.util.Locale;
-
-import static ch.epfl.rigel.math.Angle.*;
 
 /**
  * Ecliptic coordinates system
@@ -28,10 +23,7 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      * @return the ecliptic coordinates
      */
     public static EclipticCoordinates of(double lon, double lat) {
-        Interval intervalOfLon = RightOpenInterval.of(0, TAU);
-        Interval intervalOfLat = ClosedInterval.symmetric(TAU / 2);
-
-        return new EclipticCoordinates(Preconditions.checkInInterval(intervalOfLon, lon), Preconditions.checkInInterval(intervalOfLat, lat));
+        return new EclipticCoordinates(Preconditions.checkInInterval(INTERVAL_0_TO_TAU, lon), Preconditions.checkInInterval(INTERVAL_SYM_PI, lat));
     }
 
     /**

@@ -15,6 +15,9 @@ import java.util.Locale;
  */
 public final class GeographicCoordinates extends SphericalCoordinates {
 
+    private final static Interval LON_INTERVAL = RightOpenInterval.symmetric(360);
+    private final static Interval LAT_INTERVAL = ClosedInterval.symmetric(180);
+
     private GeographicCoordinates(double lon, double lat) {
         super(lon, lat);
     }
@@ -27,10 +30,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
      * @return The coordinates in geographic representation
      */
     public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
-        Interval lonInterval = RightOpenInterval.symmetric(360);
-        Interval latInterval = ClosedInterval.symmetric(180);
-
-        return new GeographicCoordinates(Angle.ofDeg(Preconditions.checkInInterval(lonInterval, lonDeg)), Angle.ofDeg(Preconditions.checkInInterval(latInterval, latDeg)));
+        return new GeographicCoordinates(Angle.ofDeg(Preconditions.checkInInterval(LON_INTERVAL, lonDeg)), Angle.ofDeg(Preconditions.checkInInterval(LAT_INTERVAL, latDeg)));
     }
 
     /**
@@ -40,9 +40,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
      * @return boolean value of the check
      */
     public static boolean isValidLonDeg(double lonDeg) {
-        Interval lonInterval = RightOpenInterval.symmetric(360);
-
-        return lonInterval.contains(lonDeg);
+        return LON_INTERVAL.contains(lonDeg);
     }
 
     /**
@@ -52,9 +50,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
      * @return boolean value of the check
      */
     public static boolean isValidLatDeg(double latDeg) {
-        Interval latInterval = ClosedInterval.symmetric(180);
-
-        return latInterval.contains(latDeg);
+        return LAT_INTERVAL.contains(latDeg);
     }
 
     /**
