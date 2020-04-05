@@ -22,6 +22,8 @@ public final class BlackBodyColor {
     private final static String BBR_COLOR_CATALOGUE_NAME = "/bbr_color.txt";
     private final static Map<Integer, Color> KELVIN_RGB = initializeMap();
 
+    private final static ClosedInterval INTERVAL = ClosedInterval.of(1000, 40000);
+
     private BlackBodyColor() {
     }
 
@@ -64,10 +66,7 @@ public final class BlackBodyColor {
      * @throws IllegalArgumentException if the temperature is not in [1000 K, 40000 K]
      */
     public static Color colorForTemperature(double temperatureKelvin) {
-        ClosedInterval interval = ClosedInterval.of(1000, 40000);
-        Preconditions.checkInInterval(interval, temperatureKelvin);
-
-        int closestTemp = closestHundredMultiple(temperatureKelvin);
+        int closestTemp = closestHundredMultiple(Preconditions.checkInInterval(INTERVAL, temperatureKelvin));
 
         return KELVIN_RGB.get(closestTemp);
     }
