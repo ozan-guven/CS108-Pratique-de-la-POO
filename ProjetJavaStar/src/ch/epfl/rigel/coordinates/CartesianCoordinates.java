@@ -5,6 +5,7 @@ import java.util.Locale;
 /**
  * Cartesian coordinates system
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class CartesianCoordinates {

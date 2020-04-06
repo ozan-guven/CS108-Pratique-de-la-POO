@@ -9,6 +9,7 @@ import java.util.*;
 /**
  * Class representing a catalogue of stars and asterisms
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class StarCatalogue {
@@ -79,6 +80,7 @@ public final class StarCatalogue {
      * Builder for the StarCatalogue (non immutable StarCatalogue used
      * to build the catalogue)
      *
+     * @author Robin Goumaz (301420)
      * @author Ozan Güven (297076)
      */
     public final static class Builder {
@@ -168,6 +170,7 @@ public final class StarCatalogue {
      * Interface that represents a loader of
      * the stars and asterisms for the catalogue
      *
+     * @author Robin Goumaz (301420)
      * @author Ozan Güven (297076)
      */
     public interface Loader {

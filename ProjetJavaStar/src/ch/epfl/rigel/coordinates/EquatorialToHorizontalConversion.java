@@ -9,6 +9,7 @@ import java.util.function.Function;
 /**
  * Tools to convert from Equatorial Coordinates to Horizontal Coordinates
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class EquatorialToHorizontalConversion implements Function<EquatorialCoordinates, HorizontalCoordinates> {

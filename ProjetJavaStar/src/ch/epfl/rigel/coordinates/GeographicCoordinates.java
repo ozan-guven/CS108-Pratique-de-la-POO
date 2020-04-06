@@ -11,6 +11,7 @@ import java.util.Locale;
 /**
  * Geographic representation of coordinates
  *
+ * @author Ozan Güven (297076)
  * @author Robin Goumaz (301420)
  */
 public final class GeographicCoordinates extends SphericalCoordinates {

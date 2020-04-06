@@ -12,6 +12,7 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
 /**
  * Loader that puts all the stars in the catalogue
  *
+ * @author Ozan Güven (297076)
  * @author Robin Goumaz (301420)
  */
 public enum HygDatabaseLoader implements StarCatalogue.Loader {

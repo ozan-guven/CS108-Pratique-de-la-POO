@@ -8,6 +8,7 @@ import java.util.Objects;
 /**
  * Main class that represents celestial objects
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public abstract class CelestialObject {

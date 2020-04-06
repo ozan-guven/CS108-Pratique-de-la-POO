@@ -10,6 +10,7 @@ import java.util.function.Function;
 /**
  * Tools to convert from Ecliptic Coordinates to Equatorial Coordinates
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class EclipticToEquatorialConversion implements Function<EclipticCoordinates, EquatorialCoordinates> {

@@ -7,6 +7,7 @@ import ch.epfl.rigel.math.ClosedInterval;
 /**
  * Class that represent a star
  *
+ * @author Ozan Güven (297076)
  * @author Robin Goumaz (301420)
  */
 public final class Star extends CelestialObject {

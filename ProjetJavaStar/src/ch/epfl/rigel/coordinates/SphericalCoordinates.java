@@ -8,6 +8,7 @@ import ch.epfl.rigel.math.RightOpenInterval;
 /**
  * Basis spherical representation of coordinates
  *
+ * @author Ozan Güven (297076)
  * @author Robin Goumaz (301420)
  */
 abstract class SphericalCoordinates {

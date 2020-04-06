@@ -11,6 +11,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Tools to compute sidereal time of a given place at a given date/time couple
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class SiderealTime {

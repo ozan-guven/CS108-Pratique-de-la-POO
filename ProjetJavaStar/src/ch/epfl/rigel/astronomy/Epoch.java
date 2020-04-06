@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Enumeration that represents astronomical epochs and their tools
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public enum Epoch {

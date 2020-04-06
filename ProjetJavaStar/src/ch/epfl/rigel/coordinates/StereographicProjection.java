@@ -8,6 +8,7 @@ import java.util.function.Function;
 /**
  * Tools to represent Stereographic Projections of Horizontal Coordinates
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class StereographicProjection implements Function<HorizontalCoordinates, CartesianCoordinates> {

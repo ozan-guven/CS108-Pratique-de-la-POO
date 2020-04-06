@@ -7,6 +7,7 @@ import java.util.Locale;
 /**
  * Ecliptic coordinates system
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class EclipticCoordinates extends SphericalCoordinates {

@@ -9,6 +9,7 @@ import java.util.Locale;
 /**
  * Class that represents the Moon
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class Moon extends CelestialObject {

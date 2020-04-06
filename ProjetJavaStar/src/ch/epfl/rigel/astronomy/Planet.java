@@ -5,6 +5,7 @@ import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 /**
  * Class that represents planets
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class Planet extends CelestialObject {

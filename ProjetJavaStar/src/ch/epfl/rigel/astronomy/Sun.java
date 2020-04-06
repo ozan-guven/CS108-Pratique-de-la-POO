@@ -8,6 +8,7 @@ import java.util.Objects;
 /**
  * Class that represents the Sun
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public final class Sun extends CelestialObject {

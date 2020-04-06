@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Enumeration containing the models of the 8 planets of the Solar system.
  *
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public enum PlanetModel implements CelestialObjectModel<Planet> {

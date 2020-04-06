@@ -7,6 +7,7 @@ import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
  * tools to compute characteristics of an object at a given time.
  *
  * @param <O> type of the object modeled by the model
+ * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
 public interface CelestialObjectModel<O> {

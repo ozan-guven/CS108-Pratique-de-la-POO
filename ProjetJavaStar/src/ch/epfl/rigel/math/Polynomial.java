@@ -52,23 +52,6 @@ public final class Polynomial {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        /*if(polynomialCoefficients.length > 1) {
-            builder.append(polynomialCoefficients[0]);
-            builder.append("x^");
-            builder.append(polynomialCoefficients.length - 1);
-            for (int i = 1; i < polynomialCoefficients.length - 2; i++) {
-                if (polynomialCoefficients[i] != 0) {
-                    if (polynomialCoefficients[i] > 0) {
-                        builder.append("+");
-                    }
-                    builder.append(polynomialCoefficients[i]);
-                    builder.append("x^");
-                    builder.append(polynomialCoefficients.length - 1 - i);
-                }
-            }
-        }
-        builder.append(polynomialCoefficients[polynomialCoefficients.length-1]);*/
-
         for (int i = 0; i < polynomialCoefficients.length; i++) {
             if (polynomialCoefficients[i] != 0) {
                 if (i > 0 && polynomialCoefficients[i] > 0) {
@@ -76,7 +59,7 @@ public final class Polynomial {
                 }
                 if (Math.abs(polynomialCoefficients[i]) != 1) {
                     builder.append(polynomialCoefficients[i]);
-                } else if(polynomialCoefficients[i] == -1){
+                } else if (polynomialCoefficients[i] == -1) {
                     builder.append("-");
                 }
                 switch (polynomialCoefficients.length - 1 - i) {

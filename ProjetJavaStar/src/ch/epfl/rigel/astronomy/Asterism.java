@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Class representing a asterism (a collection of stars)
  *
+ * @author Ozan Güven (297076)
  * @author Robin Goumaz (301420)
  */
 public final class Asterism {

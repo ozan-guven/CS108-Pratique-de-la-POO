@@ -8,6 +8,7 @@ import ch.epfl.rigel.math.Angle;
 /**
  * Model representing the moon
  *
+ * @author Ozan Güven (297076)
  * @author Robin Goumaz (301420)
  */
 public enum MoonModel implements CelestialObjectModel<Moon> {
