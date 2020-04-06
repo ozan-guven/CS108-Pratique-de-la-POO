@@ -15,3 +15,6 @@ RXNQ-MFKF-XR2C-QREN Rendu - 1 - Semaine 5
 
 3GBB-K8NR-0T3X-N85S Rendu - 1 - Semaine 6
 BF07-3X74-P653-QFG6 Rendu - 2 - Semaine 6
+
+STDX-TSTE-MV52-17RP Rendu - 1 - Intermédiare
+BQV2-S6HA-7DM1-ZK53 Rendu - 2 - Intermédiare

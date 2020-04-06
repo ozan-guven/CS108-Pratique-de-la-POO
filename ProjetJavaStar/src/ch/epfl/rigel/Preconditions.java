@@ -16,7 +16,7 @@ public final class Preconditions {
      * Throws an exception if the condition is not met
      *
      * @param isTrue boolean condition that needs to be checked
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if the argument is false
      */
     public static void checkArgument(boolean isTrue) {
         if (!isTrue) {
@@ -30,6 +30,7 @@ public final class Preconditions {
      * @param interval the interval
      * @param value    the value
      * @return the value if it is in the interval
+     * @throws IllegalArgumentException if the value is not in the interval
      */
     public static double checkInInterval(Interval interval, double value) {
         checkArgument(interval.contains(value));

@@ -5,7 +5,7 @@ import java.util.Locale;
 import static ch.epfl.rigel.Preconditions.checkArgument;
 
 /**
- * An interval that contains their bounds
+ * An interval that contains its bounds
  *
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
@@ -22,6 +22,7 @@ public final class ClosedInterval extends Interval {
      * @param low  the lower bound
      * @param high the upper bound
      * @return a closed interval
+     * @throws IllegalArgumentException if low >= high
      */
     public static ClosedInterval of(double low, double high) {
         checkArgument(low < high);
@@ -33,6 +34,7 @@ public final class ClosedInterval extends Interval {
      *
      * @param size the size of the interval
      * @return a symmetric interval
+     * @throws IllegalArgumentException if the size is not strictly positive
      */
     public static ClosedInterval symmetric(double size) {
         checkArgument(size > 0);

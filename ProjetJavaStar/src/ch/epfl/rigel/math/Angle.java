@@ -13,6 +13,10 @@ public final class Angle {
     private Angle() {
     }
 
+    /**
+     * Number that is two times <i>pi</i>
+     * @see Math#PI
+     */
     public final static double TAU = Math.PI * 2;
     private final static double RAD_PER_SEC = TAU / (3600 * 360);
     private final static double RAD_PER_MIN = TAU / (60 * 360);
@@ -20,7 +24,7 @@ public final class Angle {
     private final static double HOUR_PER_RAD = 24 / TAU;
 
     /**
-     * Normalizes the angle between 0 and 2*Pi
+     * Normalizes the angle between 0 and 2*<i>pi</i>
      *
      * @param rad the angle
      * @return the normalized angle
@@ -41,12 +45,13 @@ public final class Angle {
     }
 
     /**
-     * Gives the radian value of an angle given in deg min sec
+     * Gives the radian value of an angle given in degrees, minutes, seconds (DMS)
      *
      * @param deg the degrees
-     * @param min the minitues
-     * @param sec the secondes
+     * @param min the minutes
+     * @param sec the seconds
      * @return the translated angle in radians
+     * @throws IllegalArgumentException if the minutes or the seconds are not contained in [0, 60]
      */
     public static double ofDMS(int deg, int min, double sec) {
         RightOpenInterval interval = RightOpenInterval.of(0, 60);

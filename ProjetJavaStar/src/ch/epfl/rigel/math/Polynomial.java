@@ -25,6 +25,7 @@ public final class Polynomial {
      * @param coefficientN highest degree's coefficient
      * @param coefficients list of other decreasing degrees' coefficient
      * @return a polynomial with the given coefficients
+     * @throws IllegalArgumentException if the n-th coefficient is 0
      */
     public static Polynomial of(double coefficientN, double... coefficients) {
         checkArgument(coefficientN != 0);
