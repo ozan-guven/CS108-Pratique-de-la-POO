@@ -15,6 +15,7 @@ public final class Angle {
 
     /**
      * Number that is two times <i>pi</i>
+     *
      * @see Math#PI
      */
     public final static double TAU = Math.PI * 2;
@@ -45,7 +46,7 @@ public final class Angle {
     }
 
     /**
-     * Gives the radian value of an angle given in degrees, minutes, seconds (DMS)
+     * Gives the radian value of an angle given in degrees, minutes, seconds <b>(DMS)</b>
      *
      * @param deg the degrees
      * @param min the minutes
