@@ -21,7 +21,7 @@ class MyEclipticCoordinatesTest {
 
     @Test
     void ofFails() {
-        assertThrows(IllegalArgumentException.class, () ->{
+        assertThrows(IllegalArgumentException.class, () -> {
             EclipticCoordinates coord1 = EclipticCoordinates.of(10, 1.235248);
             EclipticCoordinates coord2 = EclipticCoordinates.of(2.301934, Angle.TAU);
         });

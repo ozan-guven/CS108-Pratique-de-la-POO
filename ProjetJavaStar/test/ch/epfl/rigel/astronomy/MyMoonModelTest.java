@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MyMoonModelTest {
 
@@ -18,8 +18,8 @@ class MyMoonModelTest {
                         -2313,
                         new EclipticToEquatorialConversion(
                                 ZonedDateTime.of(
-                                        LocalDate.of(2003,  Month.SEPTEMBER, 1),
-                                        LocalTime.of(0,0),
+                                        LocalDate.of(2003, Month.SEPTEMBER, 1),
+                                        LocalTime.of(0, 0),
                                         ZoneOffset.UTC)))
                         .equatorialPos().raHr(), 1e-12);
 
@@ -28,8 +28,8 @@ class MyMoonModelTest {
                         -2313,
                         new EclipticToEquatorialConversion(
                                 ZonedDateTime.of(
-                                        LocalDate.of(2003,  Month.SEPTEMBER, 1),
-                                        LocalTime.of(0,0),
+                                        LocalDate.of(2003, Month.SEPTEMBER, 1),
+                                        LocalTime.of(0, 0),
                                         ZoneOffset.UTC)))
                         .equatorialPos().dec(), 1e-13);
 
@@ -57,7 +57,7 @@ class MyMoonModelTest {
                         new EclipticToEquatorialConversion(
                                 ZonedDateTime.of(
                                         LocalDate.of(2003, 9, 1),
-                                        LocalTime.of(0, 0),ZoneOffset.UTC)))
+                                        LocalTime.of(0, 0), ZoneOffset.UTC)))
                         .info());
     }
 }

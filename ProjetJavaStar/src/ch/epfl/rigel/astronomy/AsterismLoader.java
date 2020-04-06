@@ -1,7 +1,5 @@
 package ch.epfl.rigel.astronomy;
 
-import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

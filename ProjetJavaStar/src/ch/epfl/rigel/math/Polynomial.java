@@ -1,6 +1,6 @@
 package ch.epfl.rigel.math;
 
-import static ch.epfl.rigel.Preconditions.*;
+import static ch.epfl.rigel.Preconditions.checkArgument;
 
 /**
  * A polynomial function

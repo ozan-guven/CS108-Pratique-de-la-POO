@@ -117,7 +117,7 @@ class SunTest {
 
     @Test
     void sunEqualsIsBasedOnIdentity() {
-        var prevSun = (Sun)null;
+        var prevSun = (Sun) null;
         for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
             var ecl = EclipticCoordinates.of(0, 0);
             var equ = EquatorialCoordinates.of(0, 0);

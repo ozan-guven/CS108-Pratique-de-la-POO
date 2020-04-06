@@ -3,7 +3,8 @@ package ch.epfl.rigel.coordinates;
 import ch.epfl.rigel.math.Angle;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MyStereographicProjectionTest {
 
@@ -18,7 +19,7 @@ class MyStereographicProjectionTest {
 
     @Test
     void testHashCodeThrowsException() {
-        assertThrows(UnsupportedOperationException.class, () ->{
+        assertThrows(UnsupportedOperationException.class, () -> {
             StereographicProjection projection = new StereographicProjection(HorizontalCoordinates.of(0, 0));
 
             projection.hashCode();
@@ -27,7 +28,7 @@ class MyStereographicProjectionTest {
 
     @Test
     void testEqualsThrowsException() {
-        assertThrows(UnsupportedOperationException.class, () ->{
+        assertThrows(UnsupportedOperationException.class, () -> {
             StereographicProjection projection = new StereographicProjection(HorizontalCoordinates.of(0, 0));
 
             projection.equals(null);

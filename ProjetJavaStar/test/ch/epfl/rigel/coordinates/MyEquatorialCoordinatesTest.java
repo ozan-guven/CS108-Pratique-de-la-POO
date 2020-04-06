@@ -3,7 +3,8 @@ package ch.epfl.rigel.coordinates;
 import ch.epfl.rigel.math.Angle;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MyEquatorialCoordinatesTest {
 
@@ -55,7 +56,7 @@ class MyEquatorialCoordinatesTest {
 
     @Test
     void testToString() {
-        EquatorialCoordinates coord = EquatorialCoordinates.of(0.392699081699, Math.PI/4);
+        EquatorialCoordinates coord = EquatorialCoordinates.of(0.392699081699, Math.PI / 4);
         assertEquals("(ra=1.5000h, dec=45.0000°)", coord.toString());
     }
 }

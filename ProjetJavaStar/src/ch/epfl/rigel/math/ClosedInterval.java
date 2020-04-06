@@ -2,7 +2,7 @@ package ch.epfl.rigel.math;
 
 import java.util.Locale;
 
-import static ch.epfl.rigel.Preconditions.*;
+import static ch.epfl.rigel.Preconditions.checkArgument;
 
 /**
  * An interval that contains their bounds

@@ -1,10 +1,10 @@
 package ch.epfl.sigcheck;
 
-import ch.epfl.rigel.astronomy.*;
+import ch.epfl.rigel.astronomy.CelestialObject;
+import ch.epfl.rigel.astronomy.Moon;
+import ch.epfl.rigel.astronomy.Planet;
+import ch.epfl.rigel.astronomy.Sun;
 import ch.epfl.rigel.coordinates.*;
-
-import java.time.ZonedDateTime;
-import java.util.function.Function;
 
 final class SignatureChecks_4 {
     void checkCartesianCoordinates() {

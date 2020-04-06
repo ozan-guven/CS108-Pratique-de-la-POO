@@ -51,7 +51,7 @@ public final class ObservedSky {
         //TODO : Et comment on sait la position des étoiles ?
     }
 
-    public Sun sun(){
+    public Sun sun() {
         return sun;
     }
 }

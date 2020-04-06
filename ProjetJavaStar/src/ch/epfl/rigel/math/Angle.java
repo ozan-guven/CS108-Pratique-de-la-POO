@@ -1,6 +1,6 @@
 package ch.epfl.rigel.math;
 
-import static ch.epfl.rigel.Preconditions.*;
+import static ch.epfl.rigel.Preconditions.checkInInterval;
 
 /**
  * A tool to manipulate angles

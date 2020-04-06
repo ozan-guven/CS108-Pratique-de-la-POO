@@ -92,12 +92,12 @@ public final class BlackBodyColor {
     }
 
     //TODO : On pourrait créer une classe apart avec cette méthode
-    public int closestIntMultipleTo (int multiple, double number) {
+    public int closestIntMultipleTo(int multiple, double number) {
         double numberModulo = number % multiple;
 
         if (numberModulo == 0) {
             return (int) number;
-        } else if (numberModulo >= multiple/2d) {
+        } else if (numberModulo >= multiple / 2d) {
             return ((int) (number + (multiple - numberModulo)));
         } else {
             return ((int) (number - numberModulo));

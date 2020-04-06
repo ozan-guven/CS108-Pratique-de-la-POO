@@ -3,7 +3,8 @@ package ch.epfl.rigel.coordinates;
 import ch.epfl.rigel.math.Angle;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MyHorizontalCoordinatesTest {
 
@@ -19,10 +20,10 @@ class MyHorizontalCoordinatesTest {
     }
 
     @Test
-    void ofFailsOnOutOfIntervalValues(){
+    void ofFailsOnOutOfIntervalValues() {
         assertThrows(IllegalArgumentException.class, () -> {
             HorizontalCoordinates coord1 = HorizontalCoordinates.of(Angle.TAU, 0);
-            HorizontalCoordinates coord2 = HorizontalCoordinates.of(0, Angle.TAU/4+0.0001);
+            HorizontalCoordinates coord2 = HorizontalCoordinates.of(0, Angle.TAU / 4 + 0.0001);
         });
     }
 
@@ -38,7 +39,7 @@ class MyHorizontalCoordinatesTest {
     }
 
     @Test
-    void ofDegFailsOnOutOfIntervalValues(){
+    void ofDegFailsOnOutOfIntervalValues() {
         assertThrows(IllegalArgumentException.class, () -> {
             HorizontalCoordinates coord1 = HorizontalCoordinates.of(360, 0);
             HorizontalCoordinates coord2 = HorizontalCoordinates.of(0, 90.0001);
@@ -77,11 +78,11 @@ class MyHorizontalCoordinatesTest {
         assertEquals("N", coord1.azOctantName("N", "E", "S", "W"));
         assertEquals("SE", coord2.azOctantName("N", "E", "S", "W"));
         assertEquals("SW", coord3.azOctantName("N", "E", "S", "W"));
-        assertEquals("W", coord4.azOctantName("N","E","S","W"));
-        assertEquals("S", coord5.azOctantName("N","E","S","W"));
-        assertEquals("N", coord6.azOctantName("N","E","S","W"));
-        assertEquals("NE", coord7.azOctantName("N","E","S","W"));
-        assertEquals("NW", coord8.azOctantName("N","E","S","W"));
+        assertEquals("W", coord4.azOctantName("N", "E", "S", "W"));
+        assertEquals("S", coord5.azOctantName("N", "E", "S", "W"));
+        assertEquals("N", coord6.azOctantName("N", "E", "S", "W"));
+        assertEquals("NE", coord7.azOctantName("N", "E", "S", "W"));
+        assertEquals("NW", coord8.azOctantName("N", "E", "S", "W"));
     }
 
     @Test

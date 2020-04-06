@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MyEclipticToEquatorialConversionTest {
 
@@ -23,6 +23,6 @@ class MyEclipticToEquatorialConversionTest {
         EquatorialCoordinates newCoord = eclToEqu.apply(toConvert);
 
         assertEquals(Angle.ofHr(9.5814777777778), newCoord.ra(), 1e-6);
-        assertEquals(Angle.ofDMS(19,32,6.01), newCoord.dec(), 1e-7);
+        assertEquals(Angle.ofDMS(19, 32, 6.01), newCoord.dec(), 1e-7);
     }
 }

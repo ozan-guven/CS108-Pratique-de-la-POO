@@ -3,10 +3,13 @@ package ch.epfl.rigel.astronomy;
 import ch.epfl.rigel.math.Angle;
 import org.junit.jupiter.api.Test;
 
-import java.time.*;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
-import static java.time.LocalDate.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static java.time.LocalDate.of;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SiderealTimeTestClass {
     @Test

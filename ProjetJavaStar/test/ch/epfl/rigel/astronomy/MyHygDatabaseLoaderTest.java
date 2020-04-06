@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class MyHygDatabaseLoaderTest {
 
@@ -42,6 +42,7 @@ class MyHygDatabaseLoaderTest {
 
     private static final String ASTERISM_CATALOGUE_NAME =
             "/asterisms.txt";
+
     @Test
     void variousTestsAndReadablePrintfOnCompletelyFinishedStarCatalogue() throws IOException {
         try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME)) {

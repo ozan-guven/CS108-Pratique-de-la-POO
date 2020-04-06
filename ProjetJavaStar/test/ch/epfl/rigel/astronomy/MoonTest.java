@@ -96,7 +96,7 @@ public class MoonTest {
 
     @Test
     void moonEqualsIsBasedOnIdentity() {
-        var prevMoon = (Moon)null;
+        var prevMoon = (Moon) null;
         for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
             var equ = EquatorialCoordinates.of(0, 0);
             var m = new Moon(equ, 0, 0, 0);

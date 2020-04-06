@@ -23,7 +23,7 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
      * Constructs the conversion system from Equatorial to Horizontal coordinates
      * for the given date when and the given place where
      *
-     * @param when the date for which the conversion must hold
+     * @param when  the date for which the conversion must hold
      * @param where the place where the conversion must hold
      */
     public EquatorialToHorizontalConversion(ZonedDateTime when, GeographicCoordinates where) {

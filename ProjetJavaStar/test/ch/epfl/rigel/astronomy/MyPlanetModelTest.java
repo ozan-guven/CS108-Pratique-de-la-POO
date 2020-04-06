@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MyPlanetModelTest {
 
@@ -27,20 +27,20 @@ class MyPlanetModelTest {
         assertEquals(35.11141185362771, Angle.toDeg(PlanetModel.JUPITER.at(-2231.0,
                 new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                         LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
-                .angularSize())*3600);
+                .angularSize()) * 3600);
 
         assertEquals(-1.9885659217834473, PlanetModel.JUPITER.at(-2231.0,
                 new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                         LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
                 .magnitude());
 
-        assertEquals(16.8200745658971,PlanetModel.MERCURY.at(-2231.0,
+        assertEquals(16.8200745658971, PlanetModel.MERCURY.at(-2231.0,
                 new EclipticToEquatorialConversion(
                         ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                                 LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
                 .equatorialPos().raHr(), 1e-12);
 
-        assertEquals(-24.500872462861,PlanetModel.MERCURY.at(-2231.0,
+        assertEquals(-24.500872462861, PlanetModel.MERCURY.at(-2231.0,
                 new EclipticToEquatorialConversion(
                         ZonedDateTime.of(LocalDate.of(2003, Month.NOVEMBER, 22),
                                 LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))

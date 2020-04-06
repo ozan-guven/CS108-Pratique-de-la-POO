@@ -114,7 +114,7 @@ public class PlanetTest {
 
     @Test
     void planetEqualsIsBasedOnIdentity() {
-        var prevPlanet = (Planet)null;
+        var prevPlanet = (Planet) null;
         for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
             var equ = EquatorialCoordinates.of(0, 0);
             var p = new Planet("Planet B", equ, 0, 0);

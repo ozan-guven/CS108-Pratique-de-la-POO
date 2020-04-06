@@ -49,21 +49,21 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
         double meanLonNot = lonNot - Angle.ofDeg(0.0529539) * daysSinceJ2010;
         double corrLonNot = meanLonNot - Angle.ofDeg(0.16) * Math.sin(anomalySun);
 
-        double eclLon = Math.atan2(Math.sin(trueLonOrb - corrLonNot)* Math.cos(orbIncl), Math.cos(trueLonOrb - corrLonNot)) + corrLonNot;
-        double eclLat = Math.asin(Math.sin(trueLonOrb-corrLonNot)*Math.sin(orbIncl));
+        double eclLon = Math.atan2(Math.sin(trueLonOrb - corrLonNot) * Math.cos(orbIncl), Math.cos(trueLonOrb - corrLonNot)) + corrLonNot;
+        double eclLat = Math.asin(Math.sin(trueLonOrb - corrLonNot) * Math.sin(orbIncl));
 
         // Calculations for the phase of the moon
         double phase = ((1 - Math.cos(trueLonOrb - lonSun)) / 2);
 
         // Calculations for the angular size of the moon
-        double earthMoonDistance = (1-Math.pow(exOrb, 2))/(1 + exOrb * Math.cos(trueAno + corrEC));
-        double angularSize = Angle.ofDeg(0.5181)/earthMoonDistance;
+        double earthMoonDistance = (1 - Math.pow(exOrb, 2)) / (1 + exOrb * Math.cos(trueAno + corrEC));
+        double angularSize = Angle.ofDeg(0.5181) / earthMoonDistance;
 
         // Transformation of the coordinates
 
         EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(EclipticCoordinates.of(Angle.normalizePositive(eclLon), eclLat));
 
         // Return of the moon
-        return new Moon(coord, (float)angularSize, 0, (float)phase);
+        return new Moon(coord, (float) angularSize, 0, (float) phase);
     }
 }
