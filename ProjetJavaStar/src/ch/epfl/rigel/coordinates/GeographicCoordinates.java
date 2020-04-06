@@ -16,6 +16,7 @@ import java.util.Locale;
  */
 public final class GeographicCoordinates extends SphericalCoordinates {
 
+    //To check if the values are valid for the interval
     private final static Interval LON_INTERVAL = RightOpenInterval.symmetric(360);
     private final static Interval LAT_INTERVAL = ClosedInterval.symmetric(180);
 
@@ -29,6 +30,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
      * @param lonDeg The longitude in degrees (must be in [0°, 360°[)
      * @param latDeg The latitude in degrees (must be in [-90°, 90°])
      * @return The coordinates in geographic representation
+     * @throws IllegalArgumentException if angles are not in the interval
      */
     public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
         return new GeographicCoordinates(Angle.ofDeg(Preconditions.checkInInterval(LON_INTERVAL, lonDeg)), Angle.ofDeg(Preconditions.checkInInterval(LAT_INTERVAL, latDeg)));

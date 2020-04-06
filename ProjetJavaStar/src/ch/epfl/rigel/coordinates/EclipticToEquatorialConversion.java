@@ -15,8 +15,8 @@ import java.util.function.Function;
  */
 public final class EclipticToEquatorialConversion implements Function<EclipticCoordinates, EquatorialCoordinates> {
 
-    private double cosObli;
-    private double sinObli;
+    private final double cosObli;
+    private final double sinObli;
 
     /**
      * Constructs the conversion system from Ecliptic to Equatorial coordinates

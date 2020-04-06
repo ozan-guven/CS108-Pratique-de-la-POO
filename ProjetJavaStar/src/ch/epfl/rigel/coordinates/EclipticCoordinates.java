@@ -22,12 +22,15 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      * @param lon the ecliptic longitude in radians (must be in [0, 2*pi[)
      * @param lat the ecliptic latitude in radians (must be in [-(pi/2), (pi/2)])
      * @return the ecliptic coordinates
+     * @throws IllegalArgumentException if angles are not in the interval
      */
     public static EclipticCoordinates of(double lon, double lat) {
         return new EclipticCoordinates(Preconditions.checkInInterval(INTERVAL_0_TO_TAU, lon), Preconditions.checkInInterval(INTERVAL_SYM_PI, lat));
     }
 
     /**
+     * Gets the ecliptic longitude in radians
+     *
      * @return the ecliptic longitude in radians
      */
     @Override
@@ -36,6 +39,8 @@ public final class EclipticCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Gets the ecliptic longitude in degrees
+     *
      * @return the ecliptic longitude in degrees
      */
     @Override
@@ -44,6 +49,8 @@ public final class EclipticCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Gets the ecliptic latitude in radians
+     *
      * @return the ecliptic latitude in radians
      */
     @Override
@@ -52,6 +59,8 @@ public final class EclipticCoordinates extends SphericalCoordinates {
     }
 
     /**
+     * Gets the ecliptic latitude in degrees
+     *
      * @return the ecliptic latitude in degrees
      */
     @Override

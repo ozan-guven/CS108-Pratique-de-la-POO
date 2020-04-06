@@ -16,6 +16,7 @@ import java.util.Locale;
  */
 public final class HorizontalCoordinates extends SphericalCoordinates {
 
+    //To create the octant name of the azimuth
     private final static Interval NORTH_1 = RightOpenInterval.of(292.5, 360);
     private final static Interval NORTH_2 = RightOpenInterval.of(0, 67.5);
     private final static Interval SOUTH = RightOpenInterval.of(112.5, 247.5);
