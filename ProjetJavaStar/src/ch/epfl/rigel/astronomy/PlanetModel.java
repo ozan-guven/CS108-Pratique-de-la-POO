@@ -52,6 +52,8 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
      */
     public static List<PlanetModel> ALL = Arrays.asList(PlanetModel.values());
 
+    private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU / 365.242191;
+
     private final String frenchName; //The french name of the planet
     private final double orbitalRevolution; //The orbital revolution
     private final double lonAtJ2010; //The longitude of the planet at epoch J2010
@@ -87,7 +89,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     public Planet at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
 
         //**************** VALUES FOR THE PLANET ********************
-        double meanAnomaly = (Angle.TAU / 365.242191) * (daysSinceJ2010 / orbitalRevolution) + lonAtJ2010 - lonAtPerigee; //Mean anomaly
+        double meanAnomaly = AVERAGE_ANGULAR_SPEED * (daysSinceJ2010 / orbitalRevolution) + lonAtJ2010 - lonAtPerigee; //Mean anomaly
         double nu = meanAnomaly + 2 * orbitalEccentricity * Math.sin(meanAnomaly); //True anomaly
 
         double radius = (orbitalSemiMajorAxis * (1 - orbitalEccentricity * orbitalEccentricity))
@@ -101,7 +103,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
                 Math.cos(helioLon - lonOfAscendingNode)) + lonOfAscendingNode;
 
         //**************** VALUES FOR THE EARTH *********************
-        double meanAnomalyE = (Angle.TAU / 365.242191) * (daysSinceJ2010 / EARTH.orbitalRevolution)
+        double meanAnomalyE = AVERAGE_ANGULAR_SPEED * (daysSinceJ2010 / EARTH.orbitalRevolution)
                 + EARTH.lonAtJ2010 - EARTH.lonAtPerigee; //Mean anomaly
         double nuE = meanAnomalyE + 2 * EARTH.orbitalEccentricity * Math.sin(meanAnomalyE); //True anomaly
 

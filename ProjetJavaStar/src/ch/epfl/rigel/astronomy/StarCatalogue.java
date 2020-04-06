@@ -83,7 +83,7 @@ public final class StarCatalogue {
      * @author Robin Goumaz (301420)
      * @author Ozan Güven (297076)
      */
-    public final static class Builder {
+    public static final class Builder {
 
         private List<Star> starBuild;
         private List<Asterism> asterismBuild;

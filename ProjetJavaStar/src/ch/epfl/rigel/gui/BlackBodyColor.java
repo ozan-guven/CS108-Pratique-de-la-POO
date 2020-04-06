@@ -20,10 +20,10 @@ import java.util.Map;
  */
 public final class BlackBodyColor {
 
-    private final static String BBR_COLOR_CATALOGUE_NAME = "/bbr_color.txt";
-    private final static Map<Integer, Color> KELVIN_RGB = initializeMap();
+    private static final String BBR_COLOR_CATALOGUE_NAME = "/bbr_color.txt";
+    private static final Map<Integer, Color> KELVIN_RGB = initializeMap();
 
-    private final static ClosedInterval INTERVAL = ClosedInterval.of(1000, 40000);
+    private static final ClosedInterval INTERVAL = ClosedInterval.of(1000, 40000);
 
     private BlackBodyColor() {
     }

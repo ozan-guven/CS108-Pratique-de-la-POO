@@ -17,11 +17,11 @@ import java.util.Locale;
 public final class HorizontalCoordinates extends SphericalCoordinates {
 
     //To create the octant name of the azimuth
-    private final static Interval NORTH_1 = RightOpenInterval.of(292.5, 360);
-    private final static Interval NORTH_2 = RightOpenInterval.of(0, 67.5);
-    private final static Interval SOUTH = RightOpenInterval.of(112.5, 247.5);
-    private final static Interval EAST = RightOpenInterval.of(22.5, 157.5);
-    private final static Interval WEST = RightOpenInterval.of(202.5, 337.5);
+    private static final Interval NORTH_1 = RightOpenInterval.of(292.5, 360);
+    private static final Interval NORTH_2 = RightOpenInterval.of(0, 67.5);
+    private static final Interval SOUTH = RightOpenInterval.of(112.5, 247.5);
+    private static final Interval EAST = RightOpenInterval.of(22.5, 157.5);
+    private static final Interval WEST = RightOpenInterval.of(202.5, 337.5);
 
     private HorizontalCoordinates(double az, double alt) {
         super(az, alt);

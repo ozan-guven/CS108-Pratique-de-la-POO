@@ -17,8 +17,8 @@ import java.util.Locale;
 public final class GeographicCoordinates extends SphericalCoordinates {
 
     //To check if the values are valid for the interval
-    private final static Interval LON_INTERVAL = RightOpenInterval.symmetric(360);
-    private final static Interval LAT_INTERVAL = ClosedInterval.symmetric(180);
+    private static final Interval LON_INTERVAL = RightOpenInterval.symmetric(360);
+    private static final Interval LAT_INTERVAL = ClosedInterval.symmetric(180);
 
     private GeographicCoordinates(double lon, double lat) {
         super(lon, lat);

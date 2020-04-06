@@ -14,11 +14,27 @@ import ch.epfl.rigel.math.Angle;
 public enum MoonModel implements CelestialObjectModel<Moon> {
     MOON();
 
-    private final double avgLon = Angle.ofDeg(91.929336);
-    private final double avgLonPer = Angle.ofDeg(130.143076);
-    private final double lonNot = Angle.ofDeg(291.682547);
-    private final double orbIncl = Angle.ofDeg(5.145396);
-    private final double exOrb = 0.0549;
+    //Constants of the Moon
+    private static final double AVG_LON = Angle.ofDeg(91.929336);
+    private static final double AVG_LON_PER = Angle.ofDeg(130.143076);
+    private static final double LON_NOT = Angle.ofDeg(291.682547);
+    private static final double ORB_INCL = Angle.ofDeg(5.145396);
+    private static final double EX_ORB = 0.0549;
+
+    //Constants are named after the variable in which they are used
+    private static final double MEAN_ORB_LON = Angle.ofDeg(13.1763966);
+    private static final double MEAN_ANO = Angle.ofDeg(0.1114041);
+    private static final double EVICTION = Angle.ofDeg(1.2739);
+    private static final double CORR_E_A = Angle.ofDeg(0.1858);
+    private static final double CORR_3 = Angle.ofDeg(0.37);
+    private static final double CORR_E_C = Angle.ofDeg(6.2886);
+    private static final double CORR_4 = Angle.ofDeg(0.214);
+    private static final double VARIATION = Angle.ofDeg(0.6583);
+    private static final double MEAN_LON_NOT = Angle.ofDeg(0.0529539);
+    private static final double CORR_LON_NOT = Angle.ofDeg(0.16);
+
+    //Angular size of the Moon
+    private static final double THETA_NOT = Angle.ofDeg(0.5181);
 
     /**
      * @see CelestialObjectModel#at(double, EclipticToEquatorialConversion)
@@ -30,38 +46,39 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
         double anomalySun = sun.meanAnomaly();
 
         // Calculations for the true orbital longitude
-        double avgLonOrb = Angle.ofDeg(13.1763966) * daysSinceJ2010 + avgLon;
-        double meanAno = avgLonOrb - Angle.ofDeg(0.1114041) * daysSinceJ2010 - avgLonPer;
+        double avgLonOrb = MEAN_ORB_LON * daysSinceJ2010 + AVG_LON;
+        double meanAno = avgLonOrb - MEAN_ANO * daysSinceJ2010 - AVG_LON_PER;
 
-        double evection = Angle.ofDeg(1.2739) * Math.sin(2 * (avgLonOrb - lonSun) - meanAno);
-        double corrEA = Angle.ofDeg(0.1858) * Math.sin(anomalySun);
-        double corr3 = Angle.ofDeg(0.37) * Math.sin(anomalySun);
+        double eviction = EVICTION * Math.sin(2 * (avgLonOrb - lonSun) - meanAno);
+        double corrEA = CORR_E_A * Math.sin(anomalySun);
+        double corr3 = CORR_3 * Math.sin(anomalySun);
 
-        double trueAno = meanAno + evection - corrEA - corr3;
-        double corrEC = Angle.ofDeg(6.2886) * Math.sin(trueAno);
-        double corr4 = Angle.ofDeg(0.214) * Math.sin(2 * trueAno);
+        double trueAno = meanAno + eviction - corrEA - corr3;
+        double corrEC = CORR_E_C * Math.sin(trueAno);
+        double corr4 = CORR_4 * Math.sin(2 * trueAno);
 
-        double corrLonOrb = avgLonOrb + evection + corrEC - corrEA + corr4;
-        double variation = Angle.ofDeg(0.6583) * Math.sin(2 * (corrLonOrb - lonSun));
+        double corrLonOrb = avgLonOrb + eviction + corrEC - corrEA + corr4;
+        double variation = VARIATION * Math.sin(2 * (corrLonOrb - lonSun));
         double trueLonOrb = corrLonOrb + variation;
 
         // Calculations for the ecliptic position
-        double meanLonNot = lonNot - Angle.ofDeg(0.0529539) * daysSinceJ2010;
-        double corrLonNot = meanLonNot - Angle.ofDeg(0.16) * Math.sin(anomalySun);
+        double meanLonNot = LON_NOT - MEAN_LON_NOT * daysSinceJ2010;
+        double corrLonNot = meanLonNot - CORR_LON_NOT * Math.sin(anomalySun);
 
-        double eclLon = Math.atan2(Math.sin(trueLonOrb - corrLonNot) * Math.cos(orbIncl), Math.cos(trueLonOrb - corrLonNot)) + corrLonNot;
-        double eclLat = Math.asin(Math.sin(trueLonOrb - corrLonNot) * Math.sin(orbIncl));
+        double eclLon = Math.atan2(Math.sin(trueLonOrb - corrLonNot) * Math.cos(ORB_INCL),
+                Math.cos(trueLonOrb - corrLonNot)) + corrLonNot;
+        double eclLat = Math.asin(Math.sin(trueLonOrb - corrLonNot) * Math.sin(ORB_INCL));
 
         // Calculations for the phase of the moon
         double phase = ((1 - Math.cos(trueLonOrb - lonSun)) / 2);
 
         // Calculations for the angular size of the moon
-        double earthMoonDistance = (1 - Math.pow(exOrb, 2)) / (1 + exOrb * Math.cos(trueAno + corrEC));
-        double angularSize = Angle.ofDeg(0.5181) / earthMoonDistance;
+        double earthMoonDistance = (1 - Math.pow(EX_ORB, 2)) / (1 + EX_ORB * Math.cos(trueAno + corrEC));
+        double angularSize = THETA_NOT / earthMoonDistance;
 
         // Transformation of the coordinates
-
-        EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(EclipticCoordinates.of(Angle.normalizePositive(eclLon), eclLat));
+        EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(
+                EclipticCoordinates.of(Angle.normalizePositive(eclLon), eclLat));
 
         // Return of the moon
         return new Moon(coord, (float) angularSize, 0, (float) phase);

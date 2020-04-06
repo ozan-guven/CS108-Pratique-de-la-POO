@@ -15,8 +15,8 @@ abstract class SphericalCoordinates {
     final double longitude, latitude;
 
     //To check if the values are valid for the interval
-    protected final static Interval INTERVAL_0_TO_TAU = RightOpenInterval.of(0, Angle.TAU);
-    protected final static Interval INTERVAL_SYM_PI = ClosedInterval.symmetric(Angle.TAU / 2);
+    protected static final Interval INTERVAL_0_TO_TAU = RightOpenInterval.of(0, Angle.TAU);
+    protected static final Interval INTERVAL_SYM_PI = ClosedInterval.symmetric(Angle.TAU / 2);
 
     SphericalCoordinates(double lon, double lat) {
         longitude = lon;

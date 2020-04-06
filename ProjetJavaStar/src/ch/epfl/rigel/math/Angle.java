@@ -18,11 +18,11 @@ public final class Angle {
      *
      * @see Math#PI
      */
-    public final static double TAU = Math.PI * 2;
-    private final static double RAD_PER_SEC = TAU / (3600 * 360);
-    private final static double RAD_PER_MIN = TAU / (60 * 360);
-    private final static double RAD_PER_HOUR = TAU / 24;
-    private final static double HOUR_PER_RAD = 24 / TAU;
+    public static final double TAU = Math.PI * 2;
+    private static final double RAD_PER_SEC = TAU / (3600 * 360);
+    private static final double RAD_PER_MIN = TAU / (60 * 360);
+    private static final double RAD_PER_HOUR = TAU / 24;
+    private static final double HOUR_PER_RAD = 24 / TAU;
 
     /**
      * Normalizes the angle between 0 and 2*<i>pi</i>
