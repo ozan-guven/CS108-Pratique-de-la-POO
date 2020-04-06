@@ -7,8 +7,8 @@ package ch.epfl.rigel.math;
  * @author Ozan Güven (297076)
  */
 public abstract class Interval {
-    private final double LOW_BOUND;
-    private final double UP_BOUND;
+    private final double lowBound;
+    private final double upBound;
 
     /**
      * Constructor of the interval
@@ -17,29 +17,29 @@ public abstract class Interval {
      * @param upBound  the upper bound
      */
     protected Interval(double lowBound, double upBound) {
-        LOW_BOUND = lowBound;
-        UP_BOUND = upBound;
+        this.lowBound = lowBound;
+        this.upBound = upBound;
     }
 
     /**
      * @return the lower bound
      */
     public double low() {
-        return LOW_BOUND;
+        return lowBound;
     }
 
     /**
      * @return the upper bound
      */
     public double high() {
-        return UP_BOUND;
+        return upBound;
     }
 
     /**
      * @return the size of the interval
      */
     public double size() {
-        return UP_BOUND - LOW_BOUND;
+        return upBound - lowBound;
     }
 
     /**
