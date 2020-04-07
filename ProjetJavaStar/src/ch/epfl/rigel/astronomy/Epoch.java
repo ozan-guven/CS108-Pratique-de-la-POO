@@ -23,10 +23,10 @@ public enum Epoch {
             LocalTime.of(0, 0),
             ZoneOffset.UTC));
 
-    private ZonedDateTime epochDate;
-
     private static final double MILLIS_PER_DAY = 1000 * 60 * 60 * 24; //Number of milliseconds in a day
     private static final double MILLIS_PER_JULIAN_CENTURIES = 1000 * 60 * 60 * 24 * 365.25 * 100; //Number of milliseconds in a Julian century
+
+    private ZonedDateTime epochDate;
 
     private Epoch(ZonedDateTime epochDate) {
         this.epochDate = epochDate;
