@@ -17,7 +17,7 @@ public final class StarCatalogue {
     private final List<Star> stars;
     private final List<Asterism> asterisms;
 
-    private Map<Asterism, List<Integer>> starIndexMap;
+    private final Map<Asterism, List<Integer>> starIndexMap;
 
     /**
      * Constructor of the star and asterism catalogue
