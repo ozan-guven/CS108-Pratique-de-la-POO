@@ -23,6 +23,7 @@ public final class Star extends CelestialObject {
      * @param magnitude     the magnitude of the star
      * @param colorIndex    the color index of the star
      * @throws IllegalArgumentException if the colorIndex is not in [-0.5, 5.5]
+     * @throws IllegalArgumentException if the hipparcosId is < 0
      * @throws NullPointerException     if the name is null
      * @throws NullPointerException     if the equatorialPos is null
      */
