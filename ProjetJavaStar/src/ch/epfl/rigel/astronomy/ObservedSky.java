@@ -29,7 +29,7 @@ public final class ObservedSky {
     private final CartesianCoordinates moonCoordinates;
     private final double[] planetPositions = new double[14];
 
-    private Map<CartesianCoordinates, CelestialObject> mapOfAll;
+    private Map<CelestialObject, CartesianCoordinates> mapOfAll;
 
     public ObservedSky(ZonedDateTime time, GeographicCoordinates coordinates,
                        StereographicProjection projection, StarCatalogue catalogue) {
@@ -50,8 +50,8 @@ public final class ObservedSky {
         sunCoordinates = projection.apply(conversionToHor.apply(sun.equatorialPos()));
         moonCoordinates = projection.apply(conversionToHor.apply(moon.equatorialPos()));
 
-        mapOfAll.put(sunCoordinates, sun);
-        mapOfAll.put(moonCoordinates, moon);
+        mapOfAll.put(sun, sunCoordinates);
+        mapOfAll.put(moon, moonCoordinates);
 
         planets = new ArrayList<>();
         //List<Double> planetCoordinates = new ArrayList<>();
@@ -65,7 +65,7 @@ public final class ObservedSky {
                 planetPositions[i++] = planetProjection.x();
                 planetPositions[i++] = planetProjection.y();
 
-                mapOfAll.put(planetProjection, newPlanet);
+                mapOfAll.put(newPlanet, planetProjection);
             }
         }
 
@@ -112,17 +112,15 @@ public final class ObservedSky {
         return null;
     }
 
-    public CelestialObject objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
+    public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
         CartesianCoordinates coordOfNearest = null;
-        double currentDistance;
+        double currentDistance = distance(sunCoordinates, coordinates);
         ClosedInterval intervalX = ClosedInterval.of(coordinates.x() - maxDistance, coordinates.x() + maxDistance);
         ClosedInterval intervalY = ClosedInterval.of(coordinates.y() - maxDistance, coordinates.y() + maxDistance);
-        for (CartesianCoordinates coord : mapOfAll.keySet()) {
-            if (intervalX.contains(coord.x()) && intervalY.contains(coord.y())) {
-                //coordOfNearest = currentDistance > distance(coordinates, coord) ? coord : coordOfNearest;
-            }
-        }
-        return mapOfAll.get(coordOfNearest);
+
+        //TODO : Que faire ? CartesianCoordinates ne peuvent pas être hachées
+
+        return coordOfNearest == null ? Optional.empty() : Optional.of(null);
     }
 
     private double distance(CartesianCoordinates coord1, CartesianCoordinates coord2) {
