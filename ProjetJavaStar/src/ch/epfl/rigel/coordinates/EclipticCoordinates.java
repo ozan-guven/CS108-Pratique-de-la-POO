@@ -25,7 +25,9 @@ public final class EclipticCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException if angles are not in the interval
      */
     public static EclipticCoordinates of(double lon, double lat) {
-        return new EclipticCoordinates(Preconditions.checkInInterval(INTERVAL_0_TO_TAU, lon), Preconditions.checkInInterval(INTERVAL_SYM_PI, lat));
+        return new EclipticCoordinates(
+                Preconditions.checkInInterval(INTERVAL_0_TO_TAU, lon),
+                Preconditions.checkInInterval(INTERVAL_SYM_PI, lat));
     }
 
     /**

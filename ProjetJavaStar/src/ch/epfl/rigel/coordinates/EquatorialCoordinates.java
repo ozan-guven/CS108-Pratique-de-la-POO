@@ -26,7 +26,9 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException if angles are not in the interval
      */
     public static EquatorialCoordinates of(double ra, double dec) {
-        return new EquatorialCoordinates(Preconditions.checkInInterval(INTERVAL_0_TO_TAU, ra), Preconditions.checkInInterval(INTERVAL_SYM_PI, dec));
+        return new EquatorialCoordinates(
+                Preconditions.checkInInterval(INTERVAL_0_TO_TAU, ra),
+                Preconditions.checkInInterval(INTERVAL_SYM_PI, dec));
     }
 
     /**
