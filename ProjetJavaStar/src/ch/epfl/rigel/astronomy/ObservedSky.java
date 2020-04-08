@@ -3,7 +3,8 @@ package ch.epfl.rigel.astronomy;
 import ch.epfl.rigel.coordinates.*;
 
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing a set of celestial objects projected
