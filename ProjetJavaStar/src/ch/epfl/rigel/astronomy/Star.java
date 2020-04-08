@@ -11,6 +11,9 @@ import ch.epfl.rigel.math.ClosedInterval;
  * @author Robin Goumaz (301420)
  */
 public final class Star extends CelestialObject {
+
+    private static final ClosedInterval COLOR_INDEX_INTERVAL = ClosedInterval.of(-0.5, 5.5);
+
     private final int hipparcosId;
     private final double colorTemperature;
 
@@ -30,9 +33,7 @@ public final class Star extends CelestialObject {
     public Star(int hipparcosId, String name, EquatorialCoordinates equatorialPos, float magnitude, float colorIndex) {
         super(name, equatorialPos, 0, magnitude);
 
-        ClosedInterval colorIndexInterval = ClosedInterval.of(-0.5, 5.5);
-
-        Preconditions.checkInInterval(colorIndexInterval, colorIndex);
+        Preconditions.checkInInterval(COLOR_INDEX_INTERVAL, colorIndex);
         Preconditions.checkArgument(hipparcosId >= 0);
 
         this.hipparcosId = hipparcosId;

@@ -12,11 +12,12 @@ import ch.epfl.rigel.math.RightOpenInterval;
  * @author Robin Goumaz (301420)
  */
 abstract class SphericalCoordinates {
-    final double longitude, latitude;
 
     //To check if the values are valid for the interval
     protected static final Interval INTERVAL_0_TO_TAU = RightOpenInterval.of(0, Angle.TAU);
     protected static final Interval INTERVAL_SYM_PI = ClosedInterval.symmetric(Angle.TAU / 2);
+
+    final double longitude, latitude;
 
     SphericalCoordinates(double lon, double lat) {
         longitude = lon;

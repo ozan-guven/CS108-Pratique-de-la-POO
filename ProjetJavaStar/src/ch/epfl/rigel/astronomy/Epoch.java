@@ -40,9 +40,7 @@ public enum Epoch {
      * @return the number of days between when and the epoch
      */
     public double daysUntil(ZonedDateTime when) {
-        double timeToWhen;
-
-        timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
+        double timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
 
         return timeToWhen / MILLIS_PER_DAY;
     }
@@ -56,9 +54,7 @@ public enum Epoch {
      * @return the number of days between when and the epoch
      */
     public double julianCenturiesUntil(ZonedDateTime when) {
-        double timeToWhen;
-
-        timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
+        double timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
 
         return timeToWhen / MILLIS_PER_JULIAN_CENTURIES;
     }

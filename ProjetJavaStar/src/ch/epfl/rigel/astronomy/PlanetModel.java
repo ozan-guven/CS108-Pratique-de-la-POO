@@ -47,12 +47,13 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
             0.010483, 30.1985, 1.7673,
             131.879, 62.20, -6.87);
 
+    private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU / 365.242191;
+
     /**
      * List containing all the planets.
      */
     public static List<PlanetModel> ALL = Arrays.asList(PlanetModel.values());
-
-    private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU / 365.242191;
+    private static List<PlanetModel> INNER_PLANETS = ALL.subList(0, 2);
 
     private final String frenchName; //The french name of the planet
     private final double orbitalRevolution; //The orbital revolution
@@ -64,8 +65,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double lonOfAscendingNode; //The longitude of the ascending node
     private final double angularSize; //The angular size
     private final double magnitude; //The magnitude
-
-    private static List<PlanetModel> INNER_PLANETS = ALL.subList(0, 2);
 
     private PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
                         double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
