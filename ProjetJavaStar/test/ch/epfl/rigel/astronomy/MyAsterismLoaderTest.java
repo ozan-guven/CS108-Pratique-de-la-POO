@@ -50,7 +50,7 @@ class MyAsterismLoaderTest {
                     .build();
             List<Star> allStar = new ArrayList<Star>();
             allStar.addAll(catalogue.stars());
-
+            /*
             System.out.println("LIST OF STARS :");
             for (Star s : allStar) {
                 System.out.print(s.hipparcosId() + " ");
@@ -70,14 +70,14 @@ class MyAsterismLoaderTest {
                     System.out.print("  foundHipparcos : ");
                     System.out.printf("%-6d", allStar.get(cAstInd.get(i)).hipparcosId());
 
-                /*TEST : l'index stoqué dans asterismIndices renvoie le meme hipparcosId que
-                l'index stoqué dans l'astérisme voulu : */
+                //TEST : l'index stoqué dans asterismIndices renvoie le meme hipparcosId que
+                //l'index stoqué dans l'astérisme voulu :
                     assertEquals(allStar.get(cAstInd.get(i)).hipparcosId(), star.hipparcosId());
                     System.out.print(" ||| ");
                     i++;
                 }
                 System.out.println();
-            }
+            }*/
             assertEquals(153, catalogue.asterisms().size());
         }
 

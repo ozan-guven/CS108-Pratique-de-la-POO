@@ -43,10 +43,12 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
     public HorizontalCoordinates apply(EquatorialCoordinates equ) {
         double hourAngle = localSidereal - equ.ra();
 
-        double sinAltitude = (Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle));
-        double altitude = Math.asin((Math.sin(equ.dec()) * sinLat) + (Math.cos(equ.dec()) * cosLat * Math.cos(hourAngle)));
+        double sinDec = Math.sin(equ.dec());
+        double cosDecCosLat = Math.cos(equ.dec()) * cosLat;
+        double sinAltitude = (sinDec * sinLat) + (cosDecCosLat * Math.cos(hourAngle));
 
-        double azimuth = Math.atan2(-Math.cos(equ.dec()) * cosLat * Math.sin(hourAngle), Math.sin(equ.dec()) - (sinLat * sinAltitude));
+        double altitude = Math.asin(sinAltitude);
+        double azimuth = Math.atan2(-cosDecCosLat * Math.sin(hourAngle), sinDec - (sinLat * sinAltitude));
 
         return HorizontalCoordinates.of(Angle.normalizePositive(azimuth), altitude);
     }
