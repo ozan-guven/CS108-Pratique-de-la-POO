@@ -59,11 +59,7 @@ public final class ClosedInterval extends Interval {
      * @return the value of the clip function evaluated at the value v
      */
     public double clip(double v) {
-        if (v <= low()) {
-            return low();
-        } else {
-            return Math.min(v, high());
-        }
+        return v <= low() ? low() : Math.min(v, high());
     }
 
     /**

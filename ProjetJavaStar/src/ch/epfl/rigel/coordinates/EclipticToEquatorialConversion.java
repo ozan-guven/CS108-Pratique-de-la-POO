@@ -15,6 +15,12 @@ import java.util.function.Function;
  */
 public final class EclipticToEquatorialConversion implements Function<EclipticCoordinates, EquatorialCoordinates> {
 
+    private static final Polynomial ECL_OBL_POLYNOMIAL = Polynomial.of(
+            Angle.ofArcsec(0.00181),
+            Angle.ofArcsec(-0.0006),
+            Angle.ofArcsec(-46.815),
+            Angle.ofDMS(23, 26, 21.45));
+
     private final double cosObli;
     private final double sinObli;
 
@@ -25,12 +31,7 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
      * @param when the date for which the conversion must hold
      */
     public EclipticToEquatorialConversion(ZonedDateTime when) {
-        double eclipticObliquity = Polynomial.of(
-                Angle.ofArcsec(0.00181),
-                Angle.ofArcsec(-0.0006),
-                Angle.ofArcsec(-46.815),
-                Angle.ofDMS(23, 26, 21.45))
-                .at(Epoch.J2000.julianCenturiesUntil(when));
+        double eclipticObliquity = ECL_OBL_POLYNOMIAL.at(Epoch.J2000.julianCenturiesUntil(when));
 
         cosObli = Math.cos(eclipticObliquity);
         sinObli = Math.sin(eclipticObliquity);

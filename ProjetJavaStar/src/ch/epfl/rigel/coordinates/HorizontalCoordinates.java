@@ -23,6 +23,10 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
     private static final Interval EAST = RightOpenInterval.of(22.5, 157.5);
     private static final Interval WEST = RightOpenInterval.of(202.5, 337.5);
 
+    //To check if the values are valid for the interval
+    private static final Interval AZ_INTERVAL = RightOpenInterval.of(0, 360);
+    private static final Interval ALT_INTERVAL = ClosedInterval.symmetric(180);
+
     private HorizontalCoordinates(double az, double alt) {
         super(az, alt);
     }
@@ -48,10 +52,7 @@ public final class HorizontalCoordinates extends SphericalCoordinates {
      * @throws IllegalArgumentException if angles are not in the interval
      */
     public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {
-        Interval intervalOfAz = RightOpenInterval.of(0, 360);
-        Interval intervalOfAlt = ClosedInterval.symmetric(180);
-
-        return new HorizontalCoordinates(Angle.ofDeg(Preconditions.checkInInterval(intervalOfAz, azDeg)), Angle.ofDeg(Preconditions.checkInInterval(intervalOfAlt, altDeg)));
+        return new HorizontalCoordinates(Angle.ofDeg(Preconditions.checkInInterval(AZ_INTERVAL, azDeg)), Angle.ofDeg(Preconditions.checkInInterval(ALT_INTERVAL, altDeg)));
     }
 
     /**
