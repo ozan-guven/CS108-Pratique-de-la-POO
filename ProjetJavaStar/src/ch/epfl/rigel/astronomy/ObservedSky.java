@@ -68,7 +68,6 @@ public final class ObservedSky {
                 mapOfAll.put(newPlanet, planetProjection);
             }
         }
-
         //TODO : Et comment on sait la position des étoiles ??????????????????????????????
     }
 
@@ -113,17 +112,22 @@ public final class ObservedSky {
     }
 
     public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
-        CartesianCoordinates coordOfNearest = null;
-        double currentDistance = distance(sunCoordinates, coordinates);
+        double currentDistance = distanceSquared(sunCoordinates, coordinates); //Initialises a first distance
+        CelestialObject nearestObject = null;
         ClosedInterval intervalX = ClosedInterval.of(coordinates.x() - maxDistance, coordinates.x() + maxDistance);
         ClosedInterval intervalY = ClosedInterval.of(coordinates.y() - maxDistance, coordinates.y() + maxDistance);
-
-        //TODO : Que faire ? CartesianCoordinates ne peuvent pas être hachées
-
-        return coordOfNearest == null ? Optional.empty() : Optional.of(null);
+        for (CelestialObject object : mapOfAll.keySet()) {
+            if (intervalX.contains(mapOfAll.get(object).x()) && intervalY.contains(mapOfAll.get(object).y())) {
+                currentDistance = (distanceSquared(mapOfAll.get(object), coordinates) <= currentDistance)
+                        ? distanceSquared(mapOfAll.get(nearestObject = object), coordinates) //Sets the current distance to the calculated one and sets the nearest object
+                        : currentDistance; //The current distance remains the same
+            }
+        }
+        //TODO : Checker s'il est dans le cerlce ?
+        return nearestObject == null ? Optional.empty() : Optional.of(nearestObject);
     }
 
-    private double distance(CartesianCoordinates coord1, CartesianCoordinates coord2) {
-        return Math.sqrt(Math.pow(coord1.x() - coord2.x(), 2) + Math.pow(coord1.y() - coord2.y(), 2));
+    private double distanceSquared(CartesianCoordinates coord1, CartesianCoordinates coord2) {
+        return Math.pow(coord1.x() - coord2.x(), 2) + Math.pow(coord1.y() - coord2.y(), 2);
     }
 }
