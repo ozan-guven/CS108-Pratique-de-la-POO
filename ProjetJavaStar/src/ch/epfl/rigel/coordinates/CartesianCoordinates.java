@@ -1,5 +1,7 @@
 package ch.epfl.rigel.coordinates;
 
+import ch.epfl.rigel.math.Interval;
+
 import java.util.Locale;
 
 /**
@@ -43,6 +45,28 @@ public final class CartesianCoordinates {
      */
     public double y() {
         return y;
+    }
+
+    /**
+     * Checks if this point is contained in the part of the plane defined by
+     * two intervals in x and y
+     *
+     * @param intervalX the interval along the x axis
+     * @param intervalY the interval along the y axis
+     * @return true if the point is in the given part
+     */
+    public boolean inPartOfPlane(Interval intervalX, Interval intervalY) {
+        return intervalX.contains(x) && intervalY.contains(y);
+    }
+
+    /**
+     * Returns the squared euclidean distance to the given point
+     *
+     * @param toThat the point to compute the distance to
+     * @return the squared euclidean distance
+     */
+    public double distanceToSquared(CartesianCoordinates toThat) {
+        return (x - toThat.x()) * (x - toThat.x()) + (y - toThat.y()) * (y - toThat.y());
     }
 
     @Override

@@ -113,7 +113,7 @@ public final class ObservedSky {
     }
 
     public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
-        double currentDistance = distanceSquared(sunCoordinates, coordinates); //Initialises a first distance
+        double currentDistance = coordinates.distanceToSquared(sunCoordinates); //Initialises a first distance
         double nextDistance;
         CelestialObject nearestObject = null;
         CartesianCoordinates coordOfObject;
@@ -126,8 +126,8 @@ public final class ObservedSky {
             //Checks if the coordinates are in the given square with the two intervals (not to compute the distance all the times)
             //Computes and checks if the distance is in the given maxDistance
             //Checks if the new distance is smaller or equal to the current one
-            if (intervalX.contains(coordOfObject.x()) && intervalY.contains(coordOfObject.y())
-                    && (nextDistance = distanceSquared(coordOfObject, coordinates)) <= maxDistance * maxDistance
+            if (coordOfObject.inPartOfPlane(intervalX, intervalY)
+                    && (nextDistance = coordOfObject.distanceToSquared(coordinates)) <= maxDistance * maxDistance
                     && (currentDistance >= nextDistance)) {
                 currentDistance = nextDistance;
                 nearestObject = object;
@@ -137,9 +137,5 @@ public final class ObservedSky {
             }
         }
         return nearestObject == null ? Optional.empty() : Optional.of(nearestObject);
-    }
-
-    private double distanceSquared(CartesianCoordinates coord1, CartesianCoordinates coord2) {
-        return Math.pow(coord1.x() - coord2.x(), 2) + Math.pow(coord1.y() - coord2.y(), 2);
     }
 }
