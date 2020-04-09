@@ -23,7 +23,7 @@ public final class ObservedSky {
     private final Sun sun;
     private final Moon moon;
     private final ArrayList<Planet> planets;
-    private ArrayList<Star> stars;
+    private List<Star> stars;
 
     private final CartesianCoordinates sunCoordinates;
     private final CartesianCoordinates moonCoordinates;
@@ -37,6 +37,7 @@ public final class ObservedSky {
         this.coordinates = coordinates;
         this.projection = projection;
         this.catalogue = catalogue;
+        this.stars = this.catalogue.stars();
 
         double daysUntilJ2010 = Epoch.J2010.daysUntil(time);
         EclipticToEquatorialConversion conversionToEqu = new EclipticToEquatorialConversion(time);
@@ -96,7 +97,7 @@ public final class ObservedSky {
     }
 
     public List<Star> stars() {
-        return catalogue.stars();
+        return stars;
     }
 
     public double[] starPositions() {
