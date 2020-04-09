@@ -4,8 +4,7 @@ import ch.epfl.rigel.coordinates.*;
 import ch.epfl.rigel.math.ClosedInterval;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class representing a set of celestial objects projected
@@ -98,7 +97,7 @@ public final class ObservedSky {
     }
 
     public List<Star> stars() {
-        return null;
+        return catalogue.stars();
     }
 
     public double[] starPositions() {
@@ -106,7 +105,7 @@ public final class ObservedSky {
     }
 
     public List<Asterism> asterisms() {
-        return null;
+        return new ArrayList<>(catalogue.asterisms());
     }
 
     public List<Integer> starIndexes() {
