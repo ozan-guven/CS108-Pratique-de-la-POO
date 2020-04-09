@@ -114,17 +114,28 @@ public final class ObservedSky {
 
     public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
         double currentDistance = distanceSquared(sunCoordinates, coordinates); //Initialises a first distance
+        double nextDistance;
         CelestialObject nearestObject = null;
+        CartesianCoordinates coordOfObject;
         ClosedInterval intervalX = ClosedInterval.of(coordinates.x() - maxDistance, coordinates.x() + maxDistance);
         ClosedInterval intervalY = ClosedInterval.of(coordinates.y() - maxDistance, coordinates.y() + maxDistance);
+
         for (CelestialObject object : mapOfAll.keySet()) {
-            if (intervalX.contains(mapOfAll.get(object).x()) && intervalY.contains(mapOfAll.get(object).y())) {
-                currentDistance = (distanceSquared(mapOfAll.get(object), coordinates) <= currentDistance)
+            coordOfObject = mapOfAll.get(object);
+            //In order
+            //Checks if the coordinates are in the given square with the two intervals (not to compute the distance all the times)
+            //Computes and checks if the distance is in the given maxDistance
+            //Checks if the new distance is smaller or equal to the current one
+            if (intervalX.contains(coordOfObject.x()) && intervalY.contains(coordOfObject.y())
+                    && (nextDistance = distanceSquared(coordOfObject, coordinates)) <= maxDistance * maxDistance
+                    && (currentDistance >= nextDistance)) {
+                currentDistance = nextDistance;
+                nearestObject = object;
+                /*currentDistance = (distanceSquared(mapOfAll.get(object), coordinates) <= currentDistance)
                         ? distanceSquared(mapOfAll.get(nearestObject = object), coordinates) //Sets the current distance to the calculated one and sets the nearest object
-                        : currentDistance; //The current distance remains the same
+                        : currentDistance; //The current distance remains the same*/
             }
         }
-        //TODO : Checker s'il est dans le cerlce ?
         return nearestObject == null ? Optional.empty() : Optional.of(nearestObject);
     }
 
