@@ -1,6 +1,7 @@
 package ch.epfl.rigel.astronomy;
 
 import ch.epfl.rigel.coordinates.*;
+import ch.epfl.rigel.math.ClosedInterval;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public final class ObservedSky {
     private final CartesianCoordinates moonCoordinates;
     private final double[] planetPositions = new double[14];
 
+    private Map<CelestialObject, CartesianCoordinates> mapOfAll;
+
     public ObservedSky(ZonedDateTime time, GeographicCoordinates coordinates,
                        StereographicProjection projection, StarCatalogue catalogue) {
         this.time = time;
@@ -40,8 +43,16 @@ public final class ObservedSky {
         EclipticToEquatorialConversion conversionToEqu = new EclipticToEquatorialConversion(time);
         EquatorialToHorizontalConversion conversionToHor = new EquatorialToHorizontalConversion(time, coordinates);
 
+        mapOfAll = new HashMap<>();
+
         sun = SunModel.SUN.at(daysUntilJ2010, conversionToEqu);
         moon = MoonModel.MOON.at(daysUntilJ2010, conversionToEqu);
+
+        sunCoordinates = projection.apply(conversionToHor.apply(sun.equatorialPos()));
+        moonCoordinates = projection.apply(conversionToHor.apply(moon.equatorialPos()));
+
+        mapOfAll.put(sun, sunCoordinates);
+        mapOfAll.put(moon, moonCoordinates);
 
         planets = new ArrayList<>();
         //List<Double> planetCoordinates = new ArrayList<>();
@@ -53,14 +64,13 @@ public final class ObservedSky {
 
                 CartesianCoordinates planetProjection = projection.apply(conversionToHor.apply(newPlanet.equatorialPos()));
                 planetPositions[i++] = planetProjection.x();
-                planetPositions[i++] = planetProjection.y(); //TODO : Ca va pas marcher faut revoir !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                planetPositions[i++] = planetProjection.y();
+
+                mapOfAll.put(newPlanet, planetProjection);
             }
         }
 
         //TODO : Et comment on sait la position des étoiles ??????????????????????????????
-
-        sunCoordinates = projection.apply(conversionToHor.apply(sun.equatorialPos()));
-        moonCoordinates = projection.apply(conversionToHor.apply(moon.equatorialPos()));
     }
 
     public Sun sun() {
@@ -103,7 +113,18 @@ public final class ObservedSky {
         return null;
     }
 
-    public CelestialObject objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
-        return null;
+    public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
+        CartesianCoordinates coordOfNearest = null;
+        double currentDistance = distance(sunCoordinates, coordinates);
+        ClosedInterval intervalX = ClosedInterval.of(coordinates.x() - maxDistance, coordinates.x() + maxDistance);
+        ClosedInterval intervalY = ClosedInterval.of(coordinates.y() - maxDistance, coordinates.y() + maxDistance);
+
+        //TODO : Que faire ? CartesianCoordinates ne peuvent pas être hachées
+
+        return coordOfNearest == null ? Optional.empty() : Optional.of(null);
+    }
+
+    private double distance(CartesianCoordinates coord1, CartesianCoordinates coord2) {
+        return Math.sqrt(Math.pow(coord1.x() - coord2.x(), 2) + Math.pow(coord1.y() - coord2.y(), 2));
     }
 }
