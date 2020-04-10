@@ -87,14 +87,14 @@ public final class ObservedSky {
             mapOfAll.put(stars.get(j), starProjection);
         }
 
-        i = 0;
+        /*i = 0;
         for (Star star : stars) {
             CartesianCoordinates starProjection = projection.apply(conversionToHor.apply(star.equatorialPos()));
             starsPositions[i++] = starProjection.x();
             starsPositions[i++] = starProjection.y();
 
             mapOfAll.put(star, starProjection);
-        }
+        }*/
     }
 
     /**
