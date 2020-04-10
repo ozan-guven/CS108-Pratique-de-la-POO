@@ -101,15 +101,15 @@ public final class ObservedSky {
     }
 
     public double[] starPositions() {
-        return null;
+
     }
 
     public List<Asterism> asterisms() {
         return new ArrayList<>(catalogue.asterisms());
     }
 
-    public List<Integer> starIndexes() {
-        return null;
+    public List<Integer> starIndexes(Asterism asterism) {
+        return catalogue.asterismIndices(asterism);
     }
 
     public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
