@@ -167,7 +167,7 @@ public final class ObservedSky {
     /**
      * Gets an array containing the cartesian coordinate components of each star
      * contained in the catalogue. Starting with the first star of the catalogue
-     * (For example [Star0.x(), Star0.y(), Star1.x(), ...])
+     * <p>(For example [Star0.x(), Star0.y(), Star1.x(), ...])</p>
      *
      * @return an array containing the coordinate components
      * of all the stars in the catalogue

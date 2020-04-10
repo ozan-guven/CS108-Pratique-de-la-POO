@@ -37,14 +37,15 @@ public class SkyCanvasPainter {
         int i = 0;
         for (Star star : sky.stars()) {
             ctx.setFill(BlackBodyColor.colorForTemperature(star.colorTemperature()));
-            ctx.fillOval(transformed[i++], transformed[i++], diameterFromMagnitude(star), diameterFromMagnitude(star));
+            ctx.fillOval(transformed[i++], transformed[i++],
+                    diameterFromMagnitude(star, projection), diameterFromMagnitude(star, projection));
         }
     }
 
-    private double diameterFromMagnitude(CelestialObject celestialObject) {
+    private double diameterFromMagnitude(CelestialObject celestialObject, StereographicProjection projection) {
         ClosedInterval interval = ClosedInterval.of(-2, 5);
         double clippedMagnitude = interval.clip(celestialObject.magnitude());
         double factor = (99 - 17 * clippedMagnitude) / 140;
-        return factor * 2 * Math.tan(Angle.ofDeg(0.5) / 4);
+        return factor * 2 * Math.tan(projection.applyToAngle(Angle.ofDeg(0.5)) / 4);
     }
 }
