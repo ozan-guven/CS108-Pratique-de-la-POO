@@ -15,15 +15,15 @@ import java.util.*;
  */
 public final class ObservedSky {
 
-    private final ZonedDateTime time;
-    private final GeographicCoordinates coordinates;
-    private final StereographicProjection projection;
+    //private final ZonedDateTime time;
+    //private final GeographicCoordinates coordinates;
+    //private final StereographicProjection projection;
     private final StarCatalogue catalogue;
 
     private final Sun sun;
     private final Moon moon;
     private final ArrayList<Planet> planets;
-    private List<Star> stars;
+    private final List<Star> stars;
 
     private final CartesianCoordinates sunCoordinates;
     private final CartesianCoordinates moonCoordinates;
@@ -32,13 +32,21 @@ public final class ObservedSky {
 
     private Map<CelestialObject, CartesianCoordinates> mapOfAll;
 
+    /**
+     * Constructor of an observable sky at a given time and place
+     *
+     * @param time the zoned date/time to observe the sky
+     * @param coordinates the position to observe the sky
+     * @param projection the stereographic projection to use
+     * @param catalogue the catalogue containing all the stars and asterisms to show
+     */
     public ObservedSky(ZonedDateTime time, GeographicCoordinates coordinates,
                        StereographicProjection projection, StarCatalogue catalogue) {
-        this.time = time;
-        this.coordinates = coordinates;
-        this.projection = projection;
+        //this.time = time;
+        //this.coordinates = coordinates;
+        //this.projection = projection;
         this.catalogue = catalogue;
-        this.stars = this.catalogue.stars();
+        this.stars = catalogue.stars();
 
         double daysUntilJ2010 = Epoch.J2010.daysUntil(time);
         EclipticToEquatorialConversion conversionToEqu = new EclipticToEquatorialConversion(time);
@@ -56,7 +64,6 @@ public final class ObservedSky {
         mapOfAll.put(moon, moonCoordinates);
 
         planets = new ArrayList<>();
-        //List<Double> planetCoordinates = new ArrayList<>();
         int i = 0;
         for (PlanetModel planet : PlanetModel.ALL) {
             if (planet != PlanetModel.EARTH) {
@@ -76,50 +83,120 @@ public final class ObservedSky {
             CartesianCoordinates starProjection = projection.apply(conversionToHor.apply(stars.get(j).equatorialPos()));
             starsPositions[j*2] = starProjection.x();
             starsPositions[j*2+1] = starProjection.y();
+
+            mapOfAll.put(stars.get(j), starProjection);
         }
-        //TODO : Et comment on sait la position des étoiles ??????????????????????????????
     }
 
+    /**
+     * Gets the sun computed at that time and seen from that position
+     *
+     * @return the sun
+     */
     public Sun sun() {
         return sun;
     }
 
+    /**
+     * Gets the cartesian coordinates of the projection of the sun onto the plane
+     *
+     * @return the coordinates of the sun in the sky
+     */
     public CartesianCoordinates sunPosition() {
         return sunCoordinates;
     }
 
+    /**
+     * Gets the moon computed at that time and seen from that position
+     *
+     * @return the moon
+     */
     public Moon moon() {
         return moon;
     }
 
+    /**
+     * Gets the cartesian coordinates of the projection of the moon onto the plane
+     *
+     * @return the coordinates of the moon in the sky
+     */
     public CartesianCoordinates moonPosition() {
         return moonCoordinates;
     }
 
+    /**
+     * Gets a list of all the planets (excepted the Earth)
+     * computed at that time and seen from that position
+     *
+     * @return a list of the planets (excepted the Earth)
+     */
     public List<Planet> planets() {
         return List.copyOf(planets);
     }
 
+    /**
+     * Gets an array containing the cartesian coordinate components of each planet (excepted the Earth)
+     * in order beginning from Mercury and the x coordinate
+     * ([Mercury.x(), Mercury.y(), Venus.x(), Venus.y(), Mars.x(), ...])
+     *
+     * @return an array containing the coordinate components of all the planets (excepted Earth)
+     */
     public double[] planetPositions() {
         return planetPositions;
     }
 
+    /**
+     * Gets a list of all the stars contained in the observed sky
+     * (Gets all the stars of the catalogue)
+     *
+     * @return a list of all the stars in the observed sky
+     */
     public List<Star> stars() {
-        return stars;
+        return List.copyOf(stars);
     }
 
+    /**
+     * Gets an array containing the cartesian coordinate components of each star
+     * contained in the catalogue. Starting with the first star of the catalogue
+     * (For example [Star0.x(), Star0.y(), Star1.x(), ...])
+     *
+     * @return an array containing the coordinate components
+     * of all the stars in the catalogue
+     */
     public double[] starPositions() {
           return starsPositions;
     }
 
-    public List<Asterism> asterisms() {
-        return new ArrayList<>(catalogue.asterisms());
+    /**
+     * Gets a set containing all the asterisms of the catalogue
+     *
+     * @return a set containing all the asterisms of the catalogue
+     * @see StarCatalogue#asterisms()
+     */
+    public Set<Asterism> asterisms() {
+        return Set.copyOf(catalogue.asterisms());
     }
 
-    public List<Integer> starIndexes(Asterism asterism) {
-        return catalogue.asterismIndices(asterism);
+    /**
+     * Gets the list of the star indexes contained in the catalogue
+     * for the given asterism
+     *
+     * @param asterism the asterism to have its star indexes
+     * @return a list containing the indexes of the stars
+     * @see StarCatalogue#asterismIndices(Asterism)
+     */
+    public List<Integer> asterismIndices(Asterism asterism) {
+        return List.copyOf(catalogue.asterismIndices(asterism));
     }
 
+    /**
+     * Gets the closest Celestial object on the projection for the given
+     * cartesian coordinates and given a maximum distance
+     *
+     * @param coordinates the coordinates to search the closest object from
+     * @param maxDistance the maximum distance to search the object from the coordinate
+     * @return the closest object to the given point
+     */
     public Optional<CelestialObject> objectClosestTo(CartesianCoordinates coordinates, double maxDistance) {
         double currentDistance = coordinates.distanceToSquared(sunCoordinates); //Initialises a first distance
         double nextDistance;
@@ -130,18 +207,15 @@ public final class ObservedSky {
 
         for (CelestialObject object : mapOfAll.keySet()) {
             coordOfObject = mapOfAll.get(object);
-            //In order
-            //Checks if the coordinates are in the given square with the two intervals (not to compute the distance all the times)
-            //Computes and checks if the distance is in the given maxDistance
-            //Checks if the new distance is smaller or equal to the current one
+            /*In order
+            Checks if the coordinates are in the given square with the two intervals (not to compute the distance all the times)
+            Computes and checks if the distance is in the given maxDistance
+            Checks if the new distance is smaller or equal to the current one*/
             if (coordOfObject.inPartOfPlane(intervalX, intervalY)
                     && (nextDistance = coordOfObject.distanceToSquared(coordinates)) <= maxDistance * maxDistance
                     && (currentDistance >= nextDistance)) {
                 currentDistance = nextDistance;
                 nearestObject = object;
-                /*currentDistance = (distanceSquared(mapOfAll.get(object), coordinates) <= currentDistance)
-                        ? distanceSquared(mapOfAll.get(nearestObject = object), coordinates) //Sets the current distance to the calculated one and sets the nearest object
-                        : currentDistance; //The current distance remains the same*/
             }
         }
         return nearestObject == null ? Optional.empty() : Optional.of(nearestObject);
