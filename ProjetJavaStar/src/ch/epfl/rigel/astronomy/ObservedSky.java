@@ -28,6 +28,7 @@ public final class ObservedSky {
     private final CartesianCoordinates sunCoordinates;
     private final CartesianCoordinates moonCoordinates;
     private final double[] planetPositions = new double[14];
+    private final double[] starsPositions;
 
     private Map<CelestialObject, CartesianCoordinates> mapOfAll;
 
@@ -69,6 +70,13 @@ public final class ObservedSky {
                 mapOfAll.put(newPlanet, planetProjection);
             }
         }
+
+        starsPositions = new double[stars.size()*2];
+        for (int j = 0; j < stars.size(); j++) {
+            CartesianCoordinates starProjection = projection.apply(conversionToHor.apply(stars.get(j).equatorialPos()));
+            starsPositions[j*2] = starProjection.x();
+            starsPositions[j*2+1] = starProjection.y();
+        }
         //TODO : Et comment on sait la position des étoiles ??????????????????????????????
     }
 
@@ -101,7 +109,7 @@ public final class ObservedSky {
     }
 
     public double[] starPositions() {
-
+          return starsPositions;
     }
 
     public List<Asterism> asterisms() {
