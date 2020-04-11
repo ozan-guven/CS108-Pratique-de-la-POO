@@ -40,9 +40,9 @@ public class SkyCanvasPainter {
         int i = 0;
         double z;
         for (Star star : sky.stars()) {
-            z = diameterFromMagnitude(star.magnitude(), projection);
+            z = planeToCanvas.deltaTransform(diameterFromMagnitude(star.magnitude(), projection), 0).getX();
             ctx.setFill(BlackBodyColor.colorForTemperature(star.colorTemperature()));
-            ctx.fillOval(transformed[i++], transformed[i++], z, z);
+            ctx.fillOval(transformed[i++] - z / 2, transformed[i++] - z / 2, z, z);
         }
     }
 
@@ -50,6 +50,6 @@ public class SkyCanvasPainter {
         ClosedInterval interval = ClosedInterval.of(-2, 5);
         double clippedMagnitude = interval.clip(magnitude);
         double factor = (99 - 17 * clippedMagnitude) / 140.0;
-        return factor * projection.applyToAngle(2 * Math.tan(Angle.ofDeg(0.5) / 4.0));
+        return factor * projection.applyToAngle(Angle.ofDeg(0.5));
     }
 }
