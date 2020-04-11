@@ -1,5 +1,6 @@
 package ch.epfl.rigel.gui;
 
+import ch.epfl.rigel.astronomy.AsterismLoader;
 import ch.epfl.rigel.astronomy.HygDatabaseLoader;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.StarCatalogue;
@@ -27,12 +28,23 @@ public final class DrawSky extends Application {
         return getClass().getResourceAsStream(resourceName);
     }
 
+    String HYG_CATALOGUE_NAME = "/hygdata_v3.csv";
+    String AST_CATALOGUE_NAME = "/asterisms.txt";
+    StarCatalogue catalogue;
+    StarCatalogue.Builder builder;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        try (InputStream hs = resourceStream("/hygdata_v3.csv")){
+        /*try (InputStream hs = resourceStream("/hygdata_v3.csv")){
             StarCatalogue catalogue = new StarCatalogue.Builder()
                     .loadFrom(hs, HygDatabaseLoader.INSTANCE)
-                    .build();
+                    .build();*/
+        try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME)) {
+            builder = new StarCatalogue.Builder().loadFrom(hygStream, HygDatabaseLoader.INSTANCE);
+        }
+        try (InputStream astStream = getClass().getResourceAsStream(AST_CATALOGUE_NAME)) {
+            catalogue = builder.loadFrom(astStream, AsterismLoader.INSTANCE).build();
+        }
 
             ZonedDateTime when =
                     ZonedDateTime.parse("2020-02-17T20:15:00+01:00");
@@ -61,7 +73,7 @@ public final class DrawSky extends Application {
                     SwingFXUtils.fromFXImage(fxImage, null);
             //ImageIO.write(swingImage, "png", new File("sky.png"));
             ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
-        }
+        //}
         Platform.exit();
     }
 }

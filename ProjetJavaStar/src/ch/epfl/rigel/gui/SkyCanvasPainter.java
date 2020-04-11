@@ -39,8 +39,20 @@ public class SkyCanvasPainter {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
 
-        ctx.setFill(Color.BLUE);
         ctx.setLineWidth(1);
+        ctx.setStroke(Color.BLUE);
+
+        List<Integer> asterismIndices;
+        for (Asterism asterism : sky.asterisms()) {
+            asterismIndices = sky.asterismIndices(asterism);
+            ctx.beginPath();
+            for (int i = 0; i < asterismIndices.size() - 1; i++) {
+                ctx.moveTo(transformed[2 * asterismIndices.get(i)], transformed[2 * asterismIndices.get(i) + 1]);
+                ctx.lineTo(transformed[2 * asterismIndices.get(i + 1)], transformed[2 * asterismIndices.get(i + 1) + 1]);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
 
         int i = 0;
         double z;
