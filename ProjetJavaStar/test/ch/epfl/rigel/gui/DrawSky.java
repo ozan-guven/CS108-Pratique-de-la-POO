@@ -59,7 +59,8 @@ public final class DrawSky extends Application {
                     canvas.snapshot(null, null);
             BufferedImage swingImage =
                     SwingFXUtils.fromFXImage(fxImage, null);
-            ImageIO.write(swingImage, "png", new File("sky.png"));
+            //ImageIO.write(swingImage, "png", new File("sky.png"));
+            ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
         }
         Platform.exit();
     }

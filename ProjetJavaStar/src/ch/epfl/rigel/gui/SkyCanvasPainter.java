@@ -1,6 +1,6 @@
 package ch.epfl.rigel.gui;
 
-import ch.epfl.rigel.astronomy.CelestialObject;
+import ch.epfl.rigel.astronomy.Asterism;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.Star;
 import ch.epfl.rigel.coordinates.StereographicProjection;
@@ -10,6 +10,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Transform;
+
+import java.util.List;
 
 /**
  * Class used to draw the sky on the screen
@@ -36,6 +38,9 @@ public class SkyCanvasPainter {
     public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
+
+        ctx.setFill(Color.BLUE);
+        ctx.setLineWidth(1);
 
         int i = 0;
         double z;
