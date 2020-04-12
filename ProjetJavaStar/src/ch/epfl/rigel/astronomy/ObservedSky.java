@@ -145,8 +145,8 @@ public final class ObservedSky {
 
     /**
      * Gets an array containing the cartesian coordinate components of each planet (excepted the Earth)
-     * in order beginning from Mercury and the x coordinate
-     * ([Mercury.x(), Mercury.y(), Venus.x(), Venus.y(), Mars.x(), ...])
+     * in order beginning from Mercury and the x coordinate.
+     * <p>([Mercury.x(), Mercury.y(), Venus.x(), Venus.y(), Mars.x(), ..., Neptune.x(), Neptune.y()])</p>
      *
      * @return an array containing the coordinate components of all the planets (excepted Earth)
      */
@@ -166,8 +166,8 @@ public final class ObservedSky {
 
     /**
      * Gets an array containing the cartesian coordinate components of each star
-     * contained in the catalogue. Starting with the first star of the catalogue
-     * <p>(For example [Star0.x(), Star0.y(), Star1.x(), ...])</p>
+     * contained in the catalogue. Starting with the first star of the catalogue.
+     * <p>(For example [Star0.x(), Star0.y(), Star1.x(), ..., StarN.x(), StarN.y()])</p>
      *
      * @return an array containing the coordinate components
      * of all the stars in the catalogue

@@ -51,7 +51,8 @@ public final class DrawSky extends Application {
             GeographicCoordinates where =
                     GeographicCoordinates.ofDeg(6.57, 46.52);
             HorizontalCoordinates projCenter =
-                    HorizontalCoordinates.ofDeg(180, 45);
+                    //HorizontalCoordinates.ofDeg(180, 45);                  //Original center
+                    HorizontalCoordinates.ofDeg(277, -23);    //Center for sun
             StereographicProjection projection =
                     new StereographicProjection(projCenter);
             ObservedSky sky =
@@ -66,13 +67,15 @@ public final class DrawSky extends Application {
 
             painter.clear();
             painter.drawStars(sky, projection, planeToCanvas);
+            painter.drawSun(sky, projection, planeToCanvas); //Draws the sun
 
             WritableImage fxImage =
                     canvas.snapshot(null, null);
             BufferedImage swingImage =
                     SwingFXUtils.fromFXImage(fxImage, null);
             //ImageIO.write(swingImage, "png", new File("sky.png"));
-            ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
+            //ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
+            ImageIO.write(swingImage, "png", new File("skySun.png"));
         //}
         Platform.exit();
     }
