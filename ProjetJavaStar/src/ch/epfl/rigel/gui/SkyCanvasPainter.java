@@ -4,7 +4,6 @@ import ch.epfl.rigel.astronomy.Asterism;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.Star;
 import ch.epfl.rigel.astronomy.Sun;
-import ch.epfl.rigel.coordinates.CartesianCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
@@ -47,17 +46,13 @@ public class SkyCanvasPainter {
     }
 
     /**
-     * Draws the asterisms and the stars onto the canvas
+     * Method that draws the asterisms onto the canvas
      *
-     * @param sky           the observed sky
-     * @param projection    the projection used
-     * @param planeToCanvas the affine transformation to transform from
-     *                      cartesian coordinates to the coordinates of the sreen
+     * @param sky         the observed sky containing the asterisms
+     * @param transformed the transformed coordinates of all
+     *                    the stars contained in the observed sky
      */
-    public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
-        double[] transformed = new double[sky.starPositions().length];
-        planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
-
+    private void drawAsterisms(ObservedSky sky, double[] transformed) {
         ctx.setLineWidth(1);
         ctx.setStroke(Color.BLUE);
         List<Integer> asterismIndices;
@@ -77,6 +72,21 @@ public class SkyCanvasPainter {
             ctx.closePath();
             ctx.stroke();
         }
+    }
+
+    /**
+     * Draws the asterisms and the stars onto the canvas
+     *
+     * @param sky           the observed sky
+     * @param projection    the projection used
+     * @param planeToCanvas the affine transformation to transform from
+     *                      cartesian coordinates to the coordinates of the screen
+     */
+    public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
+        double[] transformed = new double[sky.starPositions().length];
+        planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
+
+        drawAsterisms(sky, transformed); //To add later as a bonus : user could choose whether to show the asterisms or not
 
         int i = 0;
         double z;
@@ -94,6 +104,14 @@ public class SkyCanvasPainter {
         return factor * projection.applyToAngle(Angle.ofDeg(0.5));
     }
 
+    /**
+     * Draws the sun onto the canvas
+     *
+     * @param sky           the observed sky
+     * @param projection    the projection used
+     * @param planeToCanvas the affine transformation to transform from
+     *                      cartesian coordinates to the coordinates of the screen
+     */
     public void drawSun(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
         Sun sun = sky.sun();
         Point2D sunCoordinates = planeToCanvas.transform(sky.sunPosition().x(), sky.sunPosition().y());
