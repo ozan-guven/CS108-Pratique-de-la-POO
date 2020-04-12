@@ -96,19 +96,19 @@ public class SkyCanvasPainter {
 
     public void drawSun(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
         Sun sun = sky.sun();
-        Point2D sunCoordinates = planeToCanvas.deltaTransform(sky.sunPosition().x(), sky.sunPosition().y());
+        Point2D sunCoordinates = planeToCanvas.transform(sky.sunPosition().x(), sky.sunPosition().y());
         double sunX = sunCoordinates.getX();
         double sunY = sunCoordinates.getY();
 
-        double sunHaloDiameter = planeToCanvas.deltaTransform(sun.angularSize() * 2.2, 0).getX();
-        double sunSecondDiameter = planeToCanvas.deltaTransform(sun.angularSize() + 2, 0).getX();
-        double sunDiameter = planeToCanvas.deltaTransform(sun.angularSize(), 0).getX();
+        double sunDiameter = planeToCanvas.deltaTransform(projection.applyToAngle(sun.angularSize()), 0).getX();
+        double sunSecondDiameter = sunDiameter + 2;
+        double sunHaloDiameter = sunDiameter * 2.2;
 
-        //ctx.setFill(Color.YELLOW.deriveColor(0, 1, 1, 0.25));
-        //ctx.fillOval(sunX - sunHaloDiameter / 2, sunY - sunHaloDiameter / 2, sunHaloDiameter, sunHaloDiameter);
+        ctx.setFill(Color.YELLOW.deriveColor(0, 1, 1, 0.25));
+        ctx.fillOval(sunX - sunHaloDiameter / 2, sunY - sunHaloDiameter / 2, sunHaloDiameter, sunHaloDiameter);
 
-        //ctx.setFill(Color.YELLOW);
-        //ctx.fillOval(sunX - sunSecondDiameter / 2, sunY - sunSecondDiameter / 2, sunSecondDiameter, sunSecondDiameter);
+        ctx.setFill(Color.YELLOW);
+        ctx.fillOval(sunX - sunSecondDiameter / 2, sunY - sunSecondDiameter / 2, sunSecondDiameter, sunSecondDiameter);
 
         ctx.setFill(Color.WHITE);
         ctx.fillOval(sunX - sunDiameter / 2, sunY - sunDiameter / 2, sunDiameter, sunDiameter);
