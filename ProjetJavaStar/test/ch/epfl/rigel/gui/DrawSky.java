@@ -68,6 +68,7 @@ public final class DrawSky extends Application {
             painter.clear();
             painter.drawStars(sky, projection, planeToCanvas);
             painter.drawSun(sky, projection, planeToCanvas); //Draws the sun
+            painter.drawHorizon(projection, planeToCanvas); //Draws the horizon
 
             WritableImage fxImage =
                     canvas.snapshot(null, null);
@@ -75,7 +76,8 @@ public final class DrawSky extends Application {
                     SwingFXUtils.fromFXImage(fxImage, null);
             //ImageIO.write(swingImage, "png", new File("sky.png"));
             //ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
-            ImageIO.write(swingImage, "png", new File("skySun.png"));
+            //ImageIO.write(swingImage, "png", new File("skySun.png"));
+            ImageIO.write(swingImage, "png", new File("skyHorizon.png"));
         //}
         Platform.exit();
     }

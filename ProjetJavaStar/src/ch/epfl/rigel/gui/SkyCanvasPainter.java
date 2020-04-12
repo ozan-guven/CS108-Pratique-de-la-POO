@@ -4,6 +4,8 @@ import ch.epfl.rigel.astronomy.Asterism;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.Star;
 import ch.epfl.rigel.astronomy.Sun;
+import ch.epfl.rigel.coordinates.CartesianCoordinates;
+import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
@@ -130,5 +132,17 @@ public class SkyCanvasPainter {
 
         ctx.setFill(Color.WHITE);
         ctx.fillOval(sunX - sunDiameter / 2, sunY - sunDiameter / 2, sunDiameter, sunDiameter);
+    }
+
+    public void drawHorizon(StereographicProjection projection, Transform planeToCanvas) {
+        ctx.setStroke(Color.RED);
+        ctx.setLineWidth(2);
+        HorizontalCoordinates coordForHorizon = HorizontalCoordinates.of(0, 0);
+        //TODO : Faut vraiment faire un Math.abs pour que ça marche ?
+        double circleRadius = Math.abs(planeToCanvas.deltaTransform(projection.circleRadiusForParallel(coordForHorizon) * 2, 0).getX());
+        CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
+        Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
+
+        ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
     }
 }
