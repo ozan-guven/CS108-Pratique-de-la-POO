@@ -38,6 +38,12 @@ public final class BlackBodyColor {
 
         try (BufferedReader stream = new BufferedReader(
                 new InputStreamReader(BlackBodyColor.class.getResourceAsStream(BBR_COLOR_CATALOGUE_NAME)))) {
+            stream.lines()
+                    .filter(l -> l.charAt(0) != '#') //filters all lines with
+                    .map(l -> l.trim().split("\\s+")) //trims the string and "\\s+" takes into account multiple spaces such as "   "
+                    .filter(s -> !s[2].equals("2deg")) //filters all lines with 2deg
+                    .forEachOrdered(s -> kelvinRGB.put(Integer.parseInt(s[0]), Color.web(s[s.length -1])));
+            /*
             String s = stream.readLine();
 
             while (s.charAt(0) == '#') {
@@ -51,7 +57,7 @@ public final class BlackBodyColor {
                     kelvinRGB.put(Integer.parseInt(strings[0]), Color.web(strings[strings.length - 1]));
                 }
                 s = stream.readLine();
-            }
+            }*/
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
