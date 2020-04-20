@@ -17,6 +17,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
     private final double sinPhiCenter; //The sine of the latitude (altitude) of the center point
 
     private final double lambdaZero; //The longitude (azimuth) of the center point
+    private final double phiOne; //The latitude (altitude) of the center point
 
     private final String centerCoord; //The coordinates of the center of the projection
 
@@ -31,6 +32,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
         sinPhiCenter = Math.sin(center.alt());
 
         lambdaZero = center.az();
+        phiOne = center.alt();
 
         centerCoord = center.toString();
     }
@@ -105,17 +107,20 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      * @return the horizontal coordinates for the given cartesian coordinates
      */
     public HorizontalCoordinates inverseApply(CartesianCoordinates xy) {
+        if (xy.x() == 0 && xy.y() == 0) {
+            return HorizontalCoordinates.of(lambdaZero, phiOne);
+        } else {
+            double rho = Math.sqrt(xy.x() * xy.x() + xy.y() * xy.y());
+            double rhoSquared = rho * rho;
+            double sinC = 2 * rho / (rhoSquared + 1);
+            double cosC = (1 - rhoSquared) / (rhoSquared + 1);
 
-        double rho = Math.sqrt(xy.x() * xy.x() + xy.y() * xy.y());
-        double rhoSquared = rho * rho;
-        double sinC = 2 * rho / (rhoSquared + 1);
-        double cosC = (1 - rhoSquared) / (rhoSquared + 1);
+            double ySinC = xy.y() * sinC;
+            double lambda = Math.atan2(xy.x() * sinC, (rho * cosPhiCenter * cosC) - (ySinC * sinPhiCenter)) + lambdaZero;
+            double phi = Math.asin(cosC * sinPhiCenter + ((ySinC * cosPhiCenter) / rho));
 
-        double ySinC = xy.y() * sinC;
-        double lambda = Math.atan2(xy.x() * sinC, (rho * cosPhiCenter * cosC) - (ySinC * sinPhiCenter)) + lambdaZero;
-        double phi = Math.asin(cosC * sinPhiCenter + ((ySinC * cosPhiCenter) / rho));
-
-        return HorizontalCoordinates.of(Angle.normalizePositive(lambda), phi);
+            return HorizontalCoordinates.of(Angle.normalizePositive(lambda), phi);
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ch.epfl.rigel.math;
 
+import ch.epfl.rigel.Preconditions;
+
 import static ch.epfl.rigel.Preconditions.checkInInterval;
 
 /**
@@ -10,19 +12,20 @@ import static ch.epfl.rigel.Preconditions.checkInInterval;
  */
 public final class Angle {
 
-    private Angle() {
-    }
-
     /**
      * Number that is two times <i>pi</i>
      *
      * @see Math#PI
      */
     public static final double TAU = Math.PI * 2;
+    private static final RightOpenInterval FOR_MIN_SEC = RightOpenInterval.of(0, 60);
     private static final double RAD_PER_SEC = TAU / (3600 * 360);
     private static final double RAD_PER_MIN = TAU / (60 * 360);
     private static final double RAD_PER_HOUR = TAU / 24;
     private static final double HOUR_PER_RAD = 24 / TAU;
+
+    private Angle() {
+    }
 
     /**
      * Normalizes the angle between 0 and 2*<i>pi</i>
@@ -52,11 +55,12 @@ public final class Angle {
      * @param min the minutes
      * @param sec the seconds
      * @return the translated angle in radians
+     * @throws IllegalArgumentException if the degrees are negative
      * @throws IllegalArgumentException if the minutes or the seconds are not contained in [0, 60]
      */
     public static double ofDMS(int deg, int min, double sec) {
-        RightOpenInterval interval = RightOpenInterval.of(0, 60);
-        return checkInInterval(interval, sec) * RAD_PER_SEC + checkInInterval(interval, min) * RAD_PER_MIN + Math.toRadians(deg);
+        Preconditions.checkArgument(deg >= 0);
+        return checkInInterval(FOR_MIN_SEC, sec) * RAD_PER_SEC + checkInInterval(FOR_MIN_SEC, min) * RAD_PER_MIN + Math.toRadians(deg);
     }
 
     /**
