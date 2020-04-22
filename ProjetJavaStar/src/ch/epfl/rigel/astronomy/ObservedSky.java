@@ -58,8 +58,7 @@ public final class ObservedSky {
         moon = MoonModel.MOON.at(daysUntilJ2010, conversionToEqu);
 
         sunCoordinates = projection.apply(conversionToHor.apply(sun.equatorialPos()));
-        moonCoordinates = projection.apply(conversionToHor.apply(
-                MoonModel.MOON.at(daysUntilJ2010, conversionToEqu).equatorialPos()));
+        moonCoordinates = projection.apply(conversionToHor.apply(moon.equatorialPos()));
 
         mapOfAll.put(sun, sunCoordinates);
         mapOfAll.put(moon, moonCoordinates);
