@@ -85,7 +85,7 @@ public class SkyCanvasPainter {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
 
-        drawAsterisms(sky, transformed); //To add later as a bonus : user could choose whether to show the asterisms or not
+        drawAsterisms(sky, transformed); //TODO : To add later as a bonus : user could choose whether to show the asterisms or not
 
         int i = 0;
         double z;
@@ -184,5 +184,6 @@ public class SkyCanvasPainter {
         Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
 
         ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
+        //TODO : Il reste les points cardinaux. Comme bonus on pourait choisir d'afficher ou non l'horizon ?
     }
 }
