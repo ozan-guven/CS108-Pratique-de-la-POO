@@ -1,9 +1,6 @@
 package ch.epfl.rigel.gui;
 
-import ch.epfl.rigel.astronomy.Asterism;
-import ch.epfl.rigel.astronomy.ObservedSky;
-import ch.epfl.rigel.astronomy.Star;
-import ch.epfl.rigel.astronomy.Sun;
+import ch.epfl.rigel.astronomy.*;
 import ch.epfl.rigel.coordinates.CartesianCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
@@ -114,6 +111,29 @@ public class SkyCanvasPainter {
      * @param planeToCanvas the affine transformation to transform from
      *                      cartesian coordinates to the coordinates of the screen
      */
+    public void drawPlanets(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas){
+        List<Planet> planets = sky.planets();
+
+        for (Planet planet: planets) {
+            Point2D planetCoordinates = planeToCanvas.transform(sky.moonPosition().x(), sky.moonPosition().y());
+            double planetX = planetCoordinates.getX();
+            double planetY = planetCoordinates.getY();
+
+            double diameter = diameterFromMagnitude(planet.magnitude(), projection);
+
+            ctx.setFill(Color.WHITE);
+            ctx.fillOval(planetX - diameter/2, planetY - diameter /2, diameter, diameter);
+        }
+    }
+
+    /**
+     * Draws the sun onto the canvas
+     *
+     * @param sky           the observed sky
+     * @param projection    the projection used
+     * @param planeToCanvas the affine transformation to transform from
+     *                      cartesian coordinates to the coordinates of the screen
+     */
     public void drawSun(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
         Sun sun = sky.sun();
         Point2D sunCoordinates = planeToCanvas.transform(sky.sunPosition().x(), sky.sunPosition().y());
@@ -132,6 +152,26 @@ public class SkyCanvasPainter {
 
         ctx.setFill(Color.WHITE);
         ctx.fillOval(sunX - sunDiameter / 2, sunY - sunDiameter / 2, sunDiameter, sunDiameter);
+    }
+
+    /**
+     * Draws the moon on the canvas
+     *
+     * @param sky           the observed sky
+     * @param projection    the projection used
+     * @param planeToCanvas the affine transformation to transform from
+     *                      cartesian coordinates to the coordinates of the screen
+     */
+    public void drawMoon(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
+        Moon moon = sky.moon();
+        Point2D moonCoordinates = planeToCanvas.transform(sky.moonPosition().x(), sky.moonPosition().y());
+        double moonX = moonCoordinates.getX();
+        double moonY = moonCoordinates.getY();
+
+        double diameter = diameterFromMagnitude(moon.magnitude(), projection);
+
+        ctx.setFill(Color.WHITE);
+        ctx.fillOval(moonX - diameter/2, moonY - diameter /2, diameter, diameter);
     }
 
     public void drawHorizon(StereographicProjection projection, Transform planeToCanvas) {
