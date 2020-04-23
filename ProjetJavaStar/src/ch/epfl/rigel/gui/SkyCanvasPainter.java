@@ -152,6 +152,7 @@ public class SkyCanvasPainter {
 
         ctx.setFill(Color.WHITE);
         ctx.fillOval(sunX - sunDiameter / 2, sunY - sunDiameter / 2, sunDiameter, sunDiameter);
+        System.out.printf("Sun Diameter : %.6f, Sun Coordinates : %.6f %11.6f%n", sunDiameter, (sunX-sunDiameter/2), (sunY-sunDiameter/2));//TODO TEST
     }
 
     /**
@@ -168,10 +169,14 @@ public class SkyCanvasPainter {
         double moonX = moonCoordinates.getX();
         double moonY = moonCoordinates.getY();
 
-        double diameter = diameterFromMagnitude(moon.magnitude(), projection);
+        double diameter = planeToCanvas.deltaTransform(projection.applyToAngle(moon.angularSize()), 0).getX();
 
         ctx.setFill(Color.WHITE);
-        ctx.fillOval(moonX - diameter/2, moonY - diameter /2, diameter, diameter);
+        ctx.fillOval(moonX - diameter / 2, moonY - diameter / 2, diameter, diameter);
+
+        System.out.printf("MoonDiameter : %f, MoonCoordinates : %f %f%n", diameter, moonX - diameter / 2, moonY - diameter / 2);//TODO TEST
+        System.out.printf("Bounds of canvas : %.0f, %.0f",
+                canvas.getBoundsInLocal().getWidth(), canvas.getBoundsInLocal().getHeight());//TODO TEST
     }
 
     public void drawHorizon(StereographicProjection projection, Transform planeToCanvas) {
