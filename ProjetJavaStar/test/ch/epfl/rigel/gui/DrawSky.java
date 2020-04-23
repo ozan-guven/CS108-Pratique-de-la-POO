@@ -41,10 +41,9 @@ public final class DrawSky extends Application {
             StarCatalogue catalogue = new StarCatalogue.Builder()
                     .loadFrom(hs, HygDatabaseLoader.INSTANCE)
                     .build();*/
-        try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME)) {
+        try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME);
+             InputStream astStream = getClass().getResourceAsStream(AST_CATALOGUE_NAME)) {
             builder = new StarCatalogue.Builder().loadFrom(hygStream, HygDatabaseLoader.INSTANCE);
-        }
-        try (InputStream astStream = getClass().getResourceAsStream(AST_CATALOGUE_NAME)) {
             catalogue = builder.loadFrom(astStream, AsterismLoader.INSTANCE).build();
         }
 
