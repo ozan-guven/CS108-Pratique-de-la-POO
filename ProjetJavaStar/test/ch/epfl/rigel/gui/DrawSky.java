@@ -53,8 +53,10 @@ public final class DrawSky extends Application {
                 GeographicCoordinates.ofDeg(6.57, 46.52);
         HorizontalCoordinates projCenter =
                 //HorizontalCoordinates.ofDeg(180, 45);                  //Original center
-                HorizontalCoordinates.ofDeg(277, -23);                 //Center for sun
-                //HorizontalCoordinates.ofDeg(3.7, -65);    //Center for Moon
+                //HorizontalCoordinates.ofDeg(277, -23);                 //Center for sun
+                //HorizontalCoordinates.ofDeg(3.7, -65);                 //Center for Moon
+                HorizontalCoordinates.ofDeg(0, 23);                    //Center for Ursa Minor Polaris
+                //HorizontalCoordinates.ofDeg(0, 90);                    //Center for whole horizon
         StereographicProjection projection =
                 new StereographicProjection(projCenter);
         ObservedSky sky =
@@ -63,7 +65,8 @@ public final class DrawSky extends Application {
         Canvas canvas =
                 new Canvas(800, 600);
         Transform planeToCanvas =
-                Transform.affine(1300, 0, 0, -1300, 400, 300);
+                Transform.affine(1300, 0, 0, -1300, 400, 300); //Normal transform
+                //Transform.affine(260, 0, 0, -260, 400, 300); //For whole horizon
         SkyCanvasPainter painter =
                 new SkyCanvasPainter(canvas);
 
@@ -81,8 +84,10 @@ public final class DrawSky extends Application {
         //ImageIO.write(swingImage, "png", new File("sky.png"));
         //ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
         //ImageIO.write(swingImage, "png", new File("skySun.png"));
-        ImageIO.write(swingImage, "png", new File("skyHorizon.png"));
+        //ImageIO.write(swingImage, "png", new File("skyHorizon.png"));
         //ImageIO.write(swingImage, "png", new File("skyMoon.png"));
+        ImageIO.write(swingImage, "png", new File("skyUrsaMinorPolaris.png"));
+        //ImageIO.write(swingImage, "png", new File("skyWholeHorizon.png"));
         //}
         Platform.exit();
     }

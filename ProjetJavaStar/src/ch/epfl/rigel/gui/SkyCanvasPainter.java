@@ -188,11 +188,30 @@ public class SkyCanvasPainter {
         //TODO : Il reste les points cardinaux. Comme bonus on pourait choisir d'afficher ou non l'horizon ?
 
         ctx.setFill(Color.RED);
-        HorizontalCoordinates coordForNorth = HorizontalCoordinates.of(0, 0);
-        CartesianCoordinates coordOfNorth = projection.apply(coordForNorth);
-        Point2D pointN = planeToCanvas.transform(coordOfNorth.x(), coordOfNorth.y());
-        ctx.setTextAlign(TextAlignment.CENTER);
-        ctx.setTextBaseline(VPos.BASELINE);
-        ctx.fillText("N", pointN.getX(), pointN.getY());
+        ctx.setTextAlign(TextAlignment.CENTER); //TODO : TextAlignment.LEFT ?
+        ctx.setTextBaseline(VPos.TOP);
+        HorizontalCoordinates coordForCardinal;
+        CartesianCoordinates coordOnProjection;
+        Point2D pointCardinal;
+        for (CardinalPoints cardinalPoints : CardinalPoints.values()) {
+            coordForCardinal = HorizontalCoordinates.ofDeg(45 * cardinalPoints.ordinal(), -0.5);
+            coordOnProjection = projection.apply(coordForCardinal);
+            pointCardinal = planeToCanvas.transform(coordOnProjection.x(), coordOnProjection.y());
+            ctx.fillText(cardinalPoints.toString(), pointCardinal.getX(), pointCardinal.getY());
+        }
+    }
+
+    private enum CardinalPoints{
+        N("N"), NE("NE"), E("E"), SE("SE"), S("S"), SO("SO"), O("O"), NO("NO");
+
+        private String cardinalPoint;
+        CardinalPoints(String cardinalPoint) {
+            this.cardinalPoint = cardinalPoint;
+        }
+
+        @Override
+        public String toString() {
+            return cardinalPoint;
+        }
     }
 }
