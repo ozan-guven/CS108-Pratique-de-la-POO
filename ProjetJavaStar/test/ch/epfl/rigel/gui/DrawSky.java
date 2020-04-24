@@ -53,8 +53,8 @@ public final class DrawSky extends Application {
                 GeographicCoordinates.ofDeg(6.57, 46.52);
         HorizontalCoordinates projCenter =
                 //HorizontalCoordinates.ofDeg(180, 45);                  //Original center
-                //HorizontalCoordinates.ofDeg(277, -23);                 //Center for sun
-                HorizontalCoordinates.ofDeg(3.7, -65);    //Center for Moon
+                HorizontalCoordinates.ofDeg(277, -23);                 //Center for sun
+                //HorizontalCoordinates.ofDeg(3.7, -65);    //Center for Moon
         StereographicProjection projection =
                 new StereographicProjection(projCenter);
         ObservedSky sky =
@@ -81,8 +81,8 @@ public final class DrawSky extends Application {
         //ImageIO.write(swingImage, "png", new File("sky.png"));
         //ImageIO.write(swingImage, "png", new File("skyAsterisms.png"));
         //ImageIO.write(swingImage, "png", new File("skySun.png"));
-        //ImageIO.write(swingImage, "png", new File("skyHorizon.png"));
-        ImageIO.write(swingImage, "png", new File("skyMoon.png"));
+        ImageIO.write(swingImage, "png", new File("skyHorizon.png"));
+        //ImageIO.write(swingImage, "png", new File("skyMoon.png"));
         //}
         Platform.exit();
     }

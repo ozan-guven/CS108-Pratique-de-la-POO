@@ -7,9 +7,11 @@ import ch.epfl.rigel.coordinates.StereographicProjection;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
 import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Transform;
 
 import java.util.List;
@@ -104,25 +106,24 @@ public class SkyCanvasPainter {
     }
 
     /**
-     * Draws the sun onto the canvas
+     * Draws the 7 planets onto the canvas
      *
      * @param sky           the observed sky
      * @param projection    the projection used
      * @param planeToCanvas the affine transformation to transform from
      *                      cartesian coordinates to the coordinates of the screen
      */
-    public void drawPlanets(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas){
-        List<Planet> planets = sky.planets();
+    public void drawPlanets(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
+        double[] planetCoordinates = new double[sky.planetPositions().length];
+        planeToCanvas.transform2DPoints(sky.planetPositions(), 0, planetCoordinates, 0, sky.planetPositions().length / 2);
 
-        for (Planet planet: planets) {
-            Point2D planetCoordinates = planeToCanvas.transform(sky.moonPosition().x(), sky.moonPosition().y());
-            double planetX = planetCoordinates.getX();
-            double planetY = planetCoordinates.getY();
-
-            double diameter = diameterFromMagnitude(planet.magnitude(), projection);
-
-            ctx.setFill(Color.WHITE);
-            ctx.fillOval(planetX - diameter/2, planetY - diameter /2, diameter, diameter);
+        int i = 0;
+        double diameter;
+        ctx.setFill(Color.LIGHTGRAY);
+        for (Planet planet: sky.planets()) {
+            diameter = planeToCanvas.deltaTransform(diameterFromMagnitude(planet.magnitude(), projection), 0).getX();
+            //TODO : later ctx.setFill(planet.color());
+            ctx.fillOval(planetCoordinates[i++] - diameter / 2, planetCoordinates[i++] - diameter / 2, diameter, diameter);
         }
     }
 
@@ -185,5 +186,13 @@ public class SkyCanvasPainter {
 
         ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
         //TODO : Il reste les points cardinaux. Comme bonus on pourait choisir d'afficher ou non l'horizon ?
+
+        ctx.setFill(Color.RED);
+        HorizontalCoordinates coordForNorth = HorizontalCoordinates.of(0, 0);
+        CartesianCoordinates coordOfNorth = projection.apply(coordForNorth);
+        Point2D pointN = planeToCanvas.transform(coordOfNorth.x(), coordOfNorth.y());
+        ctx.setTextAlign(TextAlignment.CENTER);
+        ctx.setTextBaseline(VPos.BASELINE);
+        ctx.fillText("N", pointN.getX(), pointN.getY());
     }
 }
