@@ -120,7 +120,7 @@ public class SkyCanvasPainter {
         int i = 0;
         double diameter;
         ctx.setFill(Color.LIGHTGRAY);
-        for (Planet planet: sky.planets()) {
+        for (Planet planet : sky.planets()) {
             diameter = planeToCanvas.deltaTransform(diameterFromMagnitude(planet.magnitude(), projection), 0).getX();
             //TODO : later ctx.setFill(planet.color());
             ctx.fillOval(planetCoordinates[i++] - diameter / 2, planetCoordinates[i++] - diameter / 2, diameter, diameter);
@@ -179,8 +179,8 @@ public class SkyCanvasPainter {
         ctx.setStroke(Color.RED);
         ctx.setLineWidth(2);
         HorizontalCoordinates coordForHorizon = HorizontalCoordinates.of(0, 0);
-        //TODO : Faut vraiment faire un Math.abs pour que ça marche ?
-        double circleRadius = Math.abs(planeToCanvas.deltaTransform(projection.circleRadiusForParallel(coordForHorizon) * 2, 0).getX());
+
+        double circleRadius = planeToCanvas.deltaTransform(projection.circleRadiusForParallel(coordForHorizon) * 2, 0).magnitude();
         CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
         Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
 
@@ -201,10 +201,11 @@ public class SkyCanvasPainter {
         }
     }
 
-    private enum CardinalPoints{
+    private enum CardinalPoints {
         N("N"), NE("NE"), E("E"), SE("SE"), S("S"), SO("SO"), O("O"), NO("NO");
 
         private String cardinalPoint;
+
         CardinalPoints(String cardinalPoint) {
             this.cardinalPoint = cardinalPoint;
         }
