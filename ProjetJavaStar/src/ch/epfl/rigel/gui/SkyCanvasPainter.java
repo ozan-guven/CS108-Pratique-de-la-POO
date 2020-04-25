@@ -197,7 +197,7 @@ public class SkyCanvasPainter {
             coordForCardinal = HorizontalCoordinates.ofDeg(45 * cardinalPoints.ordinal(), -0.5);
             coordOnProjection = projection.apply(coordForCardinal);
             pointCardinal = planeToCanvas.transform(coordOnProjection.x(), coordOnProjection.y());
-            ctx.fillText(cardinalPoints.toString(), pointCardinal.getX(), pointCardinal.getY());
+            ctx.fillText(cardinalPoints.cardinal(), pointCardinal.getX(), pointCardinal.getY());
         }
     }
 
@@ -209,8 +209,7 @@ public class SkyCanvasPainter {
             this.cardinalPoint = cardinalPoint;
         }
 
-        @Override
-        public String toString() {
+        private String cardinal() {
             return cardinalPoint;
         }
     }
