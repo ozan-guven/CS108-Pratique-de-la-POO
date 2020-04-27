@@ -183,7 +183,7 @@ public class SkyCanvasPainter {
         ctx.setLineWidth(2);
         HorizontalCoordinates coordForHorizon = HorizontalCoordinates.of(0, 0);
 
-        double circleRadius = planeToCanvas.deltaTransform(projection.circleRadiusForParallel(coordForHorizon) * 2, 0).magnitude();
+        double circleRadius = planeToCanvas.deltaTransform(projection.circleRadiusForParallel(coordForHorizon) * 2, 0).getX();
         CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
         Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
 
