@@ -98,13 +98,6 @@ public class SkyCanvasPainter {
         }
     }
 
-    private double diameterFromMagnitude(double magnitude, StereographicProjection projection) {
-        ClosedInterval interval = ClosedInterval.of(-2, 5);
-        double clippedMagnitude = interval.clip(magnitude);
-        double factor = (99 - 17 * clippedMagnitude) / 140.0;
-        return factor * projection.applyToAngle(Angle.ofDeg(0.5));
-    }
-
     /**
      * Draws the 7 planets onto the canvas
      *
@@ -175,7 +168,17 @@ public class SkyCanvasPainter {
         ctx.fillOval(moonX - diameter / 2, moonY - diameter / 2, diameter, diameter);
     }
 
+    /**
+     * Draws the horizon line and the cardinal and
+     * intercardinal points onto the canvas
+     *
+     * @param projection    the projection used
+     * @param planeToCanvas the affine transformation to transform from
+     *                      cartesian coordinates to the coordinates of the screen
+     */
     public void drawHorizon(StereographicProjection projection, Transform planeToCanvas) {
+        //TODO : Comme bonus on pourrait choisir d'afficher ou non l'horizon ?
+        //Draws the horizon
         ctx.setStroke(Color.RED);
         ctx.setLineWidth(2);
         HorizontalCoordinates coordForHorizon = HorizontalCoordinates.of(0, 0);
@@ -185,26 +188,29 @@ public class SkyCanvasPainter {
         Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
 
         ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
-        //TODO : Il reste les points cardinaux. Comme bonus on pourait choisir d'afficher ou non l'horizon ?
 
+        //Draws the cardinal points
         ctx.setFill(Color.RED);
-        ctx.setTextAlign(TextAlignment.CENTER); //TODO : TextAlignment.LEFT ?
+        ctx.setTextAlign(TextAlignment.CENTER);
         ctx.setTextBaseline(VPos.TOP);
-        HorizontalCoordinates coordForCardinal;
+
         CartesianCoordinates coordOnProjection;
         Point2D pointCardinal;
         for (CardinalPoints cardinalPoints : CardinalPoints.values()) {
-            coordForCardinal = HorizontalCoordinates.ofDeg(45 * cardinalPoints.ordinal(), -0.5);
-            coordOnProjection = projection.apply(coordForCardinal);
+            coordOnProjection = projection.apply(cardinalPoints.coordOfCardinal());
             pointCardinal = planeToCanvas.transform(coordOnProjection.x(), coordOnProjection.y());
             ctx.fillText(cardinalPoints.cardinal(), pointCardinal.getX(), pointCardinal.getY());
         }
     }
 
+    /**
+     * Enumeration containing all the 8 cardinal and intercardinal points
+     * with their french name and their horizontal coordinates
+     */
     private enum CardinalPoints {
-        N("N"), NE("NE"), E("E"), SE("SE"), S("S"), SO("SO"), O("O"), NO("NO");
+        N("N"), NE("NE"), E("E"), SE("SE"), S("S"), SW("SO"), W("O"), NW("NO");
 
-        private String cardinalPoint;
+        private final String cardinalPoint;
 
         CardinalPoints(String cardinalPoint) {
             this.cardinalPoint = cardinalPoint;
@@ -213,5 +219,29 @@ public class SkyCanvasPainter {
         private String cardinal() {
             return cardinalPoint;
         }
+
+        /**
+         * Gets the horizontal coordinate for the current cardinal point
+         *
+         * @return the horizontal coordinate of the cardinal point
+         */
+        private HorizontalCoordinates coordOfCardinal() {
+            return HorizontalCoordinates.ofDeg(45 * this.ordinal(), -0.5);
+        }
+    }
+
+    /**
+     * Method to compute the diameter of a celestial object given it's magnitude.<br>
+     * (scale to an object with angular size equal to 0.5°)
+     *
+     * @param magnitude  the magnitude of the object
+     * @param projection the projection to be used
+     * @return the diameter from the magnitude
+     */
+    private double diameterFromMagnitude(double magnitude, StereographicProjection projection) {
+        ClosedInterval interval = ClosedInterval.of(-2, 5);
+        double clippedMagnitude = interval.clip(magnitude);
+        double factor = (99 - 17 * clippedMagnitude) / 140.0;
+        return factor * projection.applyToAngle(Angle.ofDeg(0.5));
     }
 }
