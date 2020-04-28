@@ -20,6 +20,9 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
     private static final double LON_NOT = Angle.ofDeg(291.682547);
     private static final double ORB_INCL = Angle.ofDeg(5.145396);
     private static final double EX_ORB = 0.0549;
+    private static final double COS_ORB_INCL = Math.cos(ORB_INCL);
+    private static final double SIN_ORB_INCL = Math.sin(ORB_INCL);
+    private static final double EXC_SQUARED = (1 - EX_ORB * EX_ORB);
 
     //Constants are named after the variable in which they are used
     private static final double MEAN_ORB_LON = Angle.ofDeg(13.1763966);
@@ -43,15 +46,15 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
     public Moon at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
         Sun sun = SunModel.SUN.at(daysSinceJ2010, eclipticToEquatorialConversion);
         double lonSun = sun.eclipticPos().lon();
-        double anomalySun = sun.meanAnomaly();
+        double sinSunAno = Math.sin(sun.meanAnomaly());
 
         // Calculations for the true orbital longitude
         double avgLonOrb = MEAN_ORB_LON * daysSinceJ2010 + AVG_LON;
         double meanAno = avgLonOrb - MEAN_ANO * daysSinceJ2010 - AVG_LON_PER;
 
         double eviction = EVICTION * Math.sin(2 * (avgLonOrb - lonSun) - meanAno);
-        double corrEA = CORR_E_A * Math.sin(anomalySun);
-        double corr3 = CORR_3 * Math.sin(anomalySun);
+        double corrEA = CORR_E_A * sinSunAno;
+        double corr3 = CORR_3 * sinSunAno;
 
         double trueAno = meanAno + eviction - corrEA - corr3;
         double corrEC = CORR_E_C * Math.sin(trueAno);
@@ -63,17 +66,18 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 
         // Calculations for the ecliptic position
         double meanLonNot = LON_NOT - MEAN_LON_NOT * daysSinceJ2010;
-        double corrLonNot = meanLonNot - CORR_LON_NOT * Math.sin(anomalySun);
+        double corrLonNot = meanLonNot - CORR_LON_NOT * sinSunAno;
 
-        double eclLon = Math.atan2(Math.sin(trueLonOrb - corrLonNot) * Math.cos(ORB_INCL),
+        double sinTrueLonCorrLon = Math.sin(trueLonOrb - corrLonNot);
+        double eclLon = Math.atan2(sinTrueLonCorrLon * COS_ORB_INCL,
                 Math.cos(trueLonOrb - corrLonNot)) + corrLonNot;
-        double eclLat = Math.asin(Math.sin(trueLonOrb - corrLonNot) * Math.sin(ORB_INCL));
+        double eclLat = Math.asin(sinTrueLonCorrLon * SIN_ORB_INCL);
 
         // Calculations for the phase of the moon
         double phase = ((1 - Math.cos(trueLonOrb - lonSun)) / 2);
 
         // Calculations for the angular size of the moon
-        double earthMoonDistance = (1 - Math.pow(EX_ORB, 2)) / (1 + EX_ORB * Math.cos(trueAno + corrEC));
+        double earthMoonDistance = EXC_SQUARED / (1 + EX_ORB * Math.cos(trueAno + corrEC));
         double angularSize = THETA_NOT / earthMoonDistance;
 
         // Transformation of the coordinates

@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 import java.util.function.Function;
 
 /**
- * Tools to convert from Equatorial Coordinates to Horizontal Coordinates
+ * Class used to convert from Equatorial Coordinates to Horizontal Coordinates
  *
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)

@@ -43,7 +43,8 @@ public final class Moon extends CelestialObject {
     @Override
     public String info() {
         return String.format(Locale.ROOT,
-                "Lune (%.1f%%)", //We need to put %% to print % and not to see it as a format
+                "%s (%.1f%%)", //We need to put %% to print % and not to see it as a format
+                MOON_NAME,
                 phase * 100);
     }
 }

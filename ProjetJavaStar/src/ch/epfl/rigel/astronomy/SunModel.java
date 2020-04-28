@@ -19,6 +19,7 @@ public enum SunModel implements CelestialObjectModel<Sun> {
     private static final double LON_PER = Angle.ofDeg(283.112438);
     private static final double EX_SUN_EARTH = 0.016705;
     private static final double ANGULAR_SIZE_ZERO = Angle.ofDeg(0.533128);
+    private static final double EX_SUN_SQUARED = (1 - Math.pow(EX_SUN_EARTH, 2));
 
     /**
      * @see CelestialObjectModel#at(double, EclipticToEquatorialConversion)
@@ -36,7 +37,7 @@ public enum SunModel implements CelestialObjectModel<Sun> {
 
         EquatorialCoordinates coord2 = eclipticToEquatorialConversion.apply(coord1);
 
-        double angularSize = ANGULAR_SIZE_ZERO * ((1 + EX_SUN_EARTH * Math.cos(trueAnomaly)) / (1 - Math.pow(EX_SUN_EARTH, 2)));
+        double angularSize = ANGULAR_SIZE_ZERO * ((1 + EX_SUN_EARTH * Math.cos(trueAnomaly)) / EX_SUN_SQUARED);
 
         return new Sun(coord1, coord2, (float) angularSize, (float) meanAnomaly);
     }

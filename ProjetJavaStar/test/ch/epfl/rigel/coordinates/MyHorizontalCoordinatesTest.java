@@ -11,12 +11,12 @@ class MyHorizontalCoordinatesTest {
     @Test
     void ofWorksOnNonTrivialCoords() {
         HorizontalCoordinates coord1 = HorizontalCoordinates.of(0, 0);
-        assertEquals(0, coord1.longitude);
-        assertEquals(0, coord1.latitude);
+        assertEquals(0, coord1.lon());
+        assertEquals(0, coord1.lat());
 
         HorizontalCoordinates coord2 = HorizontalCoordinates.of(4.13452, 1.08210);
-        assertEquals(4.13452, coord2.longitude, 1e-8);
-        assertEquals(1.08210, coord2.latitude, 1e-8);
+        assertEquals(4.13452, coord2.lon(), 1e-8);
+        assertEquals(1.08210, coord2.lat(), 1e-8);
     }
 
     @Test

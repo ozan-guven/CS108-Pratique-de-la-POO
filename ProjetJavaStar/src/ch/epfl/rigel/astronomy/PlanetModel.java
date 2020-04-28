@@ -52,8 +52,11 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     /**
      * List containing all the planets.
      */
-    public static List<PlanetModel> ALL = Arrays.asList(PlanetModel.values());
+    public static List<PlanetModel> ALL = List.of(PlanetModel.values());
     private static List<PlanetModel> INNER_PLANETS = ALL.subList(0, 2);
+
+    private final double sinOrbIncl;
+    private final double cosOrbIncl;
 
     private final String frenchName; //The french name of the planet
     private final double orbitalRevolution; //The orbital revolution
@@ -61,7 +64,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double lonAtPerigee; //The longitude of the planet at Perigee
     private final double orbitalEccentricity; //The orbital eccentricity of the planet
     private final double orbitalSemiMajorAxis; //The orbital semi-major axis
-    private final double orbitalInclinationAtEcliptic; //The orbital inclination at the Ecliptic
     private final double lonOfAscendingNode; //The longitude of the ascending node
     private final double angularSize; //The angular size
     private final double magnitude; //The magnitude
@@ -75,10 +77,13 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         lonAtPerigee = Angle.ofDeg(lonAtPerigeeDeg);
         this.orbitalEccentricity = orbitalEccentricity;
         this.orbitalSemiMajorAxis = orbitalSemiMajorAxis;
-        this.orbitalInclinationAtEcliptic = Angle.ofDeg(orbitalInclinationAtEclipticDeg);
+        double orbitalInclinationAtEcliptic = Angle.ofDeg(orbitalInclinationAtEclipticDeg); //The orbital inclination at the Ecliptic
         this.lonOfAscendingNode = Angle.ofDeg(lonOfAscendingNodeDeg);
         this.angularSize = Angle.ofArcsec(angularSizeArcsec);
         this.magnitude = magnitude;
+
+        sinOrbIncl = Math.sin(orbitalInclinationAtEcliptic);
+        cosOrbIncl = Math.cos(orbitalInclinationAtEcliptic);
     }
 
     /**
@@ -88,26 +93,21 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     public Planet at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
 
         //**************** VALUES FOR THE PLANET ********************
-        double meanAnomaly = AVERAGE_ANGULAR_SPEED * (daysSinceJ2010 / orbitalRevolution) + lonAtJ2010 - lonAtPerigee; //Mean anomaly
-        double nu = meanAnomaly + 2 * orbitalEccentricity * Math.sin(meanAnomaly); //True anomaly
+        double nu = trueAnomaly(daysSinceJ2010); //True anomaly
 
-        double radius = (orbitalSemiMajorAxis * (1 - orbitalEccentricity * orbitalEccentricity))
-                / (1 + orbitalEccentricity * Math.cos(nu));
+        double radius = radius(nu);
         double helioLon = nu + lonAtPerigee;
-        double phi = Math.asin(Math.sin(helioLon - lonOfAscendingNode) * Math.sin(orbitalInclinationAtEcliptic));
+        double phi = Math.asin(Math.sin(helioLon - lonOfAscendingNode) * sinOrbIncl);
 
 
         double eclRadius = radius * Math.cos(phi);
-        double eclHelioLon = Math.atan2(Math.sin(helioLon - lonOfAscendingNode) * Math.cos(orbitalInclinationAtEcliptic),
+        double eclHelioLon = Math.atan2(Math.sin(helioLon - lonOfAscendingNode) * cosOrbIncl,
                 Math.cos(helioLon - lonOfAscendingNode)) + lonOfAscendingNode;
 
         //**************** VALUES FOR THE EARTH *********************
-        double meanAnomalyE = AVERAGE_ANGULAR_SPEED * (daysSinceJ2010 / EARTH.orbitalRevolution)
-                + EARTH.lonAtJ2010 - EARTH.lonAtPerigee; //Mean anomaly
-        double nuE = meanAnomalyE + 2 * EARTH.orbitalEccentricity * Math.sin(meanAnomalyE); //True anomaly
+        double nuE = EARTH.trueAnomaly(daysSinceJ2010); //True anomaly
 
-        double radiusE = (EARTH.orbitalSemiMajorAxis * (1 - EARTH.orbitalEccentricity * EARTH.orbitalEccentricity))
-                / (1 + EARTH.orbitalEccentricity * Math.cos(nuE));
+        double radiusE = EARTH.radius(nuE);
         double helioLonE = nuE + EARTH.lonAtPerigee;
 
         //**************** ECLIPTIC COORDINATES *********************
@@ -138,5 +138,27 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         double newMagnitude = magnitude + 5 * Math.log10(radius * rho / Math.sqrt(phase));
 
         return new Planet(frenchName, eclipticToEquatorialConversion.apply(eclipticCoordinates), (float) newAngularSize, (float) newMagnitude);
+    }
+
+    /**
+     * Computes the true anomaly for the given number
+     * of days since J2010
+     *
+     * @param daysSinceJ2010 the number of days since J2010
+     * @return the true anomaly of the planet
+     */
+    private double trueAnomaly(double daysSinceJ2010) {
+        double meanAnomaly = AVERAGE_ANGULAR_SPEED * (daysSinceJ2010 / orbitalRevolution) + lonAtJ2010 - lonAtPerigee; //Mean anomaly
+        return meanAnomaly + 2 * orbitalEccentricity * Math.sin(meanAnomaly); //True anomaly
+    }
+
+    /**
+     * Computes the radius of the planet given its true anomaly
+     *
+     * @param trueAnomaly the true anomaly of the planet
+     * @return the radius of the planet
+     */
+    private double radius(double trueAnomaly) {
+        return (orbitalSemiMajorAxis * (1 - orbitalEccentricity * orbitalEccentricity)) / (1 + orbitalEccentricity * Math.cos(trueAnomaly));
     }
 }

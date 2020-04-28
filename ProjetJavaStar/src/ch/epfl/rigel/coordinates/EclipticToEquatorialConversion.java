@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.function.Function;
 
 /**
- * Tools to convert from Ecliptic Coordinates to Equatorial Coordinates
+ * Class used to convert from Ecliptic Coordinates to Equatorial Coordinates
  *
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
@@ -45,12 +45,11 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
      */
     @Override
     public EquatorialCoordinates apply(EclipticCoordinates ecl) {
-
         double sinLon = Math.sin(ecl.lon());
-        double alphaEqu = Math.atan2(sinLon * cosObli - Math.tan(ecl.lat()) * sinObli, Math.cos(ecl.lon()));
-        double deltaEqu = Math.asin(Math.sin(ecl.lat()) * cosObli + Math.cos(ecl.lat()) * sinObli * sinLon);
+        double rightAscension = Math.atan2(sinLon * cosObli - Math.tan(ecl.lat()) * sinObli, Math.cos(ecl.lon()));
+        double declination = Math.asin(Math.sin(ecl.lat()) * cosObli + Math.cos(ecl.lat()) * sinObli * sinLon);
 
-        return EquatorialCoordinates.of(Angle.normalizePositive(alphaEqu), deltaEqu);
+        return EquatorialCoordinates.of(Angle.normalizePositive(rightAscension), declination);
     }
 
     @Override

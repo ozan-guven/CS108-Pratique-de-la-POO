@@ -15,7 +15,6 @@ import java.util.*;
 public final class StarCatalogue {
 
     private final List<Star> stars;
-    private final List<Asterism> asterisms;
 
     private final Map<Asterism, List<Integer>> starIndexMap;
 
@@ -29,9 +28,23 @@ public final class StarCatalogue {
      */
     public StarCatalogue(List<Star> stars, List<Asterism> asterisms) {
         this.stars = List.copyOf(stars);
-        this.asterisms = List.copyOf(asterisms);
         starIndexMap = new HashMap<>();
 
+        /*Map<Star, Integer> indexOfStar = new HashMap<>();
+
+        for (Star star : stars) {
+            indexOfStar.put(star, stars.indexOf(star));
+        }
+
+        for (Asterism asterism : asterisms) {
+            List<Integer> listOfIndex = new ArrayList<>();
+            Preconditions.checkArgument(stars.containsAll(asterism.stars())); //Checks if all the stars of all the asterisims are in the list of stars
+
+            for (Star star : asterism.stars()) {
+                listOfIndex.add(indexOfStar.get(star)); //Adds the index of the current star contained in the list star to the index list
+            }*/
+
+        //TODO : JE NE SAIS PAS COMMENT FAIRE CA DU COUP
         for (Asterism asterism : asterisms) {
             List<Integer> listOfIndex = new ArrayList<>();
 
@@ -50,7 +63,7 @@ public final class StarCatalogue {
      * @return the list of stars of the catalogue
      */
     public List<Star> stars() {
-        return List.copyOf(stars);
+        return stars;
     }
 
     /**
@@ -59,7 +72,7 @@ public final class StarCatalogue {
      * @return the set containing all the asterisims of the catalogue
      */
     public Set<Asterism> asterisms() {
-        return new HashSet<>(asterisms);
+        return new HashSet<>(starIndexMap.keySet());
     }
 
     /**
@@ -71,7 +84,7 @@ public final class StarCatalogue {
      * @throws IllegalArgumentException if the asterism is not in the catalogue
      */
     public List<Integer> asterismIndices(Asterism asterism) {
-        Preconditions.checkArgument(asterisms.contains(asterism)); //Can throw the exception
+        Preconditions.checkArgument(starIndexMap.containsKey(asterism)); //Can throw the exception
 
         return List.copyOf(starIndexMap.get(asterism));
     }

@@ -29,13 +29,13 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
             while ((s = stream.readLine()) != null) {
                 String[] tab = s.split(",");
 
-                int hypID = !tab[Column.HIP.ordinal()].equals("") ? Integer.parseInt(tab[Column.HIP.ordinal()]) : 0;
+                int hypID = !tab[Column.HIP.ordinal()].isBlank() ? Integer.parseInt(tab[Column.HIP.ordinal()]) : 0;
 
                 StringBuilder strBuilder = new StringBuilder();
-                if (!tab[Column.PROPER.ordinal()].equals("")) {
+                if (!tab[Column.PROPER.ordinal()].isBlank()) {
                     strBuilder.append(tab[Column.PROPER.ordinal()]);
                 } else {
-                    if (!tab[Column.BAYER.ordinal()].equals("")) {
+                    if (!tab[Column.BAYER.ordinal()].isBlank()) {
                         strBuilder.append(tab[Column.BAYER.ordinal()]);
                     } else {
                         strBuilder.append("?");
@@ -46,9 +46,9 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 
                 EquatorialCoordinates coord = EquatorialCoordinates.of(Double.parseDouble(tab[Column.RARAD.ordinal()]), Double.parseDouble(tab[Column.DECRAD.ordinal()]));
 
-                float magnitude = !tab[Column.MAG.ordinal()].equals("") ? Float.parseFloat(tab[Column.MAG.ordinal()]) : 0;
+                float magnitude = !tab[Column.MAG.ordinal()].isBlank() ? Float.parseFloat(tab[Column.MAG.ordinal()]) : 0;
 
-                float color = !tab[Column.CI.ordinal()].equals("") ? Float.parseFloat(tab[Column.CI.ordinal()]) : 0;
+                float color = !tab[Column.CI.ordinal()].isBlank() ? Float.parseFloat(tab[Column.CI.ordinal()]) : 0;
 
                 builder.addStar(new Star(hypID, strBuilder.toString(), coord, magnitude, color));
             }

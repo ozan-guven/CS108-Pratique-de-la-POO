@@ -19,6 +19,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
     private final double lambdaZero; //The longitude (azimuth) of the center point
     private final double phiOne; //The latitude (altitude) of the center point
 
+    //TODO : CONTESTER !
     private final String centerCoord; //The coordinates of the center of the projection
 
     /**

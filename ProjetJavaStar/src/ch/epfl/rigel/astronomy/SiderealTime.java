@@ -17,8 +17,8 @@ import java.time.temporal.ChronoUnit;
 public final class SiderealTime {
 
     private static final double MILLIS_PER_HOUR = 1000.0 * 60.0 * 60.0;
-    private static final Polynomial SIDEREAL_0 = Polynomial.of(0.000025862, 2400.051336, 6.697374558);
-    private static final double SIDEREAL_1 = 1.002737909;
+    private static final Polynomial SIDEREAL_POLY = Polynomial.of(0.000025862, 2400.051336, 6.697374558);
+    private static final double SIDEREAL_CONSTANT = 1.002737909;
 
     private SiderealTime() {
     }
@@ -36,8 +36,8 @@ public final class SiderealTime {
         double julCentToWhenZero = Epoch.J2000.julianCenturiesUntil(whenInGreenwichAtZero);
         double hrsFromZeroToWhen = whenInGreenwichAtZero.until(whenInGreenwich, ChronoUnit.MILLIS) / MILLIS_PER_HOUR;
 
-        double sidereal0 = SIDEREAL_0.at(julCentToWhenZero);
-        double sidereal1 = SIDEREAL_1 * hrsFromZeroToWhen;
+        double sidereal0 = SIDEREAL_POLY.at(julCentToWhenZero);
+        double sidereal1 = SIDEREAL_CONSTANT * hrsFromZeroToWhen;
 
         return Angle.normalizePositive(Angle.ofHr(sidereal0 + sidereal1)); //Where sidereal0 + sidereal1 is the sidereal time in Greenwich in hours
     }
@@ -50,9 +50,7 @@ public final class SiderealTime {
      * @return the sidereal time (in radians) at the date when for the given place where
      */
     public static double local(ZonedDateTime when, GeographicCoordinates where) {
-        double siderealL = greenwich(when) + where.lon(); //In radians
-
-        return Angle.normalizePositive(siderealL);
+        return Angle.normalizePositive(greenwich(when) + where.lon());
     }
 
 }

@@ -14,19 +14,20 @@ public enum Epoch {
     //Definition of the J2000 epoch : 1st January 2000 at 12:00 UTC
     J2000(ZonedDateTime.of(
             LocalDate.of(2000, Month.JANUARY, 1),
-            LocalTime.of(12, 0),
+            LocalTime.NOON,
             ZoneOffset.UTC)),
 
     //Definition of the J2010 epoch : 31st December 2009 (0th January 2010) at 00:00 UTC
     J2010(ZonedDateTime.of(
             LocalDate.of(2010, Month.JANUARY, 1).minusDays(1),
-            LocalTime.of(0, 0),
+            LocalTime.MIDNIGHT,
             ZoneOffset.UTC));
 
     private static final double MILLIS_PER_DAY = 1000 * 60 * 60 * 24; //Number of milliseconds in a day
     private static final double MILLIS_PER_JULIAN_CENTURIES = 1000 * 60 * 60 * 24 * 365.25 * 100; //Number of milliseconds in a Julian century
 
-    private ZonedDateTime epochDate;
+    //TODO : Vraiment final ?
+    private final ZonedDateTime epochDate;
 
     private Epoch(ZonedDateTime epochDate) {
         this.epochDate = epochDate;
@@ -40,9 +41,7 @@ public enum Epoch {
      * @return the number of days between when and the epoch
      */
     public double daysUntil(ZonedDateTime when) {
-        double timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
-
-        return timeToWhen / MILLIS_PER_DAY;
+        return epochDate.until(when, ChronoUnit.MILLIS) / MILLIS_PER_DAY;
     }
 
     /**
@@ -54,8 +53,6 @@ public enum Epoch {
      * @return the number of days between when and the epoch
      */
     public double julianCenturiesUntil(ZonedDateTime when) {
-        double timeToWhen = epochDate.until(when, ChronoUnit.MILLIS);
-
-        return timeToWhen / MILLIS_PER_JULIAN_CENTURIES;
+        return epochDate.until(when, ChronoUnit.MILLIS) / MILLIS_PER_JULIAN_CENTURIES;
     }
 }
