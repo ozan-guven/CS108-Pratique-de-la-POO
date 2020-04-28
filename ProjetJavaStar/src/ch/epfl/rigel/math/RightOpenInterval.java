@@ -38,7 +38,8 @@ public final class RightOpenInterval extends Interval {
      */
     public static RightOpenInterval symmetric(double size) {
         checkArgument(size > 0);
-        return new RightOpenInterval(-size / 2, size / 2);
+        double halfSize = size / 2;
+        return new RightOpenInterval(-halfSize, halfSize);
     }
 
     /**
@@ -59,6 +60,8 @@ public final class RightOpenInterval extends Interval {
      * @return the reduced value
      */
     public double reduce(double v) {
+        if (this.contains(v))
+            return v;
         double x = v - low();
         return low() + x - size() * Math.floor(x / size());
     }

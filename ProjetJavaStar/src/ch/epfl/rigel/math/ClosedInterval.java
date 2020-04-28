@@ -38,7 +38,8 @@ public final class ClosedInterval extends Interval {
      */
     public static ClosedInterval symmetric(double size) {
         checkArgument(size > 0);
-        return new ClosedInterval(-size / 2, size / 2);
+        double halfSize = size / 2;
+        return new ClosedInterval(-halfSize, halfSize);
     }
 
     /**

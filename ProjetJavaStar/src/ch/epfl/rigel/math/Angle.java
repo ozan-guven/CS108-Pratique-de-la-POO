@@ -34,6 +34,7 @@ public final class Angle {
      * @return the normalized angle
      */
     public static double normalizePositive(double rad) {
+        //TODO : ici ?
         RightOpenInterval interval = RightOpenInterval.of(0, TAU);
         return interval.reduce(rad);
     }

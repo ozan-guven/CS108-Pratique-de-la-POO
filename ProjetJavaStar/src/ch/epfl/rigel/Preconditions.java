@@ -20,7 +20,22 @@ public final class Preconditions {
      */
     public static void checkArgument(boolean isTrue) {
         if (!isTrue) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The condition has not been met.");
+        }
+    }
+
+    /**
+     * Throws an exception if the condition is not met and prints
+     * the given message to the output console.
+     *
+     * @param isTrue       boolean condition that needs to be checked
+     * @param errorMessage message to be print on the screen if the condition is false
+     * @throws IllegalArgumentException if the argument is false
+     */
+    //TODO : On pourrait aussi utiliser cette nouvelle méthode ?
+    public static void checkArgument(boolean isTrue, String errorMessage) {
+        if (!isTrue) {
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 
@@ -33,7 +48,9 @@ public final class Preconditions {
      * @throws IllegalArgumentException if the value is not in the interval
      */
     public static double checkInInterval(Interval interval, double value) {
-        checkArgument(interval.contains(value));
+        //checkArgument(interval.contains(value));
+        if (!interval.contains(value))
+            throw new IllegalArgumentException("The given value exceeds the bounds of the given interval.");
         return value;
     }
 
