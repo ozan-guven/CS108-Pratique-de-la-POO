@@ -29,8 +29,7 @@ public final class StarCatalogue {
     public StarCatalogue(List<Star> stars, List<Asterism> asterisms) {
         this.stars = List.copyOf(stars);
         starIndexMap = new HashMap<>();
-
-        /*Map<Star, Integer> indexOfStar = new HashMap<>();
+        Map<Star, Integer> indexOfStar = new HashMap<>();
 
         for (Star star : stars) {
             indexOfStar.put(star, stars.indexOf(star));
@@ -42,8 +41,9 @@ public final class StarCatalogue {
 
             for (Star star : asterism.stars()) {
                 listOfIndex.add(indexOfStar.get(star)); //Adds the index of the current star contained in the list star to the index list
-            }*/
+            }
 
+        /*
         //TODO : JE NE SAIS PAS COMMENT FAIRE CA DU COUP
         for (Asterism asterism : asterisms) {
             List<Integer> listOfIndex = new ArrayList<>();
@@ -51,7 +51,7 @@ public final class StarCatalogue {
             for (Star star : asterism.stars()) {
                 Preconditions.checkArgument(stars.contains(star)); //Checks if all the stars of all the asterisims are in the list of stars
                 listOfIndex.add(stars.indexOf(star)); //Adds the index of the current star contained in the list star to the index list
-            }
+            }*/
 
             starIndexMap.put(asterism, listOfIndex);
         }
