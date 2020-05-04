@@ -2,7 +2,6 @@ package ch.epfl.rigel.gui;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 
 /**
  * Interface representing a time accelerator
@@ -12,6 +11,11 @@ import java.time.temporal.ChronoUnit;
  */
 @FunctionalInterface
 public interface TimeAccelerator {
+
+    /**
+     * Constant to convert from nano seconds to seconds
+     */
+    double NANO_TO_SEC = 1e-9;
 
     /**
      * Computes the simulated time T
@@ -44,6 +48,6 @@ public interface TimeAccelerator {
      */
     static TimeAccelerator discrete(int advFreq, Duration step) {
         return (initialTime, timeSinceAnimation) ->
-                initialTime.plusNanos(Math.abs(advFreq * timeSinceAnimation) * step.get(ChronoUnit.NANOS));
+                initialTime.plus(step.multipliedBy((long) Math.abs(advFreq * timeSinceAnimation * NANO_TO_SEC)));
     }
 }
