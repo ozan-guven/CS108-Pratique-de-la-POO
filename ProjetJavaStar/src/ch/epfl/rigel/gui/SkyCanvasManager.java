@@ -40,7 +40,9 @@ public class SkyCanvasManager {
         skyCanvas = new Canvas();
         SkyCanvasPainter painter = new SkyCanvasPainter(skyCanvas);
 
-        skyCanvas.setOnMouseMoved((mouse) -> mousePosition.set(new Point2D(mouse.getX(), mouse.getY())));
+        skyCanvas.setOnMouseMoved((mouse) -> {
+            mousePosition.set(new Point2D(mouse.getX(), mouse.getY()));
+        });
 
         projection = Bindings.createObjectBinding(() -> new StereographicProjection(viewingParametersBean.getCenter()),
                 viewingParametersBean.centerProperty(), viewingParametersBean.fieldOfViewDegProperty());
@@ -59,7 +61,7 @@ public class SkyCanvasManager {
 
         objectUnderMouse = Bindings.createObjectBinding(() ->
                 observedSky.get().objectClosestTo(
-                        CartesianCoordinates.of(mousePosition.get().getX(), mousePosition.get().getY()), 100).get(),
+                        CartesianCoordinates.of(mouseHorizontalPosition.get().az(), mouseHorizontalPosition.get().alt()), 10).get(),
                 observedSky, mousePosition);
 
         mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
