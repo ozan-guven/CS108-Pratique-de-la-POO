@@ -53,6 +53,11 @@ public class ObserverLocationBean {
     public ObjectBinding<GeographicCoordinates> coordinatesProperty() {
         return coordinates;
     }
+
+    public void setCoordinates(GeographicCoordinates coordinates) {
+        setLonDeg(coordinates.lonDeg());
+        setLatDeg(coordinates.latDeg());
+    }
 }
 
 /*//TODO TEST
