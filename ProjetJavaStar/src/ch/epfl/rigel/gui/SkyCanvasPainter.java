@@ -203,6 +203,15 @@ public class SkyCanvasPainter {
         }
     }
 
+    public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas) {
+        clear();
+        drawStars(observedSky, projection, planeToCanvas);
+        drawPlanets(observedSky, projection, planeToCanvas); //Draws the planets
+        drawSun(observedSky, projection, planeToCanvas); //Draws the sun
+        drawMoon(observedSky, projection, planeToCanvas);//Draws the moon
+        drawHorizon(projection, planeToCanvas); //Draws the horizon
+    }
+
     /**
      * Enumeration containing all the 8 cardinal and intercardinal points
      * with their french name and their horizontal coordinates
