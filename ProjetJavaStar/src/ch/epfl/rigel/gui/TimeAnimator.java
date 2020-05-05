@@ -1,10 +1,7 @@
 package ch.epfl.rigel.gui;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.*;
 
 import java.time.ZonedDateTime;
 
@@ -17,10 +14,11 @@ import java.time.ZonedDateTime;
 public final class TimeAnimator extends AnimationTimer {
     private DateTimeBean timeBean;
     private boolean firstTime;
+    private ZonedDateTime zDT;
     private long initialTime;
     private long elapsedTime;
 
-    private final ObjectProperty<TimeAccelerator> accelerator = null;
+    private final ObjectProperty<TimeAccelerator> accelerator = new SimpleObjectProperty<>(null);
     private final BooleanProperty running = new SimpleBooleanProperty();
 
     public TimeAnimator(DateTimeBean timeBean) {
@@ -44,15 +42,16 @@ public final class TimeAnimator extends AnimationTimer {
     @Override
     public void handle(long now) {
         if(firstTime){
+            zDT = timeBean.getZonedDateTime();
             initialTime = now;
             firstTime = false;
         }
         elapsedTime = now - initialTime;
-        timeBean.setZonedDateTime(getAccelerator().adjust(timeBean.getZonedDateTime(), elapsedTime));
+        timeBean.setZonedDateTime(getAccelerator().adjust(zDT, elapsedTime));
     }
 
     public TimeAccelerator getAccelerator() {
-        return accelerator.getValue();
+        return accelerator.get();
     }
 
     public ObjectProperty<TimeAccelerator> acceleratorProperty() {
@@ -60,7 +59,7 @@ public final class TimeAnimator extends AnimationTimer {
     }
 
     public void setAccelerator(TimeAccelerator accelerator) {
-        this.accelerator.setValue(accelerator);
+        this.accelerator.set(accelerator);
     }
 
     public boolean isRunning() {
