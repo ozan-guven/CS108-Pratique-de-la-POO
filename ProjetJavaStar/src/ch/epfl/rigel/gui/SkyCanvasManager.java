@@ -63,11 +63,10 @@ public class SkyCanvasManager {
                 },
                 skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
 
-        objectUnderMouse = Bindings.createObjectBinding(() ->
-                        observedSky.get().objectClosestTo(
-                                //TODO Ca ne marche pas
-                                CartesianCoordinates.of(mouseHorizontalPosition.get().az(), mouseHorizontalPosition.get().alt()), 10).get(),
-                observedSky, mousePosition, planeToCanvas);
+        objectUnderMouse = Bindings.createObjectBinding(() -> {
+                    Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
+                    return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).get();
+                }, observedSky, mousePosition, planeToCanvas);
 
         mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
             Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
