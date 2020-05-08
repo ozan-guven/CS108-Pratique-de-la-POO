@@ -16,6 +16,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Transform;
 
 public class SkyCanvasManager {
@@ -64,17 +65,37 @@ public class SkyCanvasManager {
                 skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
 
         objectUnderMouse = Bindings.createObjectBinding(() -> {
-                    Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-                    return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).get();
+            try {
+                Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
+                return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).get();
+            } catch (NonInvertibleTransformException e) {
+                return null;
+            }
                 }, observedSky, mousePosition, planeToCanvas);
 
         mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
-            Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-            return projection.get().inverseApply(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()));
+            try {
+                Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
+                return projection.get().inverseApply(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()));
+            } catch (NonInvertibleTransformException e) {
+                return null;
+            }
         }, projection, planeToCanvas, mousePosition);
 
-        mouseAltDeg = Bindings.createDoubleBinding(() -> mouseHorizontalPosition.get().altDeg(), mouseHorizontalPosition);
-        mouseAzDeg = Bindings.createDoubleBinding(() -> mouseHorizontalPosition.get().azDeg(), mouseHorizontalPosition);
+        mouseAltDeg = Bindings.createDoubleBinding(() -> {
+            try {
+                return mouseHorizontalPosition.get().altDeg();
+            } catch (NullPointerException e) {
+                return 0.0; //TODO: je ne sais pas si c'est la meilleure des moyens
+            }
+        }, mouseHorizontalPosition);
+        mouseAzDeg = Bindings.createDoubleBinding(() -> {
+            try {
+                return mouseHorizontalPosition.get().azDeg();
+            } catch (NullPointerException e) {
+                return 0.0;
+            }
+        }, mouseHorizontalPosition);
 
         skyCanvas.setOnMousePressed((mousePress) -> {
             if(mousePress.isPrimaryButtonDown())
@@ -82,6 +103,7 @@ public class SkyCanvasManager {
         });
 
         skyCanvas.setOnKeyPressed((key) -> {
+            key.consume(); //Avoids to go to the top control bar when pressing UP
             HorizontalCoordinates coord = viewingParametersBean.getCenter();
             switch (key.getCode()) {
                 case UP:
@@ -122,6 +144,22 @@ public class SkyCanvasManager {
 
     public Canvas canvas() {
         return skyCanvas;
+    }
+
+    public Number getMouseAzDeg() {
+        return mouseAzDeg.get();
+    }
+
+    public DoubleBinding mouseAzDegProperty() {
+        return mouseAzDeg;
+    }
+
+    public Number getMouseAltDeg() {
+        return mouseAltDeg.get();
+    }
+
+    public DoubleBinding mouseAltDegProperty() {
+        return mouseAltDeg;
     }
 
     public CelestialObject getObjectUnderMouse() {
