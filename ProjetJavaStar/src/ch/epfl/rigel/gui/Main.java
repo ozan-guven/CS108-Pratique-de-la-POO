@@ -1,20 +1,30 @@
 package ch.epfl.rigel.gui;
 
+import ch.epfl.rigel.astronomy.AsterismLoader;
+import ch.epfl.rigel.astronomy.HygDatabaseLoader;
+import ch.epfl.rigel.astronomy.Star;
+import ch.epfl.rigel.astronomy.StarCatalogue;
 import ch.epfl.rigel.coordinates.GeographicCoordinates;
+import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +32,50 @@ import java.util.function.UnaryOperator;
 
 public class Main extends Application {
 
-    public static final int MIN_WIDTH_STAGE = 800;
-    public static final int MIN_HEIGHT_STAGE = 600;
+    private static final int MIN_WIDTH_STAGE = 800;
+    private static final int MIN_HEIGHT_STAGE = 600;
+    private static final GeographicCoordinates DEFAULT_OBSERVATION_COORDINATES =
+            GeographicCoordinates.ofDeg(6.57, 46.52);
+    private static final HorizontalCoordinates DEFAULT_CENTER_FOR_VIEW =
+            HorizontalCoordinates.ofDeg(180.000000000001, 15);
+    private static final int DEFAULT_FIELD_OF_VIEW = 100;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
+
+        StarCatalogue catalogue;
+
+        try (InputStream hygDataLoader = resourceStream("/hygdata_v3.csv");
+             InputStream astLoader = resourceStream("/asterisms.txt")) {
+            catalogue = new StarCatalogue.Builder()
+                    .loadFrom(hygDataLoader, HygDatabaseLoader.INSTANCE)
+                    .loadFrom(astLoader, AsterismLoader.INSTANCE)
+                    .build();
+        }
+
+        ZonedDateTime when = ZonedDateTime.now();
+        DateTimeBean dateTimeBean = new DateTimeBean();
+        dateTimeBean.setZonedDateTime(when);
+
+        ObserverLocationBean observerLocationBean = new ObserverLocationBean();
+        observerLocationBean.setCoordinates(DEFAULT_OBSERVATION_COORDINATES);
+
+        ViewingParametersBean viewingParametersBean = new ViewingParametersBean();
+        viewingParametersBean.setCenter(DEFAULT_CENTER_FOR_VIEW);
+        viewingParametersBean.setFieldOfViewDeg(DEFAULT_FIELD_OF_VIEW);
+
+        SkyCanvasManager canvasManager =
+                new SkyCanvasManager(catalogue, dateTimeBean, observerLocationBean, viewingParametersBean);
+
+        Canvas sky = canvasManager.canvas();
+        Pane skyPane = new Pane(sky);
+
+        sky.widthProperty().bind(skyPane.widthProperty());
+        sky.heightProperty().bind(skyPane.heightProperty());
 
         //-------------------------------------------- COORDINATES CONTROL------------------------------------------------------
         TextField textFieldLon = new TextField();
@@ -131,7 +176,7 @@ public class Main extends Application {
 
 
         //------------------------------------------------------------------------------------------------------------------------------------------------------------
-        BorderPane root = new BorderPane(null, controlBar, null, null, null);
+        BorderPane root = new BorderPane(skyPane, controlBar, null, null, null);
 
         //------------------------------------------------------------------------------------------------------------------------------------------------------------
         primaryStage.setTitle("Rigel");
@@ -140,6 +185,8 @@ public class Main extends Application {
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+        sky.requestFocus();
     }
 
     /**
@@ -195,5 +242,9 @@ public class Main extends Application {
         textFieldLat.setTextFormatter(latTextFormatter);
 
         return new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat);
+    }
+
+    private InputStream resourceStream(String resourceName) {
+        return getClass().getResourceAsStream(resourceName);
     }
 }
