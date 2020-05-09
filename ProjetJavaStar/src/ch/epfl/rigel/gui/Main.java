@@ -235,6 +235,8 @@ public class Main extends Application {
         primaryStage.setMinHeight(MIN_HEIGHT_STAGE);
 
         primaryStage.setScene(new Scene(root));
+        //primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("esc")); //TODO : on peut aussi faire ça comme bonus
         primaryStage.show();
 
         sky.requestFocus();
