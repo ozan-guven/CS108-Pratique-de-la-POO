@@ -161,6 +161,7 @@ public class Main extends Application {
         listOfZoneIds.sort(String::compareTo); //Calls the String compareTo method
         zoneIdPicker.getItems().addAll(listOfZoneIds);
         zoneIdPicker.getSelectionModel().select(ZoneId.systemDefault().toString());
+        zoneIdPicker.setOnAction((choose) -> dateTimeBean.setZone(ZoneId.of(zoneIdPicker.getValue()))); //TODO c'est peut-être pas comme ça qu'il faut faire
         //zoneIdPicker.valueProperty().bindBidirectional(dateTimeBean.timeProperty()); //TODO : ne marche pas encore
         zoneIdPicker.setStyle("-fx-pref-width: 180;");
 
@@ -185,6 +186,7 @@ public class Main extends Application {
             dateTimeBean.setDate(LocalDate.now());
             dateTimeBean.setTime(LocalTime.now());
             dateTimeBean.setZone(ZoneId.systemDefault());
+            zoneIdPicker.getSelectionModel().select(ZoneId.systemDefault().toString()); //TODO Justemet j'ai ajouté parce que sinon avec l'autre ça marche pas
         });
 
         Button playPauseButton = new Button(PLAY);
