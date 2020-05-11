@@ -156,9 +156,9 @@ public class Main extends Application {
         hourPicker.setTextFormatter(timeFormatter); //TODO ne marche pas
 
 
-        ComboBox<String> zoneIdPicker = new ComboBox<>();
+        ComboBox<String> zoneIdPicker = new ComboBox<>(); //TODO COMBO BOX DE CelestialObject C'EST FAUX CE QUE J'AI FAIT
         List<String> listOfZoneIds = new ArrayList<>(ZoneId.getAvailableZoneIds());
-        listOfZoneIds.sort(String::compareTo); //Calls the String compareTo method
+        listOfZoneIds.sort(String::compareTo); //Calls the String compareTo method //TODO : Du coup on ne peut pas utiliser la méthode String::compareTo
         zoneIdPicker.getItems().addAll(listOfZoneIds);
         zoneIdPicker.getSelectionModel().select(ZoneId.systemDefault().toString());
         zoneIdPicker.setOnAction((choose) -> dateTimeBean.setZone(ZoneId.of(zoneIdPicker.getValue()))); //TODO c'est peut-être pas comme ça qu'il faut faire
@@ -220,7 +220,7 @@ public class Main extends Application {
         Text closestObject = new Text();
         closestObject.setStyle("-fx-padding: 4; -fx-background-color: white;");
         canvasManager.objectUnderMouseProperty().addListener((o, oV, nV) ->
-                closestObject.setText(nV == null ? "" : nV.info()));
+                closestObject.setText(nV == null ? "" : nV.info())); //TODO: stringBinding
 
         Text horCoord = new Text();
         horCoord.setStyle("-fx-padding: 4; -fx-background-color: white;");
