@@ -67,7 +67,11 @@ public class SkyCanvasManager {
         objectUnderMouse = Bindings.createObjectBinding(() -> {
             try {
                 Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-                return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).get();
+                if (observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).isPresent()) {
+                    return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).get();
+                }else{
+                    return null;
+                }
             } catch (NonInvertibleTransformException e) {
                 return null;
             }

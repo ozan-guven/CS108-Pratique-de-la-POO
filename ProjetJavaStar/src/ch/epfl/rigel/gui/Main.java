@@ -215,7 +215,7 @@ public class Main extends Application {
 
         Text fieldOfViewText = new Text();
         fieldOfViewText.setStyle("-fx-padding: 4; -fx-background-color: white;");
-        fieldOfViewText.textProperty().bind(Bindings.format("Champ de vue : %.2f°", viewingParametersBean.fieldOfViewDegProperty()));
+        fieldOfViewText.textProperty().bind(Bindings.format("Champ de vue : %.1f°", viewingParametersBean.fieldOfViewDegProperty()));
 
         Text closestObject = new Text();
         closestObject.setStyle("-fx-padding: 4; -fx-background-color: white;");
