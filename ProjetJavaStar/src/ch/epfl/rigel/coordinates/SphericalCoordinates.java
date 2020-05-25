@@ -13,9 +13,14 @@ import ch.epfl.rigel.math.RightOpenInterval;
  */
 abstract class SphericalCoordinates {
 
-    //TODO : On avait raison Schinz a dit que c'est justifié
-    //To check if the values are valid for the interval
+    //To check if the values are valid for the interval, only used by the subclasses
+    /**
+     * Constant to check in the interval [0, TAU[
+     */
     protected static final Interval INTERVAL_0_TO_TAU = RightOpenInterval.of(0, Angle.TAU);
+    /**
+     * Constant to check in the interval [- pi / 2, pi / 2]
+     */
     protected static final Interval INTERVAL_SYM_PI = ClosedInterval.symmetric(Angle.TAU / 2);
 
     private final double longitude, latitude;
