@@ -67,15 +67,15 @@ public class SkyCanvasManager {
         objectUnderMouse = Bindings.createObjectBinding(() -> {
             try {
                 Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-                if (observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).isPresent()) {
-                    return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), 10).get();
-                }else{
+                if (observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX()).isPresent()) {
+                    return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX()).get();
+                } else {
                     return null;
                 }
             } catch (NonInvertibleTransformException e) {
                 return null;
             }
-                }, observedSky, mousePosition, planeToCanvas);
+        }, observedSky, mousePosition, planeToCanvas);
 
         mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
             try {
@@ -102,7 +102,7 @@ public class SkyCanvasManager {
         }, mouseHorizontalPosition);
 
         skyCanvas.setOnMousePressed((mousePress) -> {
-            if(mousePress.isPrimaryButtonDown())
+            if (mousePress.isPrimaryButtonDown())
                 skyCanvas.requestFocus();
         });
 
