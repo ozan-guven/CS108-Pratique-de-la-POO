@@ -31,6 +31,14 @@ import java.util.function.UnaryOperator;
 
 public class Main extends Application {
 
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private static final int MIN_WIDTH_STAGE = 800;
     private static final int MIN_HEIGHT_STAGE = 600;
     private static final GeographicCoordinates DEFAULT_OBSERVATION_COORDINATES =
@@ -156,7 +164,7 @@ public class Main extends Application {
         hourPicker.setTextFormatter(timeFormatter); //TODO ne marche pas
 
 
-        ComboBox<String> zoneIdPicker = new ComboBox<>(); //TODO COMBO BOX DE CelestialObject C'EST FAUX CE QUE J'AI FAIT
+        ComboBox<String> zoneIdPicker = new ComboBox<>(); //TODO COMBO BOX DE CelestialObject C'EST FAUX CE QUE J'AI FAIT, mettre ComboBox<ZoneId>
         List<String> listOfZoneIds = new ArrayList<>(ZoneId.getAvailableZoneIds());
         listOfZoneIds.sort(String::compareTo); //Calls the String compareTo method //TODO : Du coup on ne peut pas utiliser la méthode String::compareTo
         zoneIdPicker.getItems().addAll(listOfZoneIds);
