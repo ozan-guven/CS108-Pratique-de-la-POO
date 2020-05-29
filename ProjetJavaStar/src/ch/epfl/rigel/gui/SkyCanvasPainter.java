@@ -93,11 +93,11 @@ public final class SkyCanvasPainter {
         drawAsterisms(sky, transformed);
 
         int i = 0;
-        double z;
+        double starDiameter;
         for (Star star : sky.stars()) {
-            z = planeToCanvas.deltaTransform(diameterFromMagnitude(star.magnitude(), projection), 0).getX();
+            starDiameter = planeToCanvas.deltaTransform(diameterFromMagnitude(star.magnitude(), projection), 0).getX();
             ctx.setFill(BlackBodyColor.colorForTemperature(star.colorTemperature()));
-            ctx.fillOval(transformed[i++] - z / 2, transformed[i++] - z / 2, z, z);
+            ctx.fillOval(transformed[i++] - starDiameter / 2, transformed[i++] - starDiameter / 2, starDiameter, starDiameter);
         }
     }
 

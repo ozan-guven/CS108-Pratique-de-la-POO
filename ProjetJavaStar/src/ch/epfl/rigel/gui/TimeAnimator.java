@@ -85,15 +85,6 @@ public final class TimeAnimator extends AnimationTimer {
     }
 
     /**
-     * Getter for the running boolean
-     *
-     * @return the running boolean
-     */
-    public boolean isRunning() {
-        return running.get();
-    }
-
-    /**
      * Getter for the running property
      *
      * @return the running property

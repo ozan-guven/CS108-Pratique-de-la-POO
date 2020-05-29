@@ -35,7 +35,7 @@ public final class ObserverLocationBean {
     }
 
     /**
-     * Getter for the lonitude property
+     * Getter for the longitude property
      *
      * @return (DoubleProperty)
      */
