@@ -13,11 +13,6 @@ import java.time.ZonedDateTime;
 public interface TimeAccelerator {
 
     /**
-     * Constant to convert from nano seconds to seconds
-     */
-    double NANO_TO_SEC = 1e-9;
-
-    /**
      * Computes the simulated time T
      *
      * @param initialTime        represents the initial simulated time
@@ -48,6 +43,7 @@ public interface TimeAccelerator {
      */
     static TimeAccelerator discrete(int advFreq, Duration step) {
         return (initialTime, timeSinceAnimation) ->
-                initialTime.plus(step.multipliedBy((long) Math.abs(advFreq * timeSinceAnimation * NANO_TO_SEC)));
+                //1e-9 represents the conversion from nano seconds to seconds
+                initialTime.plus(step.multipliedBy((long) Math.abs(advFreq * timeSinceAnimation * 1e-9)));
     }
 }
