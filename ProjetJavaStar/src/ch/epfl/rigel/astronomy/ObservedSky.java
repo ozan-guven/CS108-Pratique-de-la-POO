@@ -24,7 +24,7 @@ public final class ObservedSky {
 
     private final CartesianCoordinates sunCoordinates;
     private final CartesianCoordinates moonCoordinates;
-    private final double[] planetPositions = new double[14];
+    private final double[] planetPositions;
     private final double[] starsPositions;
 
     private Map<CelestialObject, CartesianCoordinates> mapOfAll;
@@ -57,6 +57,7 @@ public final class ObservedSky {
         mapOfAll.put(sun, sunCoordinates);
         mapOfAll.put(moon, moonCoordinates);
 
+        planetPositions = new double[14];
         planets = new ArrayList<>();
         int i = 0;
         for (PlanetModel planet : PlanetModel.ALL) {

@@ -64,24 +64,9 @@ public final class SkyCanvasManager {
 
         planeToCanvas = initiatePlaneToCanvas(viewingParametersBean, painter);
 
-        objectUnderMouse = Bindings.createObjectBinding(() -> {
-            try {
-                Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-                Optional<CelestialObject> objectClosest = observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX());
-                return objectClosest.orElse(null);
-            } catch (NonInvertibleTransformException e) {
-                return null;
-            }
-        }, observedSky, mousePosition, planeToCanvas);
+        objectUnderMouse = initiateObjectUnderMouse();
 
-        mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
-            try {
-                Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-                return projection.get().inverseApply(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()));
-            } catch (NonInvertibleTransformException e) {
-                return null;
-            }
-        }, projection, planeToCanvas, mousePosition);
+        mouseHorizontalPosition = initiateMouseHorizontalPosition();
 
         mouseAltDeg = Bindings.createDoubleBinding(() -> {
             try {
@@ -225,6 +210,29 @@ public final class SkyCanvasManager {
         planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV));
 
         return planeToCanvas;
+    }
+
+    private ObjectBinding<CelestialObject> initiateObjectUnderMouse() {
+        return Bindings.createObjectBinding(() -> {
+            try {
+                Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
+                Optional<CelestialObject> objectClosest = observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX());
+                return objectClosest.orElse(null);
+            } catch (NonInvertibleTransformException e) {
+                return null;
+            }
+        }, observedSky, mousePosition, planeToCanvas);
+    }
+
+    private ObjectBinding<HorizontalCoordinates> initiateMouseHorizontalPosition() {
+        return Bindings.createObjectBinding(() -> {
+            try {
+                Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
+                return projection.get().inverseApply(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()));
+            } catch (NonInvertibleTransformException e) {
+                return null;
+            }
+        }, projection, planeToCanvas, mousePosition);
     }
 
     private double dilatation(Canvas canvas, StereographicProjection projection, double fieldOfViewDeg) {
