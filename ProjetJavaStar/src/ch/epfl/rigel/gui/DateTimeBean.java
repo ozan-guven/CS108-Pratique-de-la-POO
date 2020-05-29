@@ -20,12 +20,12 @@ public final class DateTimeBean {
     private final ObjectProperty<ZoneId> zone = new SimpleObjectProperty<>(null);
 
     /**
-     * Constructor of DateTimeBean initializing the properties to the default date when
+     * Constructor of DateTimeBean initializing the properties to the default date initialDate
      *
-     * @param when the first date to use
+     * @param initialDate the first date to use
      */
-    public DateTimeBean(ZonedDateTime when) {
-        setZonedDateTime(when);
+    public DateTimeBean(ZonedDateTime initialDate) {
+        setZonedDateTime(initialDate);
     }
 
     /**

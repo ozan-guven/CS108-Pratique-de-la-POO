@@ -22,8 +22,8 @@ public enum NamedTimeAccelerator {
                     .plus(Duration.ofMinutes(56))
                     .plus(Duration.ofSeconds(4))));
 
-    private String name;
-    private TimeAccelerator accelerator;
+    private final String name;
+    private final TimeAccelerator accelerator;
 
     NamedTimeAccelerator(String name, TimeAccelerator type) {
         this.name = name;
