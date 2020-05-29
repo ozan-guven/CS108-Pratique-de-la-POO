@@ -54,25 +54,15 @@ public final class SkyCanvasManager {
                             DateTimeBean dateTimeBean,
                             ObserverLocationBean observerLocationBean,
                             ViewingParametersBean viewingParametersBean) {
-        skyCanvas = new Canvas();
+        skyCanvas = initiateSkyCanvas(viewingParametersBean);
         SkyCanvasPainter painter = new SkyCanvasPainter(skyCanvas);
-
-        skyCanvas.setOnMouseMoved((mouse) -> mousePosition.set(new Point2D(mouse.getX(), mouse.getY())));
 
         projection = Bindings.createObjectBinding(() -> new StereographicProjection(viewingParametersBean.getCenter()),
                 viewingParametersBean.centerProperty());
 
-        observedSky = Bindings.createObjectBinding(() ->
-                        new ObservedSky(dateTimeBean.getZonedDateTime(), observerLocationBean.getCoordinates(),
-                                projection.get(), catalogue),
-                dateTimeBean.dateProperty(), dateTimeBean.timeProperty(), dateTimeBean.zoneProperty(),
-                observerLocationBean.coordinatesProperty(), projection);
+        observedSky = initiateObservedSky(dateTimeBean, observerLocationBean, catalogue, painter);
 
-        planeToCanvas = Bindings.createObjectBinding(() -> {
-                    double dilatation = dilatation(skyCanvas, projection.get(), viewingParametersBean.getFieldOfViewDeg());
-                    return Transform.affine(dilatation, 0, 0, -dilatation, skyCanvas.getWidth() / 2, skyCanvas.getHeight() / 2);
-                },
-                skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
+        planeToCanvas = initiatePlaneToCanvas(viewingParametersBean, painter);
 
         objectUnderMouse = Bindings.createObjectBinding(() -> {
             try {
@@ -100,6 +90,7 @@ public final class SkyCanvasManager {
                 return 0.0;
             }
         }, mouseHorizontalPosition);
+
         mouseAzDeg = Bindings.createDoubleBinding(() -> {
             try {
                 return mouseHorizontalPosition.get().azDeg();
@@ -107,41 +98,6 @@ public final class SkyCanvasManager {
                 return 0.0;
             }
         }, mouseHorizontalPosition);
-
-        skyCanvas.setOnMousePressed((mousePress) -> {
-            if (mousePress.isPrimaryButtonDown())
-                skyCanvas.requestFocus();
-        });
-
-        skyCanvas.setOnKeyPressed((key) -> {
-            key.consume(); //Avoids to go to the top control bar when pressing UP
-            HorizontalCoordinates coord = viewingParametersBean.getCenter();
-            switch (key.getCode()) {
-                case UP:
-                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() + MOVE_NORTH_SOUTH)));
-                    break;
-                case DOWN:
-                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() - MOVE_NORTH_SOUTH)));
-                    break;
-                case LEFT:
-                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() - MOVE_EAST_WEST), coord.altDeg()));
-                    break;
-                case RIGHT:
-                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() + MOVE_EAST_WEST), coord.altDeg()));
-                    break;
-            }
-        });
-
-        skyCanvas.setOnScroll((scroll) -> {
-            double initFOW = viewingParametersBean.getFieldOfViewDeg();
-            if (Math.abs(scroll.getDeltaX()) >= Math.abs(scroll.getDeltaY()))
-                viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaX()));
-            else
-                viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaY()));
-        });
-
-        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV));
-        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get()));
     }
 
     /**
@@ -204,6 +160,70 @@ public final class SkyCanvasManager {
      */
     public ObjectBinding<CelestialObject> objectUnderMouseProperty() {
         return objectUnderMouse;
+    }
+
+    private Canvas initiateSkyCanvas(ViewingParametersBean viewingParametersBean) {
+        Canvas skyCanvas = new Canvas();
+
+        skyCanvas.setOnMouseMoved((mouse) -> mousePosition.set(new Point2D(mouse.getX(), mouse.getY())));
+
+        skyCanvas.setOnMousePressed((mousePress) -> {
+            if (mousePress.isPrimaryButtonDown())
+                skyCanvas.requestFocus();
+        });
+
+        skyCanvas.setOnKeyPressed((key) -> {
+            key.consume(); //Avoids to go to the top control bar when pressing UP
+            HorizontalCoordinates coord = viewingParametersBean.getCenter();
+            switch (key.getCode()) {
+                case UP:
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() + MOVE_NORTH_SOUTH)));
+                    break;
+                case DOWN:
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() - MOVE_NORTH_SOUTH)));
+                    break;
+                case LEFT:
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() - MOVE_EAST_WEST), coord.altDeg()));
+                    break;
+                case RIGHT:
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() + MOVE_EAST_WEST), coord.altDeg()));
+                    break;
+            }
+        });
+
+        skyCanvas.setOnScroll((scroll) -> {
+            double initFOW = viewingParametersBean.getFieldOfViewDeg();
+            if (Math.abs(scroll.getDeltaX()) >= Math.abs(scroll.getDeltaY()))
+                viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaX()));
+            else
+                viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaY()));
+        });
+
+        return skyCanvas;
+    }
+
+    private ObjectBinding<ObservedSky> initiateObservedSky(DateTimeBean dateTimeBean, ObserverLocationBean observerLocationBean, StarCatalogue catalogue, SkyCanvasPainter painter) {
+        ObjectBinding<ObservedSky> observedSky = Bindings.createObjectBinding(() ->
+                        new ObservedSky(dateTimeBean.getZonedDateTime(), observerLocationBean.getCoordinates(),
+                                projection.get(), catalogue),
+                dateTimeBean.dateProperty(), dateTimeBean.timeProperty(), dateTimeBean.zoneProperty(),
+                observerLocationBean.coordinatesProperty(), projection);
+
+        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get()));
+
+        return observedSky;
+    }
+
+    private ObjectBinding<Transform> initiatePlaneToCanvas(ViewingParametersBean viewingParametersBean, SkyCanvasPainter painter) {
+        ObjectBinding<Transform> planeToCanvas = Bindings.createObjectBinding(() -> {
+                    double dilatation = dilatation(skyCanvas, projection.get(), viewingParametersBean.getFieldOfViewDeg());
+                    return Transform.affine(dilatation, 0, 0, -dilatation, skyCanvas.getWidth() / 2, skyCanvas.getHeight() / 2);
+                },
+                skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
+
+        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV));
+
+        return planeToCanvas;
     }
 
     private double dilatation(Canvas canvas, StereographicProjection projection, double fieldOfViewDeg) {
