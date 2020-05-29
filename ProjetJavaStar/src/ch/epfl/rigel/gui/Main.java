@@ -27,6 +27,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 public class Main extends Application {
@@ -94,125 +95,19 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //-------------------------------------------- COORDINATES CONTROL------------------------------------------------------
-        TextField textFieldLon = new TextField();
-        TextField textFieldLat = new TextField();
-        textFieldLon.setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
-        textFieldLat.setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
-
-        //TODO : Faire une méthode apart
-        NumberStringConverter stringConverter = new NumberStringConverter("#0.00");
-
-        UnaryOperator<TextFormatter.Change> lonFilter = (change -> {
-            try {
-                String newText =
-                        change.getControlNewText();
-                double newLonDeg =
-                        stringConverter.fromString(newText).doubleValue();
-                return GeographicCoordinates.isValidLonDeg(newLonDeg)
-                        ? change
-                        : null;
-            } catch (Exception e) {
-                return null;
-            }
-        });
-
-        TextFormatter<Number> lonTextFormatter = new TextFormatter<>(stringConverter, 0, lonFilter);
-
-        UnaryOperator<TextFormatter.Change> latFilter = (change -> {
-            try {
-                String newText =
-                        change.getControlNewText();
-                double newLonDeg =
-                        stringConverter.fromString(newText).doubleValue();
-                return GeographicCoordinates.isValidLatDeg(newLonDeg)
-                        ? change
-                        : null;
-            } catch (Exception e) {
-                return null;
-            }
-        });
-
-        TextFormatter<Number> latTextFormatter = new TextFormatter<>(stringConverter, 0, latFilter);
-
-        lonTextFormatter.valueProperty().bindBidirectional(observerLocationBean.lonDegProperty()); //TODO : on a variment besoin d'un bind bidirectionnel ?
-        latTextFormatter.valueProperty().bindBidirectional(observerLocationBean.latDegProperty()); //TODO : on a variment besoin d'un bind bidirectionnel ?
-
-        textFieldLon.setTextFormatter(lonTextFormatter);
-        textFieldLat.setTextFormatter(latTextFormatter);
-
-        HBox coordControl = new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat);
+        HBox coordControl = createCoordinatesController(observerLocationBean);
 
         coordControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
 
         //------------------------------------------------ DATE CONTROL------------------------------------------------------
-        Label date = new Label("Date :");
-
-        DatePicker datePicker = new DatePicker();
-        datePicker.setStyle("-fx-pref-width: 120;");
-
-        datePicker.valueProperty().bindBidirectional(dateTimeBean.dateProperty());
-
-        Label hour = new Label("Heure :");
-
-        DateTimeFormatter hmsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTimeStringConverter timeStringConverter = new LocalTimeStringConverter(hmsFormatter, hmsFormatter);
-        TextFormatter<LocalTime> timeFormatter = new TextFormatter<>(timeStringConverter);
-
-        TextField hourPicker = new TextField();
-        hourPicker.setStyle("-fx-pref-width: 75; -fx-alignment: baseline-right;");
-        timeFormatter.valueProperty().bindBidirectional(dateTimeBean.timeProperty());
-        hourPicker.setTextFormatter(timeFormatter); //TODO ne marche pas
-
-
-        ComboBox<String> zoneIdPicker = new ComboBox<>(); //TODO COMBO BOX DE CelestialObject C'EST FAUX CE QUE J'AI FAIT, mettre ComboBox<ZoneId>
-        List<String> listOfZoneIds = new ArrayList<>(ZoneId.getAvailableZoneIds());
-        listOfZoneIds.sort(String::compareTo); //Calls the String compareTo method //TODO : Du coup on ne peut pas utiliser la méthode String::compareTo
-        zoneIdPicker.getItems().addAll(listOfZoneIds);
-        zoneIdPicker.getSelectionModel().select(ZoneId.systemDefault().toString());
-        zoneIdPicker.setOnAction((choose) -> dateTimeBean.setZone(ZoneId.of(zoneIdPicker.getValue()))); //TODO c'est peut-être pas comme ça qu'il faut faire
-        //zoneIdPicker.valueProperty().bindBidirectional(dateTimeBean.timeProperty()); //TODO : ne marche pas encore
-        zoneIdPicker.setStyle("-fx-pref-width: 180;");
-
-        HBox dateControl = new HBox(date, datePicker, hour, hourPicker, zoneIdPicker);
+        HBox dateControl = createDateController(dateTimeBean);
 
         dateControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
         dateControl.disableProperty().bind(timeAnimator.runningProperty());
 
-
         //------------------------------------------------SPEED CONTROLLER------------------------------------------------------
-        ChoiceBox<NamedTimeAccelerator> timeAcceleratorPicker = new ChoiceBox<>();
-        timeAcceleratorPicker.setItems(FXCollections.observableList(List.of(NamedTimeAccelerator.values())));
-        timeAcceleratorPicker.getSelectionModel().select(NamedTimeAccelerator.TIMES_300); //Default selection of x300
-        timeAcceleratorPicker.disableProperty().bind(timeAnimator.runningProperty());
 
-        timeAnimator.acceleratorProperty().bind(Bindings.select(timeAcceleratorPicker.valueProperty(), "accelerator"));
-
-        Button resetButton = new Button(ROLL_BACK);
-        resetButton.disableProperty().bind(timeAnimator.runningProperty());
-
-        resetButton.setOnAction((pressed) -> {
-            dateTimeBean.setDate(LocalDate.now());
-            dateTimeBean.setTime(LocalTime.now());
-            dateTimeBean.setZone(ZoneId.systemDefault());
-            zoneIdPicker.getSelectionModel().select(ZoneId.systemDefault().toString()); //TODO Justemet j'ai ajouté parce que sinon avec l'autre ça marche pas
-        });
-
-        Button playPauseButton = new Button(PLAY);
-
-        resetButton.setFont(fontForButtons);
-        playPauseButton.setFont(fontForButtons);
-
-        playPauseButton.setOnAction((pressed) -> {
-            if(playPauseButton.getText().equals(PLAY)) {
-                timeAnimator.start();
-                playPauseButton.setText(PAUSE);
-            } else {
-                timeAnimator.stop();
-                playPauseButton.setText(PLAY);
-            }
-        });
-
-        HBox speedControl = new HBox(timeAcceleratorPicker, resetButton, playPauseButton);
+        HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons);
         speedControl.setStyle("-fx-spacing: inherit;");
 
         //------------------------------------------------WHOLE CONTROL BAR-----------------------------------------------------
@@ -221,20 +116,7 @@ public class Main extends Application {
 
         //------------------------------------------------BOTTOM INFORMATION BAR------------------------------------------------
 
-        Text fieldOfViewText = new Text();
-        fieldOfViewText.setStyle("-fx-padding: 4; -fx-background-color: white;");
-        fieldOfViewText.textProperty().bind(Bindings.format("Champ de vue : %.1f°", viewingParametersBean.fieldOfViewDegProperty()));
-
-        Text closestObject = new Text();
-        closestObject.setStyle("-fx-padding: 4; -fx-background-color: white;");
-        canvasManager.objectUnderMouseProperty().addListener((o, oV, nV) ->
-                closestObject.setText(nV == null ? "" : nV.info())); //TODO: stringBinding
-
-        Text horCoord = new Text();
-        horCoord.setStyle("-fx-padding: 4; -fx-background-color: white;");
-        horCoord.textProperty().bind(Bindings.format("Azimut : %.2f°, hauteur : %.2f°", canvasManager.mouseAzDegProperty(), canvasManager.mouseAltDegProperty()));
-
-        BorderPane infoBar = new BorderPane(closestObject, null, horCoord, null, fieldOfViewText);
+        BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
 
         //------------------------------------------------ROOT BORDERPANE-------------------------------------------------------
         BorderPane root = new BorderPane(skyPane, controlBar, null, infoBar, null);
@@ -253,59 +135,138 @@ public class Main extends Application {
     }
 
     /**
-     * Creates the coordinate control HBox
+     * Creates the coordinates controller
      *
-     * @return the coordinate control HBox
+     * @param locationBean the location bean to bind with
+     * @return the coordinates controller
      */
-    /*private HBox coordControl() {
+    private HBox createCoordinatesController(ObserverLocationBean locationBean) {
         TextField textFieldLon = new TextField();
         TextField textFieldLat = new TextField();
         textFieldLon.setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
         textFieldLat.setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
 
-        //TODO : Faire une méthode apart
-        NumberStringConverter stringConverter =
-                new NumberStringConverter("#0.00");
-
-        UnaryOperator<TextFormatter.Change> lonFilter = (change -> {
-            try {
-                String newText =
-                        change.getControlNewText();
-                double newLonDeg =
-                        stringConverter.fromString(newText).doubleValue();
-                return GeographicCoordinates.isValidLonDeg(newLonDeg)
-                        ? change
-                        : null;
-            } catch (Exception e) {
-                return null;
-            }
-        });
-
-        TextFormatter<Number> lonTextFormatter =
-                new TextFormatter<>(stringConverter, 0, lonFilter);
-
-        UnaryOperator<TextFormatter.Change> latFilter = (change -> {
-            try {
-                String newText =
-                        change.getControlNewText();
-                double newLonDeg =
-                        stringConverter.fromString(newText).doubleValue();
-                return GeographicCoordinates.isValidLatDeg(newLonDeg)
-                        ? change
-                        : null;
-            } catch (Exception e) {
-                return null;
-            }
-        });
-
-        TextFormatter<Number> latTextFormatter =
-                new TextFormatter<>(stringConverter, 0, latFilter);
+        NumberStringConverter stringConverter = new NumberStringConverter("#0.00");
+        TextFormatter<Number> lonTextFormatter = createNumberFormatter(GeographicCoordinates::isValidLonDeg, stringConverter);
+        TextFormatter<Number> latTextFormatter = createNumberFormatter(GeographicCoordinates::isValidLatDeg, stringConverter);
 
         textFieldLon.setTextFormatter(lonTextFormatter);
         textFieldLat.setTextFormatter(latTextFormatter);
 
+        lonTextFormatter.valueProperty().bindBidirectional(locationBean.lonDegProperty());
+        latTextFormatter.valueProperty().bindBidirectional(locationBean.latDegProperty());
+
         return new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat);
-    }*/
+    }
+
+    /**
+     * Creates the number formatter for the coordinates controller
+     *
+     * @param predicate       the method to use
+     * @param stringConverter the string converter to use
+     * @return the text formatter
+     */
+    private TextFormatter<Number> createNumberFormatter(Predicate<Double> predicate, NumberStringConverter stringConverter) {
+        UnaryOperator<TextFormatter.Change> filter = (change -> {
+            try {
+                String newText =
+                        change.getControlNewText();
+                double newLonDeg =
+                        stringConverter.fromString(newText).doubleValue();
+                return predicate.test(newLonDeg)
+                        ? change
+                        : null;
+            } catch (Exception e) {
+                return null;
+            }
+        });
+
+        return new TextFormatter<>(stringConverter, 0, filter);
+    }
+
+    private HBox createDateController(DateTimeBean dateTimeBean) {
+        Label date = new Label("Date :");
+
+        DatePicker datePicker = new DatePicker();
+        datePicker.setStyle("-fx-pref-width: 120;");
+
+        datePicker.valueProperty().bindBidirectional(dateTimeBean.dateProperty());
+
+        Label hour = new Label("Heure :");
+
+        DateTimeFormatter hmsFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTimeStringConverter timeStringConverter = new LocalTimeStringConverter(hmsFormatter, hmsFormatter);
+        TextFormatter<LocalTime> timeFormatter = new TextFormatter<>(timeStringConverter);
+
+        TextField hourPicker = new TextField();
+        hourPicker.setStyle("-fx-pref-width: 75; -fx-alignment: baseline-right;");
+        timeFormatter.valueProperty().bindBidirectional(dateTimeBean.timeProperty());
+        hourPicker.setTextFormatter(timeFormatter);
+
+        ComboBox<ZoneId> zoneIdPicker = new ComboBox<>();
+        List<String> listOfZoneIds = new ArrayList<>(ZoneId.getAvailableZoneIds());
+        listOfZoneIds.sort(String::compareTo); //Calls the String compareTo method
+        listOfZoneIds.forEach(id -> zoneIdPicker.getItems().add(ZoneId.of(id)));
+        zoneIdPicker.valueProperty().bindBidirectional(dateTimeBean.zoneProperty());
+
+        zoneIdPicker.setStyle("-fx-pref-width: 180;");
+
+        return new HBox(date, datePicker, hour, hourPicker, zoneIdPicker);
+    }
+
+    private HBox createSpeedController(TimeAnimator timeAnimator, DateTimeBean dateTimeBean, Font fontForButtons) {
+        ChoiceBox<NamedTimeAccelerator> timeAcceleratorPicker = new ChoiceBox<>();
+        timeAcceleratorPicker.setItems(FXCollections.observableList(List.of(NamedTimeAccelerator.values())));
+        timeAcceleratorPicker.getSelectionModel().select(NamedTimeAccelerator.TIMES_300); //Default selection of x300
+        timeAcceleratorPicker.disableProperty().bind(timeAnimator.runningProperty());
+
+        timeAnimator.acceleratorProperty().bind(Bindings.select(timeAcceleratorPicker.valueProperty(), "accelerator"));
+
+        Button resetButton = new Button(ROLL_BACK);
+        resetButton.disableProperty().bind(timeAnimator.runningProperty());
+
+        resetButton.setOnAction((pressed) -> {
+            dateTimeBean.setDate(LocalDate.now());
+            dateTimeBean.setTime(LocalTime.now());
+            dateTimeBean.setZone(ZoneId.systemDefault());
+        });
+
+        Button playPauseButton = new Button(PLAY);
+
+        resetButton.setFont(fontForButtons);
+        playPauseButton.setFont(fontForButtons);
+
+        playPauseButton.setOnAction(pressed -> {
+            if (playPauseButton.getText().equals(PLAY)) {
+                timeAnimator.start();
+                playPauseButton.setText(PAUSE);
+            } else {
+                timeAnimator.stop();
+                playPauseButton.setText(PLAY);
+            }
+        });
+
+        return new HBox(timeAcceleratorPicker, resetButton, playPauseButton);
+    }
+
+    private BorderPane createBottomInfoBar(ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager) {
+        Text fieldOfViewText = new Text();
+        fieldOfViewText.setStyle("-fx-padding: 4; -fx-background-color: white;");
+        fieldOfViewText.textProperty().bind(Bindings.format("Champ de vue : %.1f°", viewingParametersBean.fieldOfViewDegProperty()));
+
+        Text closestObject = new Text();
+        closestObject.setStyle("-fx-padding: 4; -fx-background-color: white;");
+        canvasManager.objectUnderMouseProperty().addListener((o, oV, nV) ->
+                closestObject.setText(nV == null ? "" : nV.info())); //TODO: stringBinding
+
+        //closestObject.textProperty().bind(Bindings.format(, canvasManager.objectUnderMouseProperty()));
+
+        Text horCoord = new Text();
+        horCoord.setStyle("-fx-padding: 4; -fx-background-color: white;");
+        horCoord.textProperty().bind(Bindings.format("Azimut : %.2f°, hauteur : %.2f°", canvasManager.mouseAzDegProperty(), canvasManager.mouseAltDegProperty()));
+
+        return new BorderPane(closestObject, null, horCoord, null, fieldOfViewText);
+    }
 
     private InputStream resourceStream(String resourceName) {
         return getClass().getResourceAsStream(resourceName);

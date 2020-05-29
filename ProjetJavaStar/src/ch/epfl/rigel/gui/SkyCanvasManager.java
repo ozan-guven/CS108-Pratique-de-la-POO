@@ -19,7 +19,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Transform;
 
-public class SkyCanvasManager {
+public final class SkyCanvasManager {
 
     public DoubleBinding mouseAzDeg;
     public DoubleBinding mouseAltDeg;
@@ -32,13 +32,13 @@ public class SkyCanvasManager {
     private static final int MOVE_NORTH_SOUTH = 5;
     private static final int MOVE_EAST_WEST = 10;
 
-    private ObjectBinding<StereographicProjection> projection;
-    private ObjectBinding<Transform> planeToCanvas;
-    private ObjectBinding<ObservedSky> observedSky;
-    private ObjectProperty<Point2D> mousePosition = new SimpleObjectProperty<>(new Point2D(0, 0));
-    private ObjectBinding<HorizontalCoordinates> mouseHorizontalPosition;
+    private final ObjectBinding<StereographicProjection> projection;
+    private final ObjectBinding<Transform> planeToCanvas;
+    private final ObjectBinding<ObservedSky> observedSky;
+    private final ObjectProperty<Point2D> mousePosition = new SimpleObjectProperty<>(new Point2D(0, 0));
+    private final ObjectBinding<HorizontalCoordinates> mouseHorizontalPosition;
 
-    private Canvas skyCanvas;
+    private final Canvas skyCanvas;
 
     public SkyCanvasManager(StarCatalogue catalogue,
                             DateTimeBean dateTimeBean,
@@ -111,24 +111,24 @@ public class SkyCanvasManager {
             HorizontalCoordinates coord = viewingParametersBean.getCenter();
             switch (key.getCode()) {
                 case UP:
-                    if (ALT_DEG_BOUNDS.contains(coord.altDeg() + MOVE_NORTH_SOUTH))
-                        viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), coord.altDeg() + MOVE_NORTH_SOUTH));
+                    //if (ALT_DEG_BOUNDS.contains(coord.altDeg() + MOVE_NORTH_SOUTH))
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() + MOVE_NORTH_SOUTH)));
                     break;
                 case DOWN:
-                    if (ALT_DEG_BOUNDS.contains(coord.altDeg() - MOVE_NORTH_SOUTH))
-                        viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), coord.altDeg() - MOVE_NORTH_SOUTH));
+                    //if (ALT_DEG_BOUNDS.contains(coord.altDeg() - MOVE_NORTH_SOUTH))
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() - MOVE_NORTH_SOUTH)));
                     break;
                 case LEFT:
                     //TODO les else font des trucs bizarres
-                    if (AZ_DEG_BOUNDS.contains(coord.azDeg() - MOVE_EAST_WEST))
-                        viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() - MOVE_EAST_WEST, coord.altDeg()));
-                    else
+                    //if (AZ_DEG_BOUNDS.contains(coord.azDeg() - MOVE_EAST_WEST))
+                    //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() - MOVE_EAST_WEST, coord.altDeg()));
+                    //else
                         viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() - MOVE_EAST_WEST), coord.altDeg()));
                     break;
                 case RIGHT:
-                    if (AZ_DEG_BOUNDS.contains(coord.azDeg() + MOVE_EAST_WEST))
-                        viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() + MOVE_EAST_WEST, coord.altDeg()));
-                    else
+                    //if (AZ_DEG_BOUNDS.contains(coord.azDeg() + MOVE_EAST_WEST))
+                    //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() + MOVE_EAST_WEST, coord.altDeg()));
+                    //else
                         viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() + MOVE_EAST_WEST), coord.altDeg()));
                     break;
             }
@@ -136,10 +136,10 @@ public class SkyCanvasManager {
 
         skyCanvas.setOnScroll((scroll) -> {
             double initFOW = viewingParametersBean.getFieldOfViewDeg();
-            if (Math.abs(scroll.getDeltaX()) >= Math.abs(scroll.getDeltaY()) && FIELD_OF_VIEW_BOUNDS.contains(initFOW - scroll.getDeltaX()))
-                viewingParametersBean.setFieldOfViewDeg(initFOW - scroll.getDeltaX());
-            else if (FIELD_OF_VIEW_BOUNDS.contains(initFOW - scroll.getDeltaY()))
-                viewingParametersBean.setFieldOfViewDeg(initFOW - scroll.getDeltaY());
+            if (Math.abs(scroll.getDeltaX()) >= Math.abs(scroll.getDeltaY()))
+                viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaX()));
+            else
+                viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaY()));
         });
 
         planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV));

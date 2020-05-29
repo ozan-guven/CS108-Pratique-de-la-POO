@@ -22,10 +22,10 @@ import java.util.List;
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
-public class SkyCanvasPainter {
+public final class SkyCanvasPainter {
 
-    private Canvas canvas;
-    private GraphicsContext ctx;
+    private final Canvas canvas;
+    private final GraphicsContext ctx;
 
     /**
      * Initializes the sky painter
@@ -194,15 +194,24 @@ public class SkyCanvasPainter {
         ctx.setTextAlign(TextAlignment.CENTER);
         ctx.setTextBaseline(VPos.TOP);
 
+        HorizontalCoordinates coordOfCardinal;
         CartesianCoordinates coordOnProjection;
-        Point2D pointCardinal;
-        for (CardinalPoints cardinalPoints : CardinalPoints.values()) {
-            coordOnProjection = projection.apply(cardinalPoints.coordOfCardinal());
-            pointCardinal = planeToCanvas.transform(coordOnProjection.x(), coordOnProjection.y());
-            ctx.fillText(cardinalPoints.cardinal(), pointCardinal.getX(), pointCardinal.getY());
+        Point2D cardinalPoint;
+        for (int i = 0; i < 8; i++) {
+            coordOfCardinal = HorizontalCoordinates.ofDeg(i * 45, -0.5);
+            coordOnProjection = projection.apply(coordOfCardinal);
+            cardinalPoint = planeToCanvas.transform(coordOnProjection.x(), coordOnProjection.y());
+            ctx.fillText(coordOfCardinal.azOctantName("N", "E", "S", "O"), cardinalPoint.getX(), cardinalPoint.getY());
         }
     }
 
+    /**
+     * Draws all of the sky (drawStar, drawPlanets, drawSun, drawMoon, drawHorizon)
+     *
+     * @param observedSky the observed sky
+     * @param projection the projection used
+     * @param planeToCanvas the plane to canvas transform used
+     */
     public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas) {
         clear();
         drawStars(observedSky, projection, planeToCanvas);
@@ -210,33 +219,6 @@ public class SkyCanvasPainter {
         drawSun(observedSky, projection, planeToCanvas); //Draws the sun
         drawMoon(observedSky, projection, planeToCanvas);//Draws the moon
         drawHorizon(projection, planeToCanvas); //Draws the horizon
-    }
-
-    /**
-     * Enumeration containing all the 8 cardinal and intercardinal points
-     * with their french name and their horizontal coordinates
-     */
-    private enum CardinalPoints {
-        N("N"), NE("NE"), E("E"), SE("SE"), S("S"), SW("SO"), W("O"), NW("NO");
-
-        private final String cardinalPoint;
-
-        CardinalPoints(String cardinalPoint) {
-            this.cardinalPoint = cardinalPoint;
-        }
-
-        private String cardinal() {
-            return cardinalPoint;
-        }
-
-        /**
-         * Gets the horizontal coordinate for the current cardinal point
-         *
-         * @return the horizontal coordinate of the cardinal point
-         */
-        private HorizontalCoordinates coordOfCardinal() {
-            return HorizontalCoordinates.ofDeg(45 * this.ordinal(), -0.5);
-        }
     }
 
     /**
