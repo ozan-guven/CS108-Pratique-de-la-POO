@@ -26,10 +26,9 @@ public enum Epoch {
     private static final double MILLIS_PER_DAY = 1000 * 60 * 60 * 24; //Number of milliseconds in a day
     private static final double MILLIS_PER_JULIAN_CENTURIES = 1000 * 60 * 60 * 24 * 365.25 * 100; //Number of milliseconds in a Julian century
 
-    //TODO : Vraiment final ?
     private final ZonedDateTime epochDate;
 
-    private Epoch(ZonedDateTime epochDate) {
+    Epoch(ZonedDateTime epochDate) {
         this.epochDate = epochDate;
     }
 

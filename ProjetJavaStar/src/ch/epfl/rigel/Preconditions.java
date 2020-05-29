@@ -32,7 +32,6 @@ public final class Preconditions {
      * @param errorMessage message to be print on the screen if the condition is false
      * @throws IllegalArgumentException if the argument is false
      */
-    //TODO : On pourrait aussi utiliser cette nouvelle méthode ?
     public static void checkArgument(boolean isTrue, String errorMessage) {
         if (!isTrue) {
             throw new IllegalArgumentException(errorMessage);

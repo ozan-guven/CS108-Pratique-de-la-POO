@@ -42,17 +42,6 @@ public final class StarCatalogue {
             for (Star star : asterism.stars()) {
                 listOfIndex.add(indexOfStar.get(star)); //Adds the index of the current star contained in the list star to the index list
             }
-
-        /*
-        //TODO : JE NE SAIS PAS COMMENT FAIRE CA DU COUP
-        for (Asterism asterism : asterisms) {
-            List<Integer> listOfIndex = new ArrayList<>();
-
-            for (Star star : asterism.stars()) {
-                Preconditions.checkArgument(stars.contains(star)); //Checks if all the stars of all the asterisims are in the list of stars
-                listOfIndex.add(stars.indexOf(star)); //Adds the index of the current star contained in the list star to the index list
-            }*/
-
             starIndexMap.put(asterism, listOfIndex);
         }
     }
@@ -196,7 +185,7 @@ public final class StarCatalogue {
          * @param builder     the builder that constructs the star catalogue
          * @throws IOException in case of an input/output exception
          */
-        public abstract void load(InputStream inputStream, Builder builder) throws IOException;
+        void load(InputStream inputStream, Builder builder) throws IOException;
 
     }
 

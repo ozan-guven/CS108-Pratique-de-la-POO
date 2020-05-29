@@ -18,6 +18,7 @@ public final class Angle {
      * @see Math#PI
      */
     public static final double TAU = Math.PI * 2;
+    private static final RightOpenInterval INTERVAL_0_TAU = RightOpenInterval.of(0, TAU);
     private static final RightOpenInterval FOR_MIN_SEC = RightOpenInterval.of(0, 60);
     private static final double RAD_PER_SEC = TAU / (3600 * 360);
     private static final double RAD_PER_MIN = TAU / (60 * 360);
@@ -34,9 +35,7 @@ public final class Angle {
      * @return the normalized angle
      */
     public static double normalizePositive(double rad) {
-        //TODO : ici ?
-        RightOpenInterval interval = RightOpenInterval.of(0, TAU);
-        return interval.reduce(rad);
+        return INTERVAL_0_TAU.reduce(rad);
     }
 
     /**
