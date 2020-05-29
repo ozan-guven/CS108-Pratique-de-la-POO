@@ -43,21 +43,6 @@ public final class BlackBodyColor {
                     .map(l -> l.trim().split("\\s+")) //trims the string and "\\s+" takes into account multiple spaces such as "   "
                     .filter(s -> !s[2].equals("2deg")) //filters all lines with 2deg
                     .forEachOrdered(s -> kelvinRGB.put(Integer.parseInt(s[0]), Color.web(s[s.length - 1])));
-            /*
-            String s = stream.readLine();
-
-            while (s.charAt(0) == '#') {
-                s = stream.readLine();
-            }
-
-            String[] strings;
-            while (s.charAt(0) != '#') {
-                strings = s.trim().split("\\s+"); //trims the string and "\\s+" takes into account multiple spaces such as "   "
-                if (!strings[2].equals("2deg")) {
-                    kelvinRGB.put(Integer.parseInt(strings[0]), Color.web(strings[strings.length - 1]));
-                }
-                s = stream.readLine();
-            }*/
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -94,19 +79,6 @@ public final class BlackBodyColor {
             return numberRound + (100 - numberModulo);
         } else {
             return numberRound - numberModulo;
-        }
-    }
-
-    //TODO : On pourrait créer une classe apart avec cette méthode
-    public int closestIntMultipleTo(int multiple, double number) {
-        double numberModulo = number % multiple;
-
-        if (numberModulo == 0) {
-            return (int) number;
-        } else if (numberModulo >= multiple / 2d) {
-            return ((int) (number + (multiple - numberModulo)));
-        } else {
-            return ((int) (number - numberModulo));
         }
     }
 }
