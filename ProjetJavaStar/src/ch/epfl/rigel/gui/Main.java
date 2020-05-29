@@ -48,7 +48,7 @@ public class Main extends Application {
     private static final HorizontalCoordinates DEFAULT_CENTER_FOR_VIEW =
             HorizontalCoordinates.ofDeg(180.000000000001, 15);
     private static final double DEFAULT_FIELD_OF_VIEW = 100;
-    private static final String ROLL_BACK = "\uf0e2";
+    private static final String UNDO = "\uf0e2";
     private static final String PLAY = "\uf04b";
     private static final String PAUSE = "\uf04c";
 
@@ -213,7 +213,7 @@ public class Main extends Application {
 
         timeAnimator.acceleratorProperty().bind(Bindings.select(timeAcceleratorPicker.valueProperty(), "accelerator"));
 
-        Button resetButton = new Button(ROLL_BACK);
+        Button resetButton = new Button(UNDO);
         resetButton.disableProperty().bind(timeAnimator.runningProperty());
 
         resetButton.setOnAction((pressed) -> {
