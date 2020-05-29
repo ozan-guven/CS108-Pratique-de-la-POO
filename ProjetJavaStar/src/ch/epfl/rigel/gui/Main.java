@@ -23,7 +23,10 @@ import javafx.util.converter.NumberStringConverter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +66,14 @@ public class Main extends Application {
         Font fontForButtons;
 
         try (InputStream hygDataLoader = resourceStream("/hygdata_v3.csv");
-             InputStream astLoader = resourceStream("/asterisms.txt");
-             InputStream fontStream = resourceStream("/Font Awesome 5 Free-Solid-900.otf")) {
+             InputStream astLoader = resourceStream("/asterisms.txt")) {
             catalogue = new StarCatalogue.Builder()
                     .loadFrom(hygDataLoader, HygDatabaseLoader.INSTANCE)
                     .loadFrom(astLoader, AsterismLoader.INSTANCE)
                     .build();
+        }
 
+        try (InputStream fontStream = resourceStream("/Font Awesome 5 Free-Solid-900.otf")) {
             fontForButtons = Font.loadFont(fontStream, 15);
         }
 
@@ -93,33 +97,16 @@ public class Main extends Application {
         sky.widthProperty().bind(skyPane.widthProperty());
         sky.heightProperty().bind(skyPane.heightProperty());
 
-        //-------------------------------------------- COORDINATES CONTROL----------------------------------------------
-        HBox coordControl = createCoordinatesController(observerLocationBean);
-
-        coordControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
-
-        //------------------------------------------------ DATE CONTROL-------------------------------------------------
-        HBox dateControl = createDateController(dateTimeBean);
-
-        dateControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
-        dateControl.disableProperty().bind(timeAnimator.runningProperty());
-
-        //------------------------------------------------SPEED CONTROLLER----------------------------------------------
-
-        HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons);
-        speedControl.setStyle("-fx-spacing: inherit;");
-
-        //------------------------------------------------WHOLE CONTROL BAR---------------------------------------------
-        HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl, new Separator(Orientation.VERTICAL), speedControl);
-        controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
+        //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
+        HBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
 
-        //------------------------------------------------ROOT BORDERPANE-------------------------------------------------------
+        //------------------------------------------------ROOT BORDERPANE-----------------------------------------------
         BorderPane root = new BorderPane(skyPane, controlBar, null, infoBar, null);
 
-        //------------------------------------------------PRIMARY STAGE---------------------------------------------------------
+        //------------------------------------------------PRIMARY STAGE-------------------------------------------------
         primaryStage.setTitle("Rigel");
         primaryStage.setMinWidth(MIN_WIDTH_STAGE);
         primaryStage.setMinHeight(MIN_HEIGHT_STAGE);
@@ -154,7 +141,10 @@ public class Main extends Application {
         lonTextFormatter.valueProperty().bindBidirectional(locationBean.lonDegProperty());
         latTextFormatter.valueProperty().bindBidirectional(locationBean.latDegProperty());
 
-        return new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat);
+        HBox coordControl = new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat);
+        coordControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
+
+        return coordControl;
     }
 
     /**
@@ -182,7 +172,7 @@ public class Main extends Application {
         return new TextFormatter<>(stringConverter, 0, filter);
     }
 
-    private HBox createDateController(DateTimeBean dateTimeBean) {
+    private HBox createDateController(DateTimeBean dateTimeBean, TimeAnimator timeAnimator) {
         Label date = new Label("Date :");
 
         DatePicker datePicker = new DatePicker();
@@ -209,7 +199,12 @@ public class Main extends Application {
 
         zoneIdPicker.setStyle("-fx-pref-width: 180;");
 
-        return new HBox(date, datePicker, hour, hourPicker, zoneIdPicker);
+        HBox dateControl = new HBox(date, datePicker, hour, hourPicker, zoneIdPicker);
+
+        dateControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
+        dateControl.disableProperty().bind(timeAnimator.runningProperty());
+
+        return dateControl;
     }
 
     private HBox createSpeedController(TimeAnimator timeAnimator, DateTimeBean dateTimeBean, Font fontForButtons) {
@@ -244,7 +239,26 @@ public class Main extends Application {
             }
         });
 
-        return new HBox(timeAcceleratorPicker, resetButton, playPauseButton);
+        HBox speedControl = new HBox(timeAcceleratorPicker, resetButton, playPauseButton);
+        speedControl.setStyle("-fx-spacing: inherit;");
+
+        return speedControl;
+    }
+
+    private HBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons) {
+        //COORDINATES CONTROL
+        HBox coordControl = createCoordinatesController(observerLocationBean);
+
+        //DATE CONTROL
+        HBox dateControl = createDateController(dateTimeBean, timeAnimator);
+
+        //SPEED CONTROLLER
+        HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons);
+
+        HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl, new Separator(Orientation.VERTICAL), speedControl);
+        controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
+
+        return controlBar;
     }
 
     private BorderPane createBottomInfoBar(ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager) {
@@ -254,10 +268,10 @@ public class Main extends Application {
 
         Text closestObject = new Text();
         closestObject.setStyle("-fx-padding: 4; -fx-background-color: white;");
-        canvasManager.objectUnderMouseProperty().addListener((o, oV, nV) ->
-                closestObject.setText(nV == null ? "" : nV.info())); //TODO: stringBinding
-
-        //closestObject.textProperty().bind(Bindings.format(, canvasManager.objectUnderMouseProperty()));
+        closestObject.textProperty().bind(
+                Bindings.createStringBinding(() -> canvasManager.getObjectUnderMouse() == null
+                        ? ""
+                        : canvasManager.getObjectUnderMouse().toString(), canvasManager.objectUnderMouseProperty()));
 
         Text horCoord = new Text();
         horCoord.setStyle("-fx-padding: 4; -fx-background-color: white;");

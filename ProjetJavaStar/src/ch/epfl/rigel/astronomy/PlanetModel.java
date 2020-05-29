@@ -4,7 +4,6 @@ import ch.epfl.rigel.coordinates.EclipticCoordinates;
 import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.math.Angle;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double angularSize; //The angular size
     private final double magnitude; //The magnitude
 
-    private PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
+    PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
                         double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
                         double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude) {
         this.frenchName = frenchName;
