@@ -15,9 +15,6 @@ import java.util.*;
  */
 public final class ObservedSky {
 
-    //private final ZonedDateTime time;
-    //private final GeographicCoordinates coordinates;
-    //private final StereographicProjection projection;
     private final StarCatalogue catalogue;
 
     private final Sun sun;
@@ -42,9 +39,6 @@ public final class ObservedSky {
      */
     public ObservedSky(ZonedDateTime time, GeographicCoordinates coordinates,
                        StereographicProjection projection, StarCatalogue catalogue) {
-        //this.time = time;
-        //this.coordinates = coordinates;
-        //this.projection = projection;
         this.catalogue = catalogue;
         this.stars = catalogue.stars();
 
@@ -79,22 +73,14 @@ public final class ObservedSky {
         }
 
         starsPositions = new double[stars.size()*2];
-        for (int j = 0; j < stars.size(); j++) {
-            CartesianCoordinates starProjection = projection.apply(conversionToHor.apply(stars.get(j).equatorialPos()));
-            starsPositions[j*2] = starProjection.x();
-            starsPositions[j*2+1] = starProjection.y();
-
-            mapOfAll.put(stars.get(j), starProjection);
-        }
-
-        /*i = 0;
+        i = 0;
         for (Star star : stars) {
             CartesianCoordinates starProjection = projection.apply(conversionToHor.apply(star.equatorialPos()));
             starsPositions[i++] = starProjection.x();
             starsPositions[i++] = starProjection.y();
 
             mapOfAll.put(star, starProjection);
-        }*/
+        }
     }
 
     /**
