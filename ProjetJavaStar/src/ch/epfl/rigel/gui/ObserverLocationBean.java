@@ -12,11 +12,14 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
  */
-public class ObserverLocationBean {
+public final class ObserverLocationBean {
     private final DoubleProperty lonDeg = new SimpleDoubleProperty();
     private final DoubleProperty latDeg = new SimpleDoubleProperty();
     private final ObjectBinding<GeographicCoordinates> coordinates;
 
+    /**
+     * Constructor of the observer location bean
+     */
     public ObserverLocationBean() {
         coordinates = Bindings.createObjectBinding(() ->
                 GeographicCoordinates.ofDeg(lonDeg.get(), latDeg.get()), lonDeg, latDeg);
