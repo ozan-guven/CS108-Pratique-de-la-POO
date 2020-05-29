@@ -7,7 +7,9 @@ import javafx.stage.Stage;
 import java.time.ZonedDateTime;
 
 public final class UseTimeAnimator extends Application {
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -26,9 +28,7 @@ public final class UseTimeAnimator extends Application {
             System.out.printf(" Nouvelle date : %s%n", n);
             Platform.exit();
         });
-        dateTimeB.timeProperty().addListener((p, o, n) -> {
-            System.out.printf("Nouvelle heure : %s%n", n);
-        });
+        dateTimeB.timeProperty().addListener((p, o, n) -> System.out.printf("Nouvelle heure : %s%n", n));
         timeAnimator.start();
     }
 }

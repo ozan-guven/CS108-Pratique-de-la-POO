@@ -45,9 +45,9 @@ public final class SkyCanvasManager {
     /**
      * SkyCanvasManager constructor
      *
-     * @param catalogue Catalogue of celestial objects to use to build the sky
-     * @param dateTimeBean Date and time of the observation
-     * @param observerLocationBean Location of the observation
+     * @param catalogue             Catalogue of celestial objects to use to build the sky
+     * @param dateTimeBean          Date and time of the observation
+     * @param observerLocationBean  Location of the observation
      * @param viewingParametersBean The viewing parameters
      */
     public SkyCanvasManager(StarCatalogue catalogue,
@@ -110,7 +110,7 @@ public final class SkyCanvasManager {
     }
 
     /**
-     * Getter fot the azimut of the mouse
+     * Getter fot the azimuth of the mouse
      *
      * @return (Number)
      */
@@ -119,7 +119,7 @@ public final class SkyCanvasManager {
     }
 
     /**
-     * Getter for the mouse azimut property
+     * Getter for the mouse azimuth property
      *
      * @return (DoubleBinding)
      */
@@ -156,7 +156,8 @@ public final class SkyCanvasManager {
 
     /**
      * Getter for the celestial object under the mouse property
-     * @return (ObjectBinding<CelestialObject>)
+     *
+     * @return (ObjectBinding < CelestialObject >)
      */
     public ObjectBinding<CelestialObject> objectUnderMouseProperty() {
         return objectUnderMouse;

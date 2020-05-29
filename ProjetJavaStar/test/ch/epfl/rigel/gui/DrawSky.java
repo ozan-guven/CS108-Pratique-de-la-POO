@@ -56,7 +56,7 @@ public final class DrawSky extends Application {
                 //HorizontalCoordinates.ofDeg(277, -23);                 //Center for sun
                 //HorizontalCoordinates.ofDeg(3.7, -65);                 //Center for Moon
                 HorizontalCoordinates.ofDeg(0, 23);                    //Center for Ursa Minor Polaris
-                //HorizontalCoordinates.ofDeg(0, 90);                    //Center for whole horizon
+        //HorizontalCoordinates.ofDeg(0, 90);                    //Center for whole horizon
         StereographicProjection projection =
                 new StereographicProjection(projCenter);
         ObservedSky sky =
@@ -66,7 +66,7 @@ public final class DrawSky extends Application {
                 new Canvas(800, 600);
         Transform planeToCanvas =
                 Transform.affine(1300, 0, 0, -1300, 400, 300); //Normal transform
-                //Transform.affine(260, 0, 0, -260, 400, 300); //For whole horizon
+        //Transform.affine(260, 0, 0, -260, 400, 300); //For whole horizon
         SkyCanvasPainter painter =
                 new SkyCanvasPainter(canvas);
 

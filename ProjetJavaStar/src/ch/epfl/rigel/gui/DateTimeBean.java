@@ -36,6 +36,7 @@ public final class DateTimeBean {
 
     /**
      * Getter for the date
+     *
      * @return (localDate)
      */
     public LocalDate getDate() {
@@ -44,7 +45,8 @@ public final class DateTimeBean {
 
     /**
      * Getter for the date property
-     * @return (ObjectProperty<LocalDate>)
+     *
+     * @return (ObjectProperty < LocalDate >)
      */
     public ObjectProperty<LocalDate> dateProperty() {
         return date;
@@ -52,6 +54,7 @@ public final class DateTimeBean {
 
     /**
      * Setter for the date
+     *
      * @param newDate (LocalDate) new date to be set
      */
     public void setDate(LocalDate newDate) {
@@ -60,6 +63,7 @@ public final class DateTimeBean {
 
     /**
      * Getter for the time
+     *
      * @return (localTime)
      */
     public LocalTime getTime() {
@@ -68,7 +72,8 @@ public final class DateTimeBean {
 
     /**
      * Getter for the time property
-     * @return (ObjectProperty<LocalTime>)
+     *
+     * @return (ObjectProperty < LocalTime >)
      */
     public ObjectProperty<LocalTime> timeProperty() {
         return time;
@@ -76,6 +81,7 @@ public final class DateTimeBean {
 
     /**
      * Setter for the time
+     *
      * @param newTime (LocalTime) new time to be set
      */
     public void setTime(LocalTime newTime) {
@@ -84,6 +90,7 @@ public final class DateTimeBean {
 
     /**
      * Getter for the zone
+     *
      * @return (ZoneId)
      */
     public ZoneId getZone() {
@@ -92,7 +99,8 @@ public final class DateTimeBean {
 
     /**
      * Getter for the zone property
-     * @return (ObjectProperty<ZoneId>)
+     *
+     * @return (ObjectProperty < ZoneId >)
      */
     public ObjectProperty<ZoneId> zoneProperty() {
         return zone;
@@ -100,6 +108,7 @@ public final class DateTimeBean {
 
     /**
      * Setter for the zone
+     *
      * @param newZone (ZoneId) new zone to be set
      */
     public void setZone(ZoneId newZone) {
@@ -108,6 +117,7 @@ public final class DateTimeBean {
 
     /**
      * Getter for the zoned date time
+     *
      * @return (ZonedDateTime)
      */
     public ZonedDateTime getZonedDateTime() {
@@ -116,6 +126,7 @@ public final class DateTimeBean {
 
     /**
      * Setter for the zoned date time
+     *
      * @param newDate (ZonedDateTime) new zoned date time to be set
      */
     public void setZonedDateTime(ZonedDateTime newDate) {

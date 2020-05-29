@@ -68,8 +68,8 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double magnitude; //The magnitude
 
     PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
-                        double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
-                        double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude) {
+                double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
+                double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude) {
         this.frenchName = frenchName;
         this.orbitalRevolution = orbitalRevolution;
         lonAtJ2010 = Angle.ofDeg(lonAtJ2010Deg);

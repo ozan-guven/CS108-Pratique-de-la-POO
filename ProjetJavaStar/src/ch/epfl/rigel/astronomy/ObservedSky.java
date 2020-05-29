@@ -32,10 +32,10 @@ public final class ObservedSky {
     /**
      * Constructor of an observable sky at a given time and place
      *
-     * @param time the zoned date/time to observe the sky
+     * @param time        the zoned date/time to observe the sky
      * @param coordinates the position to observe the sky
-     * @param projection the stereographic projection to use
-     * @param catalogue the catalogue containing all the stars and asterisms to show
+     * @param projection  the stereographic projection to use
+     * @param catalogue   the catalogue containing all the stars and asterisms to show
      */
     public ObservedSky(ZonedDateTime time, GeographicCoordinates coordinates,
                        StereographicProjection projection, StarCatalogue catalogue) {
@@ -72,7 +72,7 @@ public final class ObservedSky {
             }
         }
 
-        starsPositions = new double[stars.size()*2];
+        starsPositions = new double[stars.size() * 2];
         i = 0;
         for (Star star : stars) {
             CartesianCoordinates starProjection = projection.apply(conversionToHor.apply(star.equatorialPos()));
@@ -159,7 +159,7 @@ public final class ObservedSky {
      * of all the stars in the catalogue
      */
     public double[] starPositions() {
-          return starsPositions;
+        return starsPositions;
     }
 
     /**

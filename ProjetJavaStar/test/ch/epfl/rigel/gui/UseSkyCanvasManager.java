@@ -16,7 +16,9 @@ import java.io.InputStream;
 import java.time.ZonedDateTime;
 
 public final class UseSkyCanvasManager extends Application {
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     private InputStream resourceStream(String resourceName) {
         return getClass().getResourceAsStream(resourceName);
@@ -53,7 +55,9 @@ public final class UseSkyCanvasManager extends Application {
                     viewingParametersBean);
 
             canvasManager.objectUnderMouseProperty().addListener(
-                    (p, o, n) -> {if (n != null) System.out.println(n);});
+                    (p, o, n) -> {
+                        if (n != null) System.out.println(n);
+                    });
 
             Canvas sky = canvasManager.canvas();
             BorderPane root = new BorderPane(sky);

@@ -25,51 +25,85 @@ public final class ObserverLocationBean {
                 GeographicCoordinates.ofDeg(lonDeg.get(), latDeg.get()), lonDeg, latDeg);
     }
 
+    /**
+     * Getter for the longitude
+     *
+     * @return (double)
+     */
     public double getLonDeg() {
         return lonDeg.get();
     }
 
+    /**
+     * Getter for the lonitude property
+     *
+     * @return (DoubleProperty)
+     */
     public DoubleProperty lonDegProperty() {
         return lonDeg;
     }
 
+    /**
+     * Setter for the longitude
+     *
+     * @param lonDeg (double) New longitude to be used
+     */
     public void setLonDeg(double lonDeg) {
         this.lonDeg.set(lonDeg);
     }
 
+    /**
+     * Getter for the latitude
+     *
+     * @return (double)
+     */
     public double getLatDeg() {
         return latDeg.get();
     }
 
+    /**
+     * Getter for the latitude property
+     *
+     * @return (DoubleProperty)
+     */
     public DoubleProperty latDegProperty() {
         return latDeg;
     }
 
+    /**
+     * Setter for the latitude
+     *
+     * @param latDeg (double) New latitude to be used
+     */
     public void setLatDeg(double latDeg) {
         this.latDeg.set(latDeg);
     }
 
+    /**
+     * Getter for the coordinates
+     *
+     * @return (GeographicCoordinates)
+     */
     public GeographicCoordinates getCoordinates() {
         return coordinates.get();
     }
 
+    /**
+     * Getter for the coordinates binding
+     *
+     * @return (ObjectBinding < GeographicCoordinates >)
+     */
     public ObjectBinding<GeographicCoordinates> coordinatesProperty() {
         return coordinates;
     }
 
+    /**
+     * Setter for the coordinates
+     *
+     * @param coordinates (GeographicCoordinates) New coordinates to be used
+     */
     public void setCoordinates(GeographicCoordinates coordinates) {
         setLonDeg(coordinates.lonDeg());
         setLatDeg(coordinates.latDeg());
     }
 }
-
-/*//TODO TEST
-class ObserverTest {
-    public static void main(String[] args) {
-        ObserverLocationBean bean = new ObserverLocationBean();
-        bean.setLatDeg(20);
-        System.out.println(bean.getCoordinates());
-        bean.setLonDeg(35);
-        System.out.println(bean.getCoordinates());
-    }
-}*/

@@ -59,6 +59,7 @@ public final class TimeAnimator extends AnimationTimer {
 
     /**
      * Getter for the time accelerator
+     *
      * @return the time accelerator
      */
     public TimeAccelerator getAccelerator() {
@@ -67,6 +68,7 @@ public final class TimeAnimator extends AnimationTimer {
 
     /**
      * Getter for the time accelerator property
+     *
      * @return the time accelerator property
      */
     public ObjectProperty<TimeAccelerator> acceleratorProperty() {
@@ -75,6 +77,7 @@ public final class TimeAnimator extends AnimationTimer {
 
     /**
      * Setter for the time accelerator
+     *
      * @param accelerator the accelerator to set
      */
     public void setAccelerator(TimeAccelerator accelerator) {
@@ -83,6 +86,7 @@ public final class TimeAnimator extends AnimationTimer {
 
     /**
      * Getter for the running boolean
+     *
      * @return the running boolean
      */
     public boolean isRunning() {
@@ -91,6 +95,7 @@ public final class TimeAnimator extends AnimationTimer {
 
     /**
      * Getter for the running property
+     *
      * @return the running property
      */
     public ReadOnlyBooleanProperty runningProperty() {

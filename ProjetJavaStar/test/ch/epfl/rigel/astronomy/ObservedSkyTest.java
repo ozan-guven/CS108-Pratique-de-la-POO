@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.time.*;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ObservedSkyTest {
 
@@ -24,7 +24,7 @@ class ObservedSkyTest {
     StarCatalogue.Builder builder;
 
     @Test
-    void starPositions()  throws IOException {
+    void starPositions() throws IOException {
         try (InputStream hygStream = getClass().getResourceAsStream(HYG_CATALOGUE_NAME)) {
             builder = new StarCatalogue.Builder().loadFrom(hygStream, HygDatabaseLoader.INSTANCE);
         }
@@ -62,11 +62,11 @@ class ObservedSkyTest {
         sky = new ObservedSky(time, geoCoords, stereo, catalogue);
 
         assertEquals("Tau Phe",
-                sky.objectClosestTo(stereo.apply(new EquatorialToHorizontalConversion(time,geoCoords)
-                        .apply(EquatorialCoordinates.of(0.004696959812148989,-0.861893035343076))),0.1).get().name());
+                sky.objectClosestTo(stereo.apply(new EquatorialToHorizontalConversion(time, geoCoords)
+                        .apply(EquatorialCoordinates.of(0.004696959812148989, -0.861893035343076))), 0.1).get().name());
 
         assertEquals(Optional.empty(),
-                sky.objectClosestTo(stereo.apply(new EquatorialToHorizontalConversion(time,geoCoords)
-                        .apply(EquatorialCoordinates.of(0.004696959812148989,-0.8618930353430763))),0.001));
+                sky.objectClosestTo(stereo.apply(new EquatorialToHorizontalConversion(time, geoCoords)
+                        .apply(EquatorialCoordinates.of(0.004696959812148989, -0.8618930353430763))), 0.001));
     }
 }
