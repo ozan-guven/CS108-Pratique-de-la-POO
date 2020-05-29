@@ -24,6 +24,9 @@ import java.util.List;
  */
 public final class SkyCanvasPainter {
 
+    private static final double SUN_HALO_OPACITY_FACTOR = 0.25;
+    private static final ClosedInterval INTERVAL_FOR_DIAMETER = ClosedInterval.of(-2, 5);
+
     private final Canvas canvas;
     private final GraphicsContext ctx;
 
@@ -87,7 +90,7 @@ public final class SkyCanvasPainter {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
 
-        drawAsterisms(sky, transformed); //TODO : To add later as a bonus : user could choose whether to show the asterisms or not
+        drawAsterisms(sky, transformed);
 
         int i = 0;
         double z;
@@ -115,7 +118,6 @@ public final class SkyCanvasPainter {
         ctx.setFill(Color.LIGHTGRAY);
         for (Planet planet : sky.planets()) {
             diameter = planeToCanvas.deltaTransform(diameterFromMagnitude(planet.magnitude(), projection), 0).getX();
-            //TODO : later ctx.setFill(planet.color());
             ctx.fillOval(planetCoordinates[i++] - diameter / 2, planetCoordinates[i++] - diameter / 2, diameter, diameter);
         }
     }
@@ -138,7 +140,7 @@ public final class SkyCanvasPainter {
         double sunSecondDiameter = sunDiameter + 2;
         double sunHaloDiameter = sunDiameter * 2.2;
 
-        ctx.setFill(Color.YELLOW.deriveColor(0, 1, 1, 0.25));
+        ctx.setFill(Color.YELLOW.deriveColor(0, 1, 1, SUN_HALO_OPACITY_FACTOR));
         ctx.fillOval(sunX - sunHaloDiameter / 2, sunY - sunHaloDiameter / 2, sunHaloDiameter, sunHaloDiameter);
 
         ctx.setFill(Color.YELLOW);
@@ -177,7 +179,6 @@ public final class SkyCanvasPainter {
      *                      cartesian coordinates to the coordinates of the screen
      */
     public void drawHorizon(StereographicProjection projection, Transform planeToCanvas) {
-        //TODO : Comme bonus on pourrait choisir d'afficher ou non l'horizon ?
         //Draws the horizon
         ctx.setStroke(Color.RED);
         ctx.setLineWidth(2);
@@ -230,8 +231,7 @@ public final class SkyCanvasPainter {
      * @return the diameter from the magnitude
      */
     private double diameterFromMagnitude(double magnitude, StereographicProjection projection) {
-        ClosedInterval interval = ClosedInterval.of(-2, 5);
-        double clippedMagnitude = interval.clip(magnitude);
+        double clippedMagnitude = INTERVAL_FOR_DIAMETER.clip(magnitude);
         double factor = (99 - 17 * clippedMagnitude) / 140.0;
         return factor * projection.applyToAngle(Angle.ofDeg(0.5));
     }
