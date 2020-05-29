@@ -20,7 +20,7 @@ public interface TimeAccelerator {
     /**
      * Computes the simulated time T
      *
-     * @param initialTime represents the initial simulated time
+     * @param initialTime        represents the initial simulated time
      * @param timeSinceAnimation represents the real elapsed time since
      *                           the beginning of the simulation
      * @return the simulated time
@@ -43,7 +43,7 @@ public interface TimeAccelerator {
      * given advancement frequency and the step
      *
      * @param advFreq the advancement frequency
-     * @param step the step
+     * @param step    the step
      * @return the discrete accelerator
      */
     static TimeAccelerator discrete(int advFreq, Duration step) {

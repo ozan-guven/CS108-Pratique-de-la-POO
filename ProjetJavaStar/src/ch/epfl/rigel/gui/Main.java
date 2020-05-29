@@ -30,23 +30,21 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+/**
+ * Main class of the programme
+ *
+ * @author Robin Goumaz (301420)
+ * @author Ozan Güven (297076)
+ */
 public class Main extends Application {
 
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //TODO: ATENTION FAUT MATTRE FINAL A TOTES LES PROPRIETES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private static final int MIN_WIDTH_STAGE = 800;
     private static final int MIN_HEIGHT_STAGE = 600;
     private static final GeographicCoordinates DEFAULT_OBSERVATION_COORDINATES =
             GeographicCoordinates.ofDeg(6.57, 46.52);
     private static final HorizontalCoordinates DEFAULT_CENTER_FOR_VIEW =
             HorizontalCoordinates.ofDeg(180.000000000001, 15);
-    private static final int DEFAULT_FIELD_OF_VIEW = 100;
+    private static final double DEFAULT_FIELD_OF_VIEW = 100;
     private static final String ROLL_BACK = "\uf0e2";
     private static final String PLAY = "\uf04b";
     private static final String PAUSE = "\uf04c";
@@ -55,6 +53,9 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * @see Application#start(Stage)
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 
@@ -72,9 +73,7 @@ public class Main extends Application {
             fontForButtons = Font.loadFont(fontStream, 15);
         }
 
-        ZonedDateTime when = ZonedDateTime.now();
-        DateTimeBean dateTimeBean = new DateTimeBean();
-        dateTimeBean.setZonedDateTime(when);
+        DateTimeBean dateTimeBean = new DateTimeBean(ZonedDateTime.now());
 
         TimeAnimator timeAnimator = new TimeAnimator(dateTimeBean);
 
@@ -94,28 +93,27 @@ public class Main extends Application {
         sky.widthProperty().bind(skyPane.widthProperty());
         sky.heightProperty().bind(skyPane.heightProperty());
 
-        //-------------------------------------------- COORDINATES CONTROL------------------------------------------------------
+        //-------------------------------------------- COORDINATES CONTROL----------------------------------------------
         HBox coordControl = createCoordinatesController(observerLocationBean);
 
         coordControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
 
-        //------------------------------------------------ DATE CONTROL------------------------------------------------------
+        //------------------------------------------------ DATE CONTROL-------------------------------------------------
         HBox dateControl = createDateController(dateTimeBean);
 
         dateControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
         dateControl.disableProperty().bind(timeAnimator.runningProperty());
 
-        //------------------------------------------------SPEED CONTROLLER------------------------------------------------------
+        //------------------------------------------------SPEED CONTROLLER----------------------------------------------
 
         HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons);
         speedControl.setStyle("-fx-spacing: inherit;");
 
-        //------------------------------------------------WHOLE CONTROL BAR-----------------------------------------------------
+        //------------------------------------------------WHOLE CONTROL BAR---------------------------------------------
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl, new Separator(Orientation.VERTICAL), speedControl);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
 
-        //------------------------------------------------BOTTOM INFORMATION BAR------------------------------------------------
-
+        //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
 
         //------------------------------------------------ROOT BORDERPANE-------------------------------------------------------

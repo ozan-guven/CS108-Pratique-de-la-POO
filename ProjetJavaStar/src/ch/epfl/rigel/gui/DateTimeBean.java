@@ -19,6 +19,21 @@ public final class DateTimeBean {
     private final ObjectProperty<LocalTime> time = new SimpleObjectProperty<>(null);
     private final ObjectProperty<ZoneId> zone = new SimpleObjectProperty<>(null);
 
+    /**
+     * Constructor of DateTimeBean initializing the properties to the default date when
+     *
+     * @param when the first date to use
+     */
+    public DateTimeBean(ZonedDateTime when) {
+        setZonedDateTime(when);
+    }
+
+    /**
+     * Default constructor of DateTimeBean
+     */
+    public DateTimeBean() {
+    }
+
     public LocalDate getDate() {
         return date.get();
     }

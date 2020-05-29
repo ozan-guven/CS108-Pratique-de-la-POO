@@ -208,8 +208,8 @@ public final class SkyCanvasPainter {
     /**
      * Draws all of the sky (drawStar, drawPlanets, drawSun, drawMoon, drawHorizon)
      *
-     * @param observedSky the observed sky
-     * @param projection the projection used
+     * @param observedSky   the observed sky
+     * @param projection    the projection used
      * @param planeToCanvas the plane to canvas transform used
      */
     public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas) {

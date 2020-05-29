@@ -17,13 +17,8 @@ import javafx.beans.property.SimpleObjectProperty;
  * @author Ozan Güven (297076)
  */
 public final class ViewingParametersBean {
-    private final DoubleProperty fieldOfViewDeg = new SimpleDoubleProperty();
-    private final ObjectProperty<HorizontalCoordinates> center = new SimpleObjectProperty<>();
-
-    public ViewingParametersBean() {
-        fieldOfViewDeg.set(0);
-        center.set(null);
-    }
+    private final DoubleProperty fieldOfViewDeg = new SimpleDoubleProperty(0);
+    private final ObjectProperty<HorizontalCoordinates> center = new SimpleObjectProperty<>(null);
 
     public double getFieldOfViewDeg() {
         return fieldOfViewDeg.get();

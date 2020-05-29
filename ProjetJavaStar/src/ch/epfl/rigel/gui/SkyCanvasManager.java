@@ -21,9 +21,9 @@ import javafx.scene.transform.Transform;
 
 public final class SkyCanvasManager {
 
-    public DoubleBinding mouseAzDeg;
-    public DoubleBinding mouseAltDeg;
-    public ObjectBinding<CelestialObject> objectUnderMouse;
+    public final DoubleBinding mouseAzDeg;
+    public final DoubleBinding mouseAltDeg;
+    public final ObjectBinding<CelestialObject> objectUnderMouse;
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
@@ -123,13 +123,13 @@ public final class SkyCanvasManager {
                     //if (AZ_DEG_BOUNDS.contains(coord.azDeg() - MOVE_EAST_WEST))
                     //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() - MOVE_EAST_WEST, coord.altDeg()));
                     //else
-                        viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() - MOVE_EAST_WEST), coord.altDeg()));
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() - MOVE_EAST_WEST), coord.altDeg()));
                     break;
                 case RIGHT:
                     //if (AZ_DEG_BOUNDS.contains(coord.azDeg() + MOVE_EAST_WEST))
                     //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() + MOVE_EAST_WEST, coord.altDeg()));
                     //else
-                        viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() + MOVE_EAST_WEST), coord.altDeg()));
+                    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() + MOVE_EAST_WEST), coord.altDeg()));
                     break;
             }
         });

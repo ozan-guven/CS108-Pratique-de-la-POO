@@ -42,7 +42,7 @@ public final class BlackBodyColor {
                     .filter(l -> l.charAt(0) != '#') //filters all lines with '#'
                     .map(l -> l.trim().split("\\s+")) //trims the string and "\\s+" takes into account multiple spaces such as "   "
                     .filter(s -> !s[2].equals("2deg")) //filters all lines with 2deg
-                    .forEachOrdered(s -> kelvinRGB.put(Integer.parseInt(s[0]), Color.web(s[s.length -1])));
+                    .forEachOrdered(s -> kelvinRGB.put(Integer.parseInt(s[0]), Color.web(s[s.length - 1])));
             /*
             String s = stream.readLine();
 
