@@ -34,7 +34,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
- * Main class of the programme
+ * Main class of the program
  *
  * @author Robin Goumaz (301420)
  * @author Ozan Güven (297076)
