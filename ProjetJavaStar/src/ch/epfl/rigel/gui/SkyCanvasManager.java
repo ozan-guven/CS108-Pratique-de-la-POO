@@ -19,6 +19,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Transform;
 
+import java.util.Optional;
+
 public final class SkyCanvasManager {
 
     public final DoubleBinding mouseAzDeg;
@@ -40,6 +42,14 @@ public final class SkyCanvasManager {
 
     private final Canvas skyCanvas;
 
+    /**
+     * SkyCanvasManager constructor
+     *
+     * @param catalogue Catalogue of celestial objects to use to build the sky
+     * @param dateTimeBean Date and time of the observation
+     * @param observerLocationBean Location of the observation
+     * @param viewingParametersBean The viewing parameters
+     */
     public SkyCanvasManager(StarCatalogue catalogue,
                             DateTimeBean dateTimeBean,
                             ObserverLocationBean observerLocationBean,
@@ -67,11 +77,8 @@ public final class SkyCanvasManager {
         objectUnderMouse = Bindings.createObjectBinding(() -> {
             try {
                 Point2D mousePoint = planeToCanvas.get().inverseTransform(mousePosition.get());
-                if (observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX()).isPresent()) {
-                    return observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX()).get();
-                } else {
-                    return null;
-                }
+                Optional<CelestialObject> objectClosest = observedSky.get().objectClosestTo(CartesianCoordinates.of(mousePoint.getX(), mousePoint.getY()), planeToCanvas.get().inverseDeltaTransform(10, 0).getX());
+                return objectClosest.orElse(null);
             } catch (NonInvertibleTransformException e) {
                 return null;
             }
@@ -90,7 +97,7 @@ public final class SkyCanvasManager {
             try {
                 return mouseHorizontalPosition.get().altDeg();
             } catch (NullPointerException e) {
-                return 0.0; //TODO: je ne sais pas si c'est la meilleure des moyens
+                return 0.0;
             }
         }, mouseHorizontalPosition);
         mouseAzDeg = Bindings.createDoubleBinding(() -> {
@@ -111,24 +118,15 @@ public final class SkyCanvasManager {
             HorizontalCoordinates coord = viewingParametersBean.getCenter();
             switch (key.getCode()) {
                 case UP:
-                    //if (ALT_DEG_BOUNDS.contains(coord.altDeg() + MOVE_NORTH_SOUTH))
                     viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() + MOVE_NORTH_SOUTH)));
                     break;
                 case DOWN:
-                    //if (ALT_DEG_BOUNDS.contains(coord.altDeg() - MOVE_NORTH_SOUTH))
                     viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg(), ALT_DEG_BOUNDS.clip(coord.altDeg() - MOVE_NORTH_SOUTH)));
                     break;
                 case LEFT:
-                    //TODO les else font des trucs bizarres
-                    //if (AZ_DEG_BOUNDS.contains(coord.azDeg() - MOVE_EAST_WEST))
-                    //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() - MOVE_EAST_WEST, coord.altDeg()));
-                    //else
                     viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() - MOVE_EAST_WEST), coord.altDeg()));
                     break;
                 case RIGHT:
-                    //if (AZ_DEG_BOUNDS.contains(coord.azDeg() + MOVE_EAST_WEST))
-                    //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(coord.azDeg() + MOVE_EAST_WEST, coord.altDeg()));
-                    //else
                     viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(coord.azDeg() + MOVE_EAST_WEST), coord.altDeg()));
                     break;
             }
@@ -146,30 +144,64 @@ public final class SkyCanvasManager {
         observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get()));
     }
 
+    /**
+     * Getter for the canvas
+     *
+     * @return (Canvas)
+     */
     public Canvas canvas() {
         return skyCanvas;
     }
 
+    /**
+     * Getter fot the azimut of the mouse
+     *
+     * @return (Number)
+     */
     public Number getMouseAzDeg() {
         return mouseAzDeg.get();
     }
 
+    /**
+     * Getter for the mouse azimut property
+     *
+     * @return (DoubleBinding)
+     */
     public DoubleBinding mouseAzDegProperty() {
         return mouseAzDeg;
     }
 
+    /**
+     * Getter for the altitude of the mouse
+     *
+     * @return (Number)
+     */
     public Number getMouseAltDeg() {
         return mouseAltDeg.get();
     }
 
+    /**
+     * Getter for the mouse altitude property
+     *
+     * @return (DoubleBinding)
+     */
     public DoubleBinding mouseAltDegProperty() {
         return mouseAltDeg;
     }
 
+    /**
+     * Getter for the celestial object under the mouse
+     *
+     * @return (CelestialObject)
+     */
     public CelestialObject getObjectUnderMouse() {
         return objectUnderMouse.get();
     }
 
+    /**
+     * Getter for the celestial object under the mouse property
+     * @return (ObjectBinding<CelestialObject>)
+     */
     public ObjectBinding<CelestialObject> objectUnderMouseProperty() {
         return objectUnderMouse;
     }
