@@ -51,8 +51,6 @@ public class Main extends Application {
     private static final String UNDO = "\uf0e2";
     private static final String PLAY = "\uf04b";
     private static final String PAUSE = "\uf04c";
-    private static final String SHOW_ASTERISMS = "Afficher les astérismes";
-    private static final String HIDE_ASTERISMS = "Masquer les astérismes";
 
     public static void main(String[] args) {
         launch(args);
@@ -246,7 +244,7 @@ public class Main extends Application {
         return speedControl;
     }
 
-    private Button createAsterismsButton(SkyCanvasManager canvasManager) {
+    /*private Button createAsterismsButton(SkyCanvasManager canvasManager) {
         Button asterismsButton = new Button(HIDE_ASTERISMS);
 
         asterismsButton.setOnAction(action -> {
@@ -259,44 +257,24 @@ public class Main extends Application {
             }
         });
         return asterismsButton;
-    }
+    }*/
 
     private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage) {
         Menu graphicsMenu = new Menu("_Graphismes");
-        Text asterismsText = new Text(HIDE_ASTERISMS);
         //Menu items
-        MenuItem asterismsOption = new MenuItem();
-        asterismsOption.textProperty().bind(asterismsText.textProperty());
-        asterismsOption.setOnAction(action -> {
-            if (canvasManager.isDrawAsterisms()) {
-                asterismsText.setText(SHOW_ASTERISMS);
-                canvasManager.setDrawAsterisms(false);
-            } else {
-                asterismsText.setText(HIDE_ASTERISMS);
-                canvasManager.setDrawAsterisms(true);
-            }
-        });
+        CheckMenuItem asterismsOption = new CheckMenuItem("Afficher les astérismes");
+        asterismsOption.setSelected(canvasManager.isDrawAsterisms());
+        asterismsOption.setOnAction(action -> canvasManager.setDrawAsterisms(!canvasManager.isDrawAsterisms()));
         graphicsMenu.getItems().add(asterismsOption);
 
         Menu windowOptions = new Menu("_Fenêtre");
-        Text fullScreenText = new Text();
-        fullScreenText.textProperty().bind(Bindings.when(primaryStage.fullScreenProperty())
-                .then("Quitter le mode pleine écran")
-                .otherwise("Passez en mode plein écran"));
         //Menu items
-        MenuItem fullScreenOption = new MenuItem();
-        fullScreenOption.textProperty().bind(fullScreenText.textProperty());
-        fullScreenOption.setOnAction(action -> {
-            if (!primaryStage.fullScreenProperty().get())
-                primaryStage.setFullScreen(true);
-            else
-                primaryStage.setFullScreen(false);
-        });
+        CheckMenuItem fullScreenOption = new CheckMenuItem("Mode plein écran");
+        fullScreenOption.setOnAction(action -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
         windowOptions.getItems().add(fullScreenOption);
 
         MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions);
-        mainMenu.setStyle("-fx-font-size: 12px");
-        mainMenu.setStyle("-fx-background-color: DimGray;");
+        mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white;");
 
         return mainMenu;
     }
@@ -319,7 +297,7 @@ public class Main extends Application {
 
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
                 new Separator(Orientation.VERTICAL), speedControl);//, new Separator(Orientation.VERTICAL), asterismsButton);
-        controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
+        controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4; -fx-background-color: white;");
 
         return new BorderPane(null, mainMenu, null, controlBar, null);
     }
