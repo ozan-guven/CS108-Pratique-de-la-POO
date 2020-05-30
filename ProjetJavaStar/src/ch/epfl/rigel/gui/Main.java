@@ -262,7 +262,7 @@ public class Main extends Application {
     }
 
     private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage) {
-        Menu graphicsMenu = new Menu("Graphismes");
+        Menu graphicsMenu = new Menu("_Graphismes");
         Text asterismsText = new Text(HIDE_ASTERISMS);
         //Menu items
         MenuItem asterismsOption = new MenuItem();
@@ -278,7 +278,7 @@ public class Main extends Application {
         });
         graphicsMenu.getItems().add(asterismsOption);
 
-        Menu windowOptions = new Menu("Fenêtre");
+        Menu windowOptions = new Menu("_Fenêtre");
         Text fullScreenText = new Text();
         fullScreenText.textProperty().bind(Bindings.when(primaryStage.fullScreenProperty())
                 .then("Quitter le mode pleine écran")
@@ -296,7 +296,7 @@ public class Main extends Application {
 
         MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions);
         mainMenu.setStyle("-fx-font-size: 12px");
-        mainMenu.setStyle("; -fx-background-color: white;");
+        mainMenu.setStyle("-fx-background-color: DimGray;");
 
         return mainMenu;
     }
