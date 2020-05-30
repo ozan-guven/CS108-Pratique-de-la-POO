@@ -100,7 +100,7 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
-        HBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager);
+        BorderPane controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
@@ -260,7 +260,7 @@ public class Main extends Application {
         return asterismsButton;
     }
 
-    private HBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager) {
+    private BorderPane createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean);
 
@@ -273,11 +273,16 @@ public class Main extends Application {
         //ASTERISMS BUTTON
         Button asterismsButton = createAsterismsButton(canvasManager);
 
+        Menu graphicsMenu = new Menu("Graphismes");
+        graphicsMenu.getItems().add(new MenuItem(HIDE_ASTERISMS));
+
+        MenuBar mainMenu = new MenuBar(graphicsMenu);
+
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
                 new Separator(Orientation.VERTICAL), speedControl, new Separator(Orientation.VERTICAL), asterismsButton);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
 
-        return controlBar;
+        return new BorderPane(null, mainMenu, null, controlBar, null);
     }
 
     private BorderPane createBottomInfoBar(ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager) {
