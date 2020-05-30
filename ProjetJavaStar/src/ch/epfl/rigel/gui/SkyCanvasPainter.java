@@ -86,11 +86,11 @@ public final class SkyCanvasPainter {
      * @param planeToCanvas the affine transformation to transform from
      *                      cartesian coordinates to the coordinates of the screen
      */
-    public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
+    public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms) {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
 
-        drawAsterisms(sky, transformed);
+        if(drawAsterisms) drawAsterisms(sky, transformed);
 
         int i = 0;
         double starDiameter;
@@ -213,9 +213,9 @@ public final class SkyCanvasPainter {
      * @param projection    the projection used
      * @param planeToCanvas the plane to canvas transform used
      */
-    public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas) {
+    public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms) {
         clear();
-        drawStars(observedSky, projection, planeToCanvas);
+        drawStars(observedSky, projection, planeToCanvas, drawAsterisms); //Draws the star and draws the asterisms if wanted
         drawPlanets(observedSky, projection, planeToCanvas); //Draws the planets
         drawSun(observedSky, projection, planeToCanvas); //Draws the sun
         drawMoon(observedSky, projection, planeToCanvas);//Draws the moon

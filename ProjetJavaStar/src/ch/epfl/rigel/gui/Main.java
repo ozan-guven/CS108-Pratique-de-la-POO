@@ -51,6 +51,8 @@ public class Main extends Application {
     private static final String UNDO = "\uf0e2";
     private static final String PLAY = "\uf04b";
     private static final String PAUSE = "\uf04c";
+    private static final String SHOW_ASTERISMS = "Afficher les astérismes";
+    private static final String HIDE_ASTERISMS = "Masquer les astérismes";
 
     public static void main(String[] args) {
         launch(args);
@@ -98,7 +100,7 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
-        HBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons);
+        HBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
@@ -243,7 +245,22 @@ public class Main extends Application {
         return speedControl;
     }
 
-    private HBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons) {
+    private Button createAsterismsButton(SkyCanvasManager canvasManager) {
+        Button asterismsButton = new Button(HIDE_ASTERISMS);
+
+        asterismsButton.setOnAction(action -> {
+            if(canvasManager.isDrawAsterisms()) {
+                asterismsButton.setText(SHOW_ASTERISMS);
+                canvasManager.setDrawAsterisms(false);
+            } else {
+                asterismsButton.setText(HIDE_ASTERISMS);
+                canvasManager.setDrawAsterisms(true);
+            }
+        });
+        return asterismsButton;
+    }
+
+    private HBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean);
 
@@ -253,7 +270,11 @@ public class Main extends Application {
         //SPEED CONTROLLER
         HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons);
 
-        HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl, new Separator(Orientation.VERTICAL), speedControl);
+        //ASTERISMS BUTTON
+        Button asterismsButton = createAsterismsButton(canvasManager);
+
+        HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
+                new Separator(Orientation.VERTICAL), speedControl, new Separator(Orientation.VERTICAL), asterismsButton);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
 
         return controlBar;

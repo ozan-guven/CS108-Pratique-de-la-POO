@@ -12,7 +12,9 @@ import ch.epfl.rigel.math.RightOpenInterval;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -26,6 +28,8 @@ public final class SkyCanvasManager {
     public final DoubleBinding mouseAzDeg;
     public final DoubleBinding mouseAltDeg;
     public final ObjectBinding<CelestialObject> objectUnderMouse;
+
+    public final BooleanProperty drawAsterisms = new SimpleBooleanProperty(true);
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
@@ -83,6 +87,8 @@ public final class SkyCanvasManager {
                 return 0.0;
             }
         }, mouseHorizontalPosition);
+
+        drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV));
     }
 
     /**
@@ -137,6 +143,18 @@ public final class SkyCanvasManager {
      */
     public CelestialObject getObjectUnderMouse() {
         return objectUnderMouse.get();
+    }
+
+    public boolean isDrawAsterisms() {
+        return drawAsterisms.get();
+    }
+
+    public BooleanProperty drawAsterismsProperty() {
+        return drawAsterisms;
+    }
+
+    public void setDrawAsterisms(boolean drawAsterisms) {
+        this.drawAsterisms.set(drawAsterisms);
     }
 
     /**
@@ -195,7 +213,7 @@ public final class SkyCanvasManager {
                 dateTimeBean.dateProperty(), dateTimeBean.timeProperty(), dateTimeBean.zoneProperty(),
                 observerLocationBean.coordinatesProperty(), projection);
 
-        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get()));
+        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get(), drawAsterisms.get()));
 
         return observedSky;
     }
@@ -207,7 +225,7 @@ public final class SkyCanvasManager {
                 },
                 skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
 
-        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV));
+        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV, drawAsterisms.get()));
 
         return planeToCanvas;
     }

@@ -71,7 +71,7 @@ public final class DrawSky extends Application {
                 new SkyCanvasPainter(canvas);
 
         painter.clear();
-        painter.drawStars(sky, projection, planeToCanvas);
+        painter.drawStars(sky, projection, planeToCanvas, true);
         painter.drawPlanets(sky, projection, planeToCanvas); //Draws the planets
         painter.drawSun(sky, projection, planeToCanvas); //Draws the sun
         painter.drawMoon(sky, projection, planeToCanvas);//Draws the moon
