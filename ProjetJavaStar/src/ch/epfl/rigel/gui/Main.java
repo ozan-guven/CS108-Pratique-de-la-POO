@@ -100,7 +100,7 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
-        BorderPane controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager);
+        BorderPane controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager, primaryStage);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
@@ -114,6 +114,7 @@ public class Main extends Application {
         primaryStage.setMinHeight(MIN_HEIGHT_STAGE);
 
         primaryStage.setScene(new Scene(root));
+        primaryStage.setMaximized(true);
         primaryStage.show();
 
         sky.requestFocus();
@@ -249,7 +250,7 @@ public class Main extends Application {
         Button asterismsButton = new Button(HIDE_ASTERISMS);
 
         asterismsButton.setOnAction(action -> {
-            if(canvasManager.isDrawAsterisms()) {
+            if (canvasManager.isDrawAsterisms()) {
                 asterismsButton.setText(SHOW_ASTERISMS);
                 canvasManager.setDrawAsterisms(false);
             } else {
@@ -260,7 +261,47 @@ public class Main extends Application {
         return asterismsButton;
     }
 
-    private BorderPane createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager) {
+    private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage) {
+        Menu graphicsMenu = new Menu("Graphismes");
+        Text asterismsText = new Text(HIDE_ASTERISMS);
+        //Menu items
+        MenuItem asterismsOption = new MenuItem();
+        asterismsOption.textProperty().bind(asterismsText.textProperty());
+        asterismsOption.setOnAction(action -> {
+            if (canvasManager.isDrawAsterisms()) {
+                asterismsText.setText(SHOW_ASTERISMS);
+                canvasManager.setDrawAsterisms(false);
+            } else {
+                asterismsText.setText(HIDE_ASTERISMS);
+                canvasManager.setDrawAsterisms(true);
+            }
+        });
+        graphicsMenu.getItems().add(asterismsOption);
+
+        Menu windowOptions = new Menu("Fenêtre");
+        Text fullScreenText = new Text();
+        fullScreenText.textProperty().bind(Bindings.when(primaryStage.fullScreenProperty())
+                .then("Quitter le mode pleine écran")
+                .otherwise("Passez en mode plein écran"));
+        //Menu items
+        MenuItem fullScreenOption = new MenuItem();
+        fullScreenOption.textProperty().bind(fullScreenText.textProperty());
+        fullScreenOption.setOnAction(action -> {
+            if (!primaryStage.fullScreenProperty().get())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
+        });
+        windowOptions.getItems().add(fullScreenOption);
+
+        MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions);
+        mainMenu.setStyle("-fx-font-size: 12px");
+        mainMenu.setStyle("; -fx-background-color: white;");
+
+        return mainMenu;
+    }
+
+    private BorderPane createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean);
 
@@ -271,15 +312,13 @@ public class Main extends Application {
         HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons);
 
         //ASTERISMS BUTTON
-        Button asterismsButton = createAsterismsButton(canvasManager);
+        //Button asterismsButton = createAsterismsButton(canvasManager);
 
-        Menu graphicsMenu = new Menu("Graphismes");
-        graphicsMenu.getItems().add(new MenuItem(HIDE_ASTERISMS));
-
-        MenuBar mainMenu = new MenuBar(graphicsMenu);
+        //TOP MENU BAR
+        MenuBar mainMenu = createMenuBar(canvasManager, primaryStage);
 
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
-                new Separator(Orientation.VERTICAL), speedControl, new Separator(Orientation.VERTICAL), asterismsButton);
+                new Separator(Orientation.VERTICAL), speedControl);//, new Separator(Orientation.VERTICAL), asterismsButton);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
 
         return new BorderPane(null, mainMenu, null, controlBar, null);
