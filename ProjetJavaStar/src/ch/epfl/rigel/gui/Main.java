@@ -141,7 +141,16 @@ public class Main extends Application {
         lonTextFormatter.valueProperty().bindBidirectional(locationBean.lonDegProperty());
         latTextFormatter.valueProperty().bindBidirectional(locationBean.latDegProperty());
 
-        HBox coordControl = new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat);
+        ComboBox<String> cityPicker = new ComboBox<>();
+        List<String> cityList = new ArrayList<>(CityCoordinates.getCityMap().keySet());
+        cityList.sort(String::compareTo);
+        cityPicker.getItems().addAll(cityList);
+        cityPicker.getSelectionModel().select("EPFL");
+        cityPicker.setOnAction(action -> locationBean.setCoordinates(CityCoordinates.getCityMap().get(cityPicker.getValue())));
+
+        cityPicker.setStyle("-fx-pref-width: 180;");
+
+        HBox coordControl = new HBox(new Label("Longitude (°) :"), textFieldLon, new Label("Latitude (°) :"), textFieldLat, cityPicker);
         coordControl.setStyle("-fx-spacing: inherit; -fx-alignment: baseline-left;");
 
         return coordControl;
