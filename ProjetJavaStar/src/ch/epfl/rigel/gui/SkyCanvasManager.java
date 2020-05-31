@@ -174,6 +174,8 @@ public final class SkyCanvasManager {
         skyCanvas.setOnMousePressed((mousePress) -> {
             if (mousePress.isPrimaryButtonDown())
                 skyCanvas.requestFocus();
+            //if(mousePress.getClickCount() == 2)
+            //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(mouseAzDeg.get()), ALT_DEG_BOUNDS.clip(mouseAltDeg.get())));
         });
 
         skyCanvas.setOnKeyPressed((key) -> {
@@ -202,6 +204,20 @@ public final class SkyCanvasManager {
             else
                 viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaY()));
         });
+        /*
+        skyCanvas.setOnMouseDragged(dragEvent -> {
+            double dragX = dragEvent.getX();
+            double dragY = dragEvent.getY();
+            HorizontalCoordinates currCoord = viewingParametersBean.getCenter();
+            try {
+                Point2D inverse = planeToCanvas.get().inverseTransform(dragX, dragY);
+                HorizontalCoordinates coord = projection.get().inverseApply(CartesianCoordinates.of(inverse.getX(), inverse.getY()));
+                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(currCoord.azDeg() - coord.azDeg()), ALT_DEG_BOUNDS.clip(currCoord.altDeg() - coord.altDeg())));
+            } catch (NonInvertibleTransformException ignored) {
+            }
+
+            System.out.println("X : " + dragX + "; Y : " + dragY);
+        });*/
 
         return skyCanvas;
     }
