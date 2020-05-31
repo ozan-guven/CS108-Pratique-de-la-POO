@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -41,7 +42,7 @@ import java.util.function.UnaryOperator;
  */
 public class Main extends Application {
 
-    private static final int MIN_WIDTH_STAGE = 800;
+    private static final int MIN_WIDTH_STAGE = 950;
     private static final int MIN_HEIGHT_STAGE = 600;
     private static final GeographicCoordinates DEFAULT_OBSERVATION_COORDINATES =
             GeographicCoordinates.ofDeg(6.57, 46.52);
@@ -98,7 +99,7 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
-        BorderPane controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager, primaryStage);
+        VBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager, primaryStage);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
@@ -268,8 +269,13 @@ public class Main extends Application {
         graphicsMenu.getItems().add(asterismsOption);
 
         Menu windowOptions = new Menu("_Fenêtre");
+        Text fullScreenText = new Text();
+        fullScreenText.textProperty().bind(Bindings.when(primaryStage.fullScreenProperty())
+                .then("Quitter le mode plein écran")
+                .otherwise("Passer en mode plein écran"));
         //Menu items
-        CheckMenuItem fullScreenOption = new CheckMenuItem("Mode plein écran");
+        MenuItem fullScreenOption = new MenuItem();
+        fullScreenOption.textProperty().bind(fullScreenText.textProperty());
         fullScreenOption.setOnAction(action -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
         windowOptions.getItems().add(fullScreenOption);
 
@@ -279,7 +285,7 @@ public class Main extends Application {
         return mainMenu;
     }
 
-    private BorderPane createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage) {
+    private VBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean);
 
@@ -299,7 +305,7 @@ public class Main extends Application {
                 new Separator(Orientation.VERTICAL), speedControl);//, new Separator(Orientation.VERTICAL), asterismsButton);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4; -fx-background-color: white;");
 
-        return new BorderPane(null, mainMenu, null, controlBar, null);
+        return new VBox( mainMenu, controlBar);
     }
 
     private BorderPane createBottomInfoBar(ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager) {
