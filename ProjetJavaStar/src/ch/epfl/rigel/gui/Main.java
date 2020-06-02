@@ -297,13 +297,31 @@ public class Main extends Application {
         moonMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getMoonCoordinates()));
 
         //MenuItem planet = new MenuItem("Planets");
-        MenuItem mercuryMenu = new MenuItem("_Mércure");
+        MenuItem mercuryMenu = new MenuItem("Mér_cure");
         mercuryMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(0)));
+
+        MenuItem venusMenu = new MenuItem("_Vénus");
+        venusMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(1)));
+
+        MenuItem marsMenu = new MenuItem("_Mars");
+        marsMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(2)));
+
+        MenuItem jupiterMenu = new MenuItem("_Jupiter");
+        jupiterMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(3)));
+
+        MenuItem saturnMenu = new MenuItem("_Satrune");
+        saturnMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(4)));
+
+        MenuItem uranusMenu = new MenuItem("_Uranus");
+        uranusMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(5)));
+
+        MenuItem neptuneMenu = new MenuItem("_Néptune");
+        neptuneMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(6)));
 
         MenuItem resetMenu = new MenuItem("_Reset");
         resetMenu.setOnAction(action -> viewingParametersBean.setCenter(DEFAULT_CENTER_FOR_VIEW));
 
-        celestialMenu.getItems().addAll(sunMenu, moonMenu, mercuryMenu, resetMenu);//planet);
+        celestialMenu.getItems().addAll(sunMenu, moonMenu, mercuryMenu, venusMenu, marsMenu, jupiterMenu, saturnMenu, uranusMenu, neptuneMenu, resetMenu);//planet);
 
         MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions, celestialMenu);
         mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white;");
