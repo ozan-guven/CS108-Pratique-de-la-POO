@@ -36,7 +36,8 @@ public final class SkyCanvasManager {
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
-    private static final ClosedInterval ALT_DEG_BOUNDS = ClosedInterval.of(5, 90);
+    //private static final ClosedInterval ALT_DEG_BOUNDS = ClosedInterval.of(5, 90);
+    private static final ClosedInterval ALT_DEG_BOUNDS = ClosedInterval.of(-90, 90);
 
     private static final int MOVE_NORTH_SOUTH = 5;
     private static final int MOVE_EAST_WEST = 10;

@@ -53,7 +53,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      * @return the radius of the circle (may be infinity)
      */
     public double circleRadiusForParallel(HorizontalCoordinates parallel) {
-        return Math.cos(parallel.alt()) / (Math.sin(parallel.alt()) + sinPhiCenter);
+        return Math.abs(Math.cos(parallel.alt()) / (Math.sin(parallel.alt()) + sinPhiCenter));
     }
 
     /**

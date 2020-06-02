@@ -184,11 +184,17 @@ public final class SkyCanvasPainter {
         ctx.setLineWidth(2);
         HorizontalCoordinates coordForHorizon = HorizontalCoordinates.of(0, 0);
 
-        double circleRadius = planeToCanvas.deltaTransform(projection.circleRadiusForParallel(coordForHorizon) * 2, 0).getX();
-        CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
-        Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
+        double circleRadiusForParallel = projection.circleRadiusForParallel(coordForHorizon);
+        System.out.println(circleRadiusForParallel);
+        if(circleRadiusForParallel > 1E15 || circleRadiusForParallel == Double.NEGATIVE_INFINITY) {
+            ctx.strokeLine(0, canvas.getHeight() / 2d, canvas.getWidth(), canvas.getHeight() / 2d);
+        } else {
+            double circleRadius = planeToCanvas.deltaTransform(circleRadiusForParallel * 2, 0).getX();
+            CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
+            Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
 
-        ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
+            ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
+        }
 
         //Draws the cardinal points
         ctx.setFill(Color.RED);
