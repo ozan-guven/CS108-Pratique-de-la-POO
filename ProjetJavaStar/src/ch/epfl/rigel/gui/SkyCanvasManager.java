@@ -4,6 +4,7 @@ import ch.epfl.rigel.astronomy.CelestialObject;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.StarCatalogue;
 import ch.epfl.rigel.coordinates.CartesianCoordinates;
+import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
 import ch.epfl.rigel.math.Angle;
@@ -21,6 +22,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Transform;
 
+import java.util.List;
 import java.util.Optional;
 
 public final class SkyCanvasManager {
@@ -43,6 +45,10 @@ public final class SkyCanvasManager {
     private final ObjectBinding<ObservedSky> observedSky;
     private final ObjectProperty<Point2D> mousePosition = new SimpleObjectProperty<>(new Point2D(0, 0));
     private final ObjectBinding<HorizontalCoordinates> mouseHorizontalPosition;
+
+    private final ObjectBinding<HorizontalCoordinates> sunCoordinates;
+    private final ObjectBinding<HorizontalCoordinates> moonCoordinates;
+    private final ObjectBinding<List<HorizontalCoordinates>> planetsCoordinates;
 
     private final Canvas skyCanvas;
 
@@ -89,6 +95,10 @@ public final class SkyCanvasManager {
         }, mouseHorizontalPosition);
 
         drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV));
+
+        sunCoordinates = Bindings.createObjectBinding(() -> observedSky.get().sunHorizontalCoordinates(), observedSky);
+        moonCoordinates = Bindings.createObjectBinding(() -> observedSky.get().moonHorizontalCoordinates(), observedSky);
+        planetsCoordinates = Bindings.createObjectBinding(() -> observedSky.get().planetsHorizontalCoordinates(), observedSky);
     }
 
     /**
@@ -271,5 +281,17 @@ public final class SkyCanvasManager {
 
     private double dilatation(Canvas canvas, StereographicProjection projection, double fieldOfViewDeg) {
         return canvas.getWidth() / projection.applyToAngle(Angle.ofDeg(fieldOfViewDeg));
+    }
+
+    public HorizontalCoordinates getSunCoordinates() {
+        return sunCoordinates.get();
+    }
+
+    public HorizontalCoordinates getMoonCoordinates() {
+        return moonCoordinates.get();
+    }
+
+    public List<HorizontalCoordinates> getPlanetsCoordinates() {
+        return planetsCoordinates.get();
     }
 }

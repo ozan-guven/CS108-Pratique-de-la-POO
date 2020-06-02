@@ -99,7 +99,7 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
-        VBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager, primaryStage);
+        VBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager, primaryStage, viewingParametersBean);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
@@ -269,7 +269,7 @@ public class Main extends Application {
         return asterismsButton;
     }*/
 
-    private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage) {
+    private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean) {
         Menu graphicsMenu = new Menu("_Graphismes");
         //Menu items
         CheckMenuItem asterismsOption = new CheckMenuItem("Afficher les astérismes");
@@ -288,13 +288,30 @@ public class Main extends Application {
         fullScreenOption.setOnAction(action -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
         windowOptions.getItems().add(fullScreenOption);
 
-        MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions);
+        Menu celestialMenu = new Menu("_Astres");
+
+        MenuItem sunMenu = new MenuItem("_Soleil");
+        sunMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getSunCoordinates()));
+
+        MenuItem moonMenu = new MenuItem("_Lune");
+        moonMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getMoonCoordinates()));
+
+        //MenuItem planet = new MenuItem("Planets");
+        MenuItem mercuryMenu = new MenuItem("_Mércure");
+        mercuryMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(0)));
+
+        MenuItem resetMenu = new MenuItem("_Reset");
+        resetMenu.setOnAction(action -> viewingParametersBean.setCenter(DEFAULT_CENTER_FOR_VIEW));
+
+        celestialMenu.getItems().addAll(sunMenu, moonMenu, mercuryMenu, resetMenu);//planet);
+
+        MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions, celestialMenu);
         mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white;");
 
         return mainMenu;
     }
 
-    private VBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage) {
+    private VBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean);
 
@@ -308,7 +325,7 @@ public class Main extends Application {
         //Button asterismsButton = createAsterismsButton(canvasManager);
 
         //TOP MENU BAR
-        MenuBar mainMenu = createMenuBar(canvasManager, primaryStage);
+        MenuBar mainMenu = createMenuBar(canvasManager, primaryStage, viewingParametersBean);
 
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
                 new Separator(Orientation.VERTICAL), speedControl);//, new Separator(Orientation.VERTICAL), asterismsButton);

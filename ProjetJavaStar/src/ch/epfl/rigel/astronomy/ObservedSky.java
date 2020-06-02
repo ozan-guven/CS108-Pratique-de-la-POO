@@ -22,6 +22,10 @@ public final class ObservedSky {
     private final ArrayList<Planet> planets;
     private final List<Star> stars;
 
+    private final HorizontalCoordinates sunHorizontalCoordinates;
+    private final HorizontalCoordinates moonHorizontalCoordinates;
+    private final List<HorizontalCoordinates> planetsHorizontalCoordinates;
+
     private final CartesianCoordinates sunCoordinates;
     private final CartesianCoordinates moonCoordinates;
     private final double[] planetPositions;
@@ -51,12 +55,16 @@ public final class ObservedSky {
         sun = SunModel.SUN.at(daysUntilJ2010, conversionToEqu);
         moon = MoonModel.MOON.at(daysUntilJ2010, conversionToEqu);
 
-        sunCoordinates = projection.apply(conversionToHor.apply(sun.equatorialPos()));
-        moonCoordinates = projection.apply(conversionToHor.apply(moon.equatorialPos()));
+        sunHorizontalCoordinates = conversionToHor.apply(sun.equatorialPos());
+        moonHorizontalCoordinates = conversionToHor.apply(moon.equatorialPos());
+
+        sunCoordinates = projection.apply(sunHorizontalCoordinates);
+        moonCoordinates = projection.apply(moonHorizontalCoordinates);
 
         mapOfAll.put(sun, sunCoordinates);
         mapOfAll.put(moon, moonCoordinates);
 
+        planetsHorizontalCoordinates = new ArrayList<>();
         planetPositions = new double[14];
         planets = new ArrayList<>();
         int i = 0;
@@ -65,7 +73,10 @@ public final class ObservedSky {
                 Planet newPlanet = planet.at(daysUntilJ2010, conversionToEqu);
                 planets.add(newPlanet);
 
-                CartesianCoordinates planetProjection = projection.apply(conversionToHor.apply(newPlanet.equatorialPos()));
+                HorizontalCoordinates horPos = conversionToHor.apply(newPlanet.equatorialPos());
+                planetsHorizontalCoordinates.add(horPos);
+
+                CartesianCoordinates planetProjection = projection.apply(horPos);
                 planetPositions[i++] = planetProjection.x();
                 planetPositions[i++] = planetProjection.y();
 
@@ -93,6 +104,10 @@ public final class ObservedSky {
         return sun;
     }
 
+    public HorizontalCoordinates sunHorizontalCoordinates() {
+        return sunHorizontalCoordinates;
+    }
+
     /**
      * Gets the cartesian coordinates of the projection of the sun onto the plane
      *
@@ -109,6 +124,10 @@ public final class ObservedSky {
      */
     public Moon moon() {
         return moon;
+    }
+
+    public HorizontalCoordinates moonHorizontalCoordinates() {
+        return moonHorizontalCoordinates;
     }
 
     /**
@@ -128,6 +147,10 @@ public final class ObservedSky {
      */
     public List<Planet> planets() {
         return List.copyOf(planets);
+    }
+
+    public List<HorizontalCoordinates> planetsHorizontalCoordinates() {
+        return Collections.unmodifiableList(planetsHorizontalCoordinates);
     }
 
     /**
