@@ -22,6 +22,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Transform;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -292,6 +293,6 @@ public final class SkyCanvasManager {
     }
 
     public List<HorizontalCoordinates> getPlanetsCoordinates() {
-        return planetsCoordinates.get();
+        return Collections.unmodifiableList(planetsCoordinates.get());
     }
 }
