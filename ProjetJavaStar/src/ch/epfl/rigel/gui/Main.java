@@ -269,13 +269,17 @@ public class Main extends Application {
         return asterismsButton;
     }*/
 
-    private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean) {
+    /*private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean) {
         Menu graphicsMenu = new Menu("_Graphismes");
         //Menu items
         CheckMenuItem asterismsOption = new CheckMenuItem("Afficher les astérismes");
         asterismsOption.setSelected(canvasManager.isDrawAsterisms());
         asterismsOption.setOnAction(action -> canvasManager.setDrawAsterisms(!canvasManager.isDrawAsterisms()));
-        graphicsMenu.getItems().add(asterismsOption);
+
+        CheckMenuItem dayNightMenu = new CheckMenuItem("Cycle jour/nuit");
+        canvasManager.allowDayNightCycleProperty().bind(dayNightMenu.selectedProperty());
+
+        graphicsMenu.getItems().addAll(asterismsOption, dayNightMenu);
 
         Menu windowOptions = new Menu("_Fenêtre");
         Text fullScreenText = new Text();
@@ -327,7 +331,7 @@ public class Main extends Application {
         mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white;");
 
         return mainMenu;
-    }
+    }*/
 
     private VBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean) {
         //COORDINATES CONTROL
@@ -343,7 +347,7 @@ public class Main extends Application {
         //Button asterismsButton = createAsterismsButton(canvasManager);
 
         //TOP MENU BAR
-        MenuBar mainMenu = createMenuBar(canvasManager, primaryStage, viewingParametersBean);
+        MenuBar mainMenu = TopMenuBar.createMenuBar(primaryStage, canvasManager, viewingParametersBean);
 
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
                 new Separator(Orientation.VERTICAL), speedControl);//, new Separator(Orientation.VERTICAL), asterismsButton);
