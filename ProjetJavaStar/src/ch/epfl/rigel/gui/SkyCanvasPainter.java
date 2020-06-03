@@ -25,8 +25,12 @@ import java.util.List;
 public final class SkyCanvasPainter {
 
     private static final double SUN_HALO_OPACITY_FACTOR = 0.25;
+    //private static final ClosedInterval INTERVAL_FOR_DUSK_DAWN = ClosedInterval.of(-90, 2.976047);
     private static final ClosedInterval INTERVAL_FOR_DIAMETER = ClosedInterval.of(-2, 5);
-    private static final ClosedInterval INTERVAL_FOR_RGB = ClosedInterval.of(0, 255);
+    //private static final ClosedInterval INTERVAL_FOR_GREEN = ClosedInterval.of(0, 127);
+    private static final ClosedInterval INTERVAL_FOR_BLUE = ClosedInterval.of(0, 255);
+    //private static final Polynomial POLYNOMIAL_FOR_RED = Polynomial.of(-227d/16d, 227d/8, 2405d/16);
+    //private static final Polynomial POLYNOMIAL_FOR_GREEN = Polynomial.of(-21d/2d, 21, 315d/2d);
 
     private final Canvas canvas;
     private final GraphicsContext ctx;
@@ -46,11 +50,15 @@ public final class SkyCanvasPainter {
      *
      * @param sky the current observed sky
      */
-    public void clear(ObservedSky sky) {
+    public void clear(ObservedSky sky/*, boolean allowDayNightCycle*/) {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //ctx.setFill(Color.BLACK);
-        ctx.setFill(Color.rgb(0, 0, (int) INTERVAL_FOR_RGB.clip(200 + 20 * sky.sunHorizontalCoordinates().altDeg())));
-        System.out.printf("RGB : %.0f, alt : %.0f%n", 200 + 4.5 * sky.sunHorizontalCoordinates().altDeg(), sky.sunHorizontalCoordinates().altDeg());
+        //if(allowDayNightCycle)
+        //int green = (int) INTERVAL_FOR_GREEN.clip(63 * sky.sunHorizontalCoordinates().altDeg());
+            ctx.setFill(Color.rgb(0, 0, (int) INTERVAL_FOR_BLUE.clip(200 + 25 * sky.sunHorizontalCoordinates().altDeg())));
+            //RGB (0, 127, 255) is the color called Azure
+        //else
+            //ctx.setFill(Color.BLACK);
+        System.out.printf("RGB : %.0f, alt : %.0f%n", INTERVAL_FOR_BLUE.clip(200 + 25 * sky.sunHorizontalCoordinates().altDeg()), sky.sunHorizontalCoordinates().altDeg());
         ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
@@ -63,7 +71,7 @@ public final class SkyCanvasPainter {
      */
     private void drawAsterisms(ObservedSky sky, double[] transformed) {
         ctx.setLineWidth(1);
-        ctx.setStroke(Color.BLUE);
+        ctx.setStroke(Color.BLUE.deriveColor(0, 1, 1, ClosedInterval.of(0, 1).clip((200 - 20 * sky.sunHorizontalCoordinates().altDeg()) / 255d)));
         List<Integer> asterismIndices;
         int currentStar, nextStar;
         for (Asterism asterism : sky.asterisms()) {
@@ -101,7 +109,8 @@ public final class SkyCanvasPainter {
         double starDiameter;
         for (Star star : sky.stars()) {
             starDiameter = planeToCanvas.deltaTransform(diameterFromMagnitude(star.magnitude(), projection), 0).getX();
-            ctx.setFill(BlackBodyColor.colorForTemperature(star.colorTemperature()));
+            ctx.setFill(BlackBodyColor.colorForTemperature(star.colorTemperature()).deriveColor(0, 1, 1, ClosedInterval.of(0, 1).clip((200 - 20 * sky.sunHorizontalCoordinates().altDeg()) / 255d)));
+            //System.out.printf("RGB : %.0f, alt : %.0f%n", 200 + 4.5 * sky.sunHorizontalCoordinates().altDeg(), sky.sunHorizontalCoordinates().altDeg());
             ctx.fillOval(transformed[i++] - starDiameter / 2, transformed[i++] - starDiameter / 2, starDiameter, starDiameter);
         }
     }
@@ -121,7 +130,7 @@ public final class SkyCanvasPainter {
         int i = 0;
         double diameter;
         for (Planet planet : sky.planets()) {
-            ctx.setFill(planet.color);
+            ctx.setFill(planet.color.deriveColor(0, 1, 1, ClosedInterval.of(0, 1).clip((200 - 20 * sky.sunHorizontalCoordinates().altDeg()) / 255d)));
             diameter = planeToCanvas.deltaTransform(diameterFromMagnitude(planet.magnitude(), projection), 0).getX();
             ctx.fillOval(planetCoordinates[i++] - diameter / 2, planetCoordinates[i++] - diameter / 2, diameter, diameter);
         }
