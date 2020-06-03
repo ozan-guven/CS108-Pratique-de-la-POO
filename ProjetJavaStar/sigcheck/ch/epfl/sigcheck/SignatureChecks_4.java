@@ -61,13 +61,13 @@ final class SignatureChecks_4 {
         c = m;
     }
 
-    void checkPlanet() {
-        CelestialObject c;
-        Planet m;
-        EquatorialCoordinates e = null;
-        String s = null;
-        float f = 0f;
-        m = new Planet(s, e, f, f);
-        c = m;
-    }
+//    void checkPlanet() {
+//        CelestialObject c;
+//        Planet m;
+//        EquatorialCoordinates e = null;
+//        String s = null;
+//        float f = 0f;
+//        m = new Planet(s, e, f, f);
+//        c = m;
+//    }
 }

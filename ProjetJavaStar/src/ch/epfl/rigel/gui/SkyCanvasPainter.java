@@ -115,8 +115,8 @@ public final class SkyCanvasPainter {
 
         int i = 0;
         double diameter;
-        ctx.setFill(Color.LIGHTGRAY);
         for (Planet planet : sky.planets()) {
+            ctx.setFill(planet.color);
             diameter = planeToCanvas.deltaTransform(diameterFromMagnitude(planet.magnitude(), projection), 0).getX();
             ctx.fillOval(planetCoordinates[i++] - diameter / 2, planetCoordinates[i++] - diameter / 2, diameter, diameter);
         }

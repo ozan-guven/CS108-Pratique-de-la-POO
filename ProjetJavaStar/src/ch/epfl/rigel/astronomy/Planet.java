@@ -1,6 +1,7 @@
 package ch.epfl.rigel.astronomy;
 
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
+import javafx.scene.paint.Color;
 
 /**
  * Class that represents planets
@@ -9,6 +10,8 @@ import ch.epfl.rigel.coordinates.EquatorialCoordinates;
  * @author Ozan Güven (297076)
  */
 public final class Planet extends CelestialObject {
+    public final Color color;
+
 
     /**
      * Constructor of a planet
@@ -21,7 +24,9 @@ public final class Planet extends CelestialObject {
      * @throws NullPointerException     if the name is null
      * @throws NullPointerException     if the equatorialPos is null
      */
-    public Planet(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude) {
+    public Planet(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude, Color color) {
         super(name, equatorialPos, angularSize, magnitude);
+
+        this.color = color;
     }
 }

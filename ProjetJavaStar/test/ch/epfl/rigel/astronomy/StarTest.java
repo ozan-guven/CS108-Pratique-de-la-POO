@@ -96,16 +96,16 @@ public class StarTest {
         }
     }
 
-    @Test
-    void starInfoIsCorrect() {
-        var rng = TestRandomizer.newRandom();
-        for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
-            var equ = EquatorialCoordinates.of(0, 0);
-            var starName = randomStarName(rng);
-            var s = new Planet(starName, equ, 0, 0);
-            assertEquals(starName, s.info());
-        }
-    }
+//    @Test
+//    void starInfoIsCorrect() {
+//        var rng = TestRandomizer.newRandom();
+//        for (int i = 0; i < TestRandomizer.RANDOM_ITERATIONS; i++) {
+//            var equ = EquatorialCoordinates.of(0, 0);
+//            var starName = randomStarName(rng);
+//            var s = new Planet(starName, equ, 0, 0);
+//            assertEquals(starName, s.info());
+//        }
+//    }
 
     @Test
     void starHipparcosIdIsCorrect() {

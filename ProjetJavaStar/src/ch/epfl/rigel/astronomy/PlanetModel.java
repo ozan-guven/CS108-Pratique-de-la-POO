@@ -3,6 +3,7 @@ package ch.epfl.rigel.astronomy;
 import ch.epfl.rigel.coordinates.EclipticCoordinates;
 import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.math.Angle;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -16,35 +17,35 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
     MERCURY("Mercure", 0.24085, 75.5671, 77.612,
             0.205627, 0.387098, 7.0051,
-            48.449, 6.74, -0.42),
+            48.449, 6.74, -0.42, Color.GRAY),
 
     VENUS("Vénus", 0.615207, 272.30044, 131.54,
             0.006812, 0.723329, 3.3947,
-            76.769, 16.92, -4.40),
+            76.769, 16.92, -4.40, Color.YELLOW),
 
     EARTH("Terre", 0.999996, 99.556772, 103.2055,
             0.016671, 0.999985, 0,
-            0, 0, 0),
+            0, 0, 0, Color.LIGHTBLUE),
 
     MARS("Mars", 1.880765, 109.09646, 336.217,
             0.093348, 1.523689, 1.8497,
-            49.632, 9.36, -1.52),
+            49.632, 9.36, -1.52, Color.DARKRED),
 
     JUPITER("Jupiter", 11.857911, 337.917132, 14.6633,
             0.048907, 5.20278, 1.3035,
-            100.595, 196.74, -9.40),
+            100.595, 196.74, -9.40, Color.YELLOW),
 
     SATURN("Saturne", 29.310579, 172.398316, 89.567,
             0.053853, 9.51134, 2.4873,
-            113.752, 165.60, -8.88),
+            113.752, 165.60, -8.88, Color.YELLOW),
 
     URANUS("Uranus", 84.039492, 356.135400, 172.884833,
             0.046321, 19.21814, 0.773059,
-            73.926961, 65.80, -7.19),
+            73.926961, 65.80, -7.19, Color.PALEGREEN),
 
     NEPTUNE("Neptune", 165.84539, 326.895127, 23.07,
             0.010483, 30.1985, 1.7673,
-            131.879, 62.20, -6.87);
+            131.879, 62.20, -6.87, Color.ROYALBLUE);
 
     private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU / 365.242191;
 
@@ -66,10 +67,11 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double lonOfAscendingNode; //The longitude of the ascending node
     private final double angularSize; //The angular size
     private final double magnitude; //The magnitude
+    public final Color color;
 
     PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
                 double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
-                double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude) {
+                double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude, Color color) {
         this.frenchName = frenchName;
         this.orbitalRevolution = orbitalRevolution;
         lonAtJ2010 = Angle.ofDeg(lonAtJ2010Deg);
@@ -80,6 +82,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
         this.lonOfAscendingNode = Angle.ofDeg(lonOfAscendingNodeDeg);
         this.angularSize = Angle.ofArcsec(angularSizeArcsec);
         this.magnitude = magnitude;
+        this.color = color;
 
         sinOrbIncl = Math.sin(orbitalInclinationAtEcliptic);
         cosOrbIncl = Math.cos(orbitalInclinationAtEcliptic);
@@ -136,7 +139,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
         double newMagnitude = magnitude + 5 * Math.log10(radius * rho / Math.sqrt(phase));
 
-        return new Planet(frenchName, eclipticToEquatorialConversion.apply(eclipticCoordinates), (float) newAngularSize, (float) newMagnitude);
+        return new Planet(frenchName, eclipticToEquatorialConversion.apply(eclipticCoordinates), (float) newAngularSize, (float) newMagnitude, color);
     }
 
     /**
