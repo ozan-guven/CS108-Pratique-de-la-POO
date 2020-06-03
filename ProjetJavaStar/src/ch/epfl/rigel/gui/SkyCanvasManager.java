@@ -4,6 +4,7 @@ import ch.epfl.rigel.astronomy.CelestialObject;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.StarCatalogue;
 import ch.epfl.rigel.coordinates.CartesianCoordinates;
+import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
 import ch.epfl.rigel.math.Angle;
@@ -24,7 +25,6 @@ import javafx.scene.transform.Transform;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public final class SkyCanvasManager {
 
@@ -180,35 +180,32 @@ public final class SkyCanvasManager {
 
     private Canvas initiateSkyCanvas(ViewingParametersBean viewingParametersBean) {
         Canvas skyCanvas = new Canvas();
-        AtomicReference<Double> firstX = new AtomicReference<>((double) 0);
-        AtomicReference<Double> firstY = new AtomicReference<>((double) 0);
-        AtomicReference<HorizontalCoordinates> currCoord = new AtomicReference<>(HorizontalCoordinates.of(0,0));
+        double firstX;
+        double firstY;
+
 
         skyCanvas.setOnMouseMoved((mouse) -> mousePosition.set(new Point2D(mouse.getX(), mouse.getY())));
 
         skyCanvas.setOnMousePressed((mousePress) -> {
-            if (mousePress.isPrimaryButtonDown()) {
+            if (mousePress.isPrimaryButtonDown())
                 skyCanvas.requestFocus();
-            }
             //if(mousePress.getClickCount() == 2)
             //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(mouseAzDeg.get()), ALT_DEG_BOUNDS.clip(mouseAltDeg.get())));
-            firstX.set(mousePress.getX());
-            firstY.set(mousePress.getY());
-            currCoord.set(viewingParametersBean.getCenter());
+
         });
 
         skyCanvas.setOnMouseDragged(dragEvent -> {
-            double differenceX = firstX.get() - dragEvent.getX();
-            double differenceY = firstY.get() - dragEvent.getY();
-            System.out.println(currCoord);
+            double dragX = dragEvent.getX();
+            double dragY = dragEvent.getY();
+            HorizontalCoordinates currCoord = viewingParametersBean.getCenter();
             try {
-                Point2D inverse = planeToCanvas.get().inverseTransform(differenceX, differenceY);
+                Point2D inverse = planeToCanvas.get().inverseTransform(dragX, dragY);
                 HorizontalCoordinates coord = projection.get().inverseApply(CartesianCoordinates.of(inverse.getX(), inverse.getY()));
-                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(currCoord.get().azDeg() - coord.azDeg()), ALT_DEG_BOUNDS.clip(currCoord.get().altDeg() - coord.altDeg())));
+                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(currCoord.azDeg() - coord.azDeg()), ALT_DEG_BOUNDS.clip(currCoord.altDeg() - coord.altDeg())));
             } catch (NonInvertibleTransformException ignored) {
             }
 
-//            System.out.println("X : " + differenceX + "; Y : " + differenceY);
+//            System.out.println("X : " + dragX + "; Y : " + dragY);
         });
 
         skyCanvas.setOnKeyPressed((key) -> {
