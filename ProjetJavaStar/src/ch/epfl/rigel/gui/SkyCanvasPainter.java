@@ -26,6 +26,7 @@ public final class SkyCanvasPainter {
 
     private static final double SUN_HALO_OPACITY_FACTOR = 0.25;
     private static final ClosedInterval INTERVAL_FOR_DIAMETER = ClosedInterval.of(-2, 5);
+    private static final ClosedInterval INTERVAL_FOR_RGB = ClosedInterval.of(0, 255);
 
     private final Canvas canvas;
     private final GraphicsContext ctx;
@@ -42,10 +43,14 @@ public final class SkyCanvasPainter {
 
     /**
      * Clears the canvas and sets its color to black
+     *
+     * @param sky the current observed sky
      */
-    public void clear() {
+    public void clear(ObservedSky sky) {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        ctx.setFill(Color.BLACK);
+        //ctx.setFill(Color.BLACK);
+        ctx.setFill(Color.rgb(0, 0, (int) INTERVAL_FOR_RGB.clip(200 + 20 * sky.sunHorizontalCoordinates().altDeg())));
+        System.out.printf("RGB : %.0f, alt : %.0f%n", 200 + 4.5 * sky.sunHorizontalCoordinates().altDeg(), sky.sunHorizontalCoordinates().altDeg());
         ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
@@ -185,8 +190,7 @@ public final class SkyCanvasPainter {
         HorizontalCoordinates coordForHorizon = HorizontalCoordinates.of(0, 0);
 
         double circleRadiusForParallel = projection.circleRadiusForParallel(coordForHorizon);
-        System.out.println(circleRadiusForParallel);
-        if(circleRadiusForParallel > 1E15 || circleRadiusForParallel == Double.NEGATIVE_INFINITY) {
+        if(circleRadiusForParallel > 1E15) {
             ctx.strokeLine(0, canvas.getHeight() / 2d, canvas.getWidth(), canvas.getHeight() / 2d);
         } else {
             double circleRadius = planeToCanvas.deltaTransform(circleRadiusForParallel * 2, 0).getX();
@@ -220,7 +224,7 @@ public final class SkyCanvasPainter {
      * @param planeToCanvas the plane to canvas transform used
      */
     public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms) {
-        clear();
+        clear(observedSky);
         drawStars(observedSky, projection, planeToCanvas, drawAsterisms); //Draws the star and draws the asterisms if wanted
         drawPlanets(observedSky, projection, planeToCanvas); //Draws the planets
         drawSun(observedSky, projection, planeToCanvas); //Draws the sun
