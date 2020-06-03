@@ -26,7 +26,7 @@ public final class Settings {
     public static void writeSettings(BooleanProperty drawAsterisms, BooleanProperty dayNight) {
         try (Writer w = new OutputStreamWriter(new FileOutputStream("settings.txt"))) {
             w.write("# drawAsterisms, dayNight\n");
-            StringJoiner joiner = new StringJoiner("", "", ", ");
+            StringJoiner joiner = new StringJoiner(", ", "", "");
             joiner.add(Boolean.toString(drawAsterisms.get()));
             joiner.add(Boolean.toString(dayNight.get()));
             w.write(joiner.toString());

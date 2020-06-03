@@ -1,0 +1,2 @@
+# drawAsterisms, dayNight
+false, true
