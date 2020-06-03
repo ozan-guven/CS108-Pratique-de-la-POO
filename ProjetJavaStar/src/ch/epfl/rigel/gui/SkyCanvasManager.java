@@ -33,6 +33,7 @@ public final class SkyCanvasManager {
     public final ObjectBinding<CelestialObject> objectUnderMouse;
 
     public final BooleanProperty drawAsterisms = new SimpleBooleanProperty(true);
+    public final BooleanProperty allowDayNightCycle = new SimpleBooleanProperty(false);
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
@@ -96,7 +97,8 @@ public final class SkyCanvasManager {
             }
         }, mouseHorizontalPosition);
 
-        drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV));
+        drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV, allowDayNightCycle.get()));
+        allowDayNightCycle.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), drawAsterisms.get(), nV));
 
         sunCoordinates = Bindings.createObjectBinding(() -> observedSky.get().sunHorizontalCoordinates(), observedSky);
         moonCoordinates = Bindings.createObjectBinding(() -> observedSky.get().moonHorizontalCoordinates(), observedSky);
@@ -167,6 +169,18 @@ public final class SkyCanvasManager {
 
     public void setDrawAsterisms(boolean drawAsterisms) {
         this.drawAsterisms.set(drawAsterisms);
+    }
+
+    public boolean isAllowDayNightCycle() {
+        return allowDayNightCycle.get();
+    }
+
+    public BooleanProperty allowDayNightCycleProperty() {
+        return allowDayNightCycle;
+    }
+
+    public void setAllowDayNightCycle(boolean allowDayNightCycle) {
+        this.allowDayNightCycle.set(allowDayNightCycle);
     }
 
     /**
@@ -247,7 +261,7 @@ public final class SkyCanvasManager {
                 dateTimeBean.dateProperty(), dateTimeBean.timeProperty(), dateTimeBean.zoneProperty(),
                 observerLocationBean.coordinatesProperty(), projection);
 
-        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get(), drawAsterisms.get()));
+        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get(), drawAsterisms.get(), allowDayNightCycle.get()));
 
         return observedSky;
     }
@@ -259,7 +273,7 @@ public final class SkyCanvasManager {
                 },
                 skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
 
-        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV, drawAsterisms.get()));
+        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV, drawAsterisms.get(), allowDayNightCycle.get()));
 
         return planeToCanvas;
     }

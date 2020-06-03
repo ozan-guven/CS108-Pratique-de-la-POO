@@ -50,15 +50,18 @@ public final class SkyCanvasPainter {
      *
      * @param sky the current observed sky
      */
-    public void clear(ObservedSky sky/*, boolean allowDayNightCycle*/) {
+    public void clear(ObservedSky sky, boolean allowDayNightCycle) {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         //if(allowDayNightCycle)
         //int green = (int) INTERVAL_FOR_GREEN.clip(63 * sky.sunHorizontalCoordinates().altDeg());
-            ctx.setFill(Color.rgb(0, 0, (int) INTERVAL_FOR_BLUE.clip(200 + 25 * sky.sunHorizontalCoordinates().altDeg())));
+        double sunAltDeg = sky.sunHorizontalCoordinates().altDeg();
+        int blue = (int) INTERVAL_FOR_BLUE.clip(200 + 25 * sunAltDeg);
+        int green = (int) (127 * blue / 255d);
+        ctx.setFill(Color.rgb(0, green, blue));
             //RGB (0, 127, 255) is the color called Azure
         //else
             //ctx.setFill(Color.BLACK);
-        System.out.printf("RGB : %.0f, alt : %.0f%n", INTERVAL_FOR_BLUE.clip(200 + 25 * sky.sunHorizontalCoordinates().altDeg()), sky.sunHorizontalCoordinates().altDeg());
+        System.out.printf("RGB : %.0f, alt : %.0f%n", INTERVAL_FOR_BLUE.clip(200 + 25 * sunAltDeg), sunAltDeg);
         ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
@@ -232,8 +235,8 @@ public final class SkyCanvasPainter {
      * @param projection    the projection used
      * @param planeToCanvas the plane to canvas transform used
      */
-    public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms) {
-        clear(observedSky);
+    public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms, boolean allowDayNightCycle) {
+        clear(observedSky, allowDayNightCycle);
         drawStars(observedSky, projection, planeToCanvas, drawAsterisms); //Draws the star and draws the asterisms if wanted
         drawPlanets(observedSky, projection, planeToCanvas); //Draws the planets
         drawSun(observedSky, projection, planeToCanvas); //Draws the sun
