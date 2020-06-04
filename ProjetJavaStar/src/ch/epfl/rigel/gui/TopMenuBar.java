@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 public final class TopMenuBar {
 
     private static final BooleanProperty DRAW_ASTERISIMS_SELECTED = new SimpleBooleanProperty(true);
+    private static final BooleanProperty SHOW_GRID = new SimpleBooleanProperty(false);
     private static final BooleanProperty DAY_NIGHT_SELECTED = new SimpleBooleanProperty(false);
     private static final ObjectProperty<String> CURRENT_CITY = new SimpleObjectProperty<>();
     private static final ObjectProperty<NamedTimeAccelerator> CURRENT_ACCELERATOR = new SimpleObjectProperty<>();
@@ -70,12 +71,20 @@ public final class TopMenuBar {
         canvasManager.drawAsterismsProperty().bind(asterismsOption.selectedProperty());
         DRAW_ASTERISIMS_SELECTED.bind(asterismsOption.selectedProperty());
 
+        CheckMenuItem horizontalGridOption = new CheckMenuItem("Afficher la grille de coordonées horizontales");
+        horizontalGridOption.setSelected(
+                currentSettings.wasRead()
+                        ? currentSettings.showGrid()
+                        : canvasManager.isDrawHorizontalGrid());
+        canvasManager.drawHorizontalGridProperty().bind(horizontalGridOption.selectedProperty());
+        SHOW_GRID.bind(horizontalGridOption.selectedProperty());
+
         CheckMenuItem dayNightMenu = new CheckMenuItem("_Cycle jour/nuit");
         dayNightMenu.setSelected(currentSettings.wasRead() && currentSettings.allowDayNightCycle());
         canvasManager.allowDayNightCycleProperty().bind(dayNightMenu.selectedProperty());
         DAY_NIGHT_SELECTED.bind(dayNightMenu.selectedProperty());
 
-        graphicsMenu.getItems().addAll(asterismsOption, dayNightMenu);
+        graphicsMenu.getItems().addAll(asterismsOption, horizontalGridOption, dayNightMenu);
         return graphicsMenu;
     }
 
@@ -135,7 +144,7 @@ public final class TopMenuBar {
         MenuItem saveCurrentState = new MenuItem("Enregister les choix actuelles");
 
         //Calls the settings to be updated and write the current settings
-        saveCurrentState.setOnAction(action -> Settings.writeSettings(DRAW_ASTERISIMS_SELECTED, DAY_NIGHT_SELECTED, CURRENT_CITY, CURRENT_ACCELERATOR));
+        saveCurrentState.setOnAction(action -> Settings.writeSettings(DRAW_ASTERISIMS_SELECTED, SHOW_GRID, DAY_NIGHT_SELECTED, CURRENT_CITY, CURRENT_ACCELERATOR));
 
         settingsMenu.getItems().add(saveCurrentState);
 

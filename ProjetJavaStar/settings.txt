@@ -1,2 +1,2 @@
-# drawAsterisms;dayNight;currentCity;currentAccelerator
-true;false;EPFL;300x
+# drawAsterisms;showGrid;dayNight;currentCity;currentAccelerator
+true;false;false;EPFL;3000x

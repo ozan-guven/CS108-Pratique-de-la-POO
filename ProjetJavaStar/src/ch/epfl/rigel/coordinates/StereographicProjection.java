@@ -15,6 +15,8 @@ public final class StereographicProjection implements Function<HorizontalCoordin
 
     private final double cosPhiCenter; //The cosine of the latitude (altitude) of the center point
     private final double sinPhiCenter; //The sine of the latitude (altitude) of the center point
+    private final double tanPhiCenter; //The tangent of the longitude (azimuth) of the center point
+    private final double azCenter; //The longitude (azimuth) of the center point
 
     private final HorizontalCoordinates centerCoord; //The coordinates of the center of the projection
 
@@ -27,6 +29,8 @@ public final class StereographicProjection implements Function<HorizontalCoordin
     public StereographicProjection(HorizontalCoordinates center) {
         cosPhiCenter = Math.cos(center.alt());
         sinPhiCenter = Math.sin(center.alt());
+        tanPhiCenter = Math.tan(center.alt());
+        azCenter = center.az();
 
         centerCoord = center;
     }
@@ -54,6 +58,31 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      */
     public double circleRadiusForParallel(HorizontalCoordinates parallel) {
         return Math.abs(Math.cos(parallel.alt()) / (Math.sin(parallel.alt()) + sinPhiCenter));
+    }
+
+    /**
+     * Gets the cartesian coordinates of the circle corresponding to the projection
+     * of the meridian passing through the point hor (Horizontal Coordinates)
+     *
+     * @param hor horizontal coordinates where the meridian is passing through
+     * @return the coordinates of the center of the circle
+     */
+    public CartesianCoordinates circleCenterForMeridian(HorizontalCoordinates hor) {
+        double centerX = - 1d / (cosPhiCenter * Math.tan(hor.az() - azCenter));
+        double centerY = - tanPhiCenter;
+        return CartesianCoordinates.of(centerX, centerY);
+    }
+
+    /**
+     * Gets the radius of the circle corresponding to the projection of the meridian
+     * passing through the point meridian (Horizontal Coordinates).
+     * May return infinity if both the latitude of the point and the center are the same
+     *
+     * @param meridian horizontal coordinates where the meridian is passing through
+     * @return the radius of the circle (may be infinity)
+     */
+    public double circleRadiusForMeridian(HorizontalCoordinates meridian) {
+        return Math.abs(1 / (cosPhiCenter * Math.sin(meridian.az() - azCenter)));
     }
 
     /**

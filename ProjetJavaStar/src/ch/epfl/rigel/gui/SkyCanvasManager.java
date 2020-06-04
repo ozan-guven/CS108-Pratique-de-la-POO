@@ -33,6 +33,7 @@ public final class SkyCanvasManager {
 
     public final BooleanProperty drawAsterisms = new SimpleBooleanProperty(true);
     public final BooleanProperty allowDayNightCycle = new SimpleBooleanProperty(false);
+    public final BooleanProperty drawHorizontalGrid = new SimpleBooleanProperty(false);
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
@@ -100,8 +101,9 @@ public final class SkyCanvasManager {
             }
         }, mouseHorizontalPosition);
 
-        drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV, allowDayNightCycle.get()));
-        allowDayNightCycle.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), drawAsterisms.get(), nV));
+        drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV, allowDayNightCycle.get(), drawHorizontalGrid.get()));
+        allowDayNightCycle.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), drawAsterisms.get(), nV, drawHorizontalGrid.get()));
+        drawHorizontalGrid.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), drawAsterisms.get(), allowDayNightCycle.get(), nV));
 
         sunCoordinates = Bindings.createObjectBinding(() -> observedSky.get().sunHorizontalCoordinates(), observedSky);
         moonCoordinates = Bindings.createObjectBinding(() -> observedSky.get().moonHorizontalCoordinates(), observedSky);
@@ -174,6 +176,18 @@ public final class SkyCanvasManager {
         this.drawAsterisms.set(drawAsterisms);
     }
 
+    public boolean isDrawHorizontalGrid() {
+        return drawHorizontalGrid.get();
+    }
+
+    public BooleanProperty drawHorizontalGridProperty() {
+        return drawHorizontalGrid;
+    }
+
+    public void setDrawHorizontalGrid(boolean drawHorizontalGrid) {
+        this.drawHorizontalGrid.set(drawHorizontalGrid);
+    }
+
     public boolean isAllowDayNightCycle() {
         return allowDayNightCycle.get();
     }
@@ -210,9 +224,7 @@ public final class SkyCanvasManager {
             canvas().setCursor(Cursor.MOVE);
         });
 
-        skyCanvas.setOnMouseReleased(mouseRelease -> {
-            skyCanvas.setCursor(Cursor.DEFAULT);
-        });
+        skyCanvas.setOnMouseReleased(mouseRelease -> skyCanvas.setCursor(Cursor.DEFAULT));
 
         skyCanvas.setOnMouseDragged(dragEvent -> {
             double dragX = dragEvent.getX();
@@ -268,7 +280,7 @@ public final class SkyCanvasManager {
                 dateTimeBean.dateProperty(), dateTimeBean.timeProperty(), dateTimeBean.zoneProperty(),
                 observerLocationBean.coordinatesProperty(), projection);
 
-        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get(), drawAsterisms.get(), allowDayNightCycle.get()));
+        observedSky.addListener((o, oV, nV) -> painter.drawAll(nV, projection.get(), planeToCanvas.get(), drawAsterisms.get(), allowDayNightCycle.get(), drawHorizontalGrid.get()));
 
         return observedSky;
     }
@@ -280,7 +292,7 @@ public final class SkyCanvasManager {
                 },
                 skyCanvas.widthProperty(), skyCanvas.heightProperty(), projection, viewingParametersBean.fieldOfViewDegProperty());
 
-        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV, drawAsterisms.get(), allowDayNightCycle.get()));
+        planeToCanvas.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), nV, drawAsterisms.get(), allowDayNightCycle.get(), drawHorizontalGrid.get()));
 
         return planeToCanvas;
     }
@@ -322,9 +334,5 @@ public final class SkyCanvasManager {
 
     public List<HorizontalCoordinates> getPlanetsCoordinates() {
         return Collections.unmodifiableList(planetsCoordinates.get());
-    }
-
-    private void handle(MouseEvent mouseRelease) {
-        canvas().setCursor(Cursor.DEFAULT);
     }
 }
