@@ -28,8 +28,6 @@ public final class SkyCanvasPainter {
     //private static final ClosedInterval INTERVAL_FOR_DUSK_DAWN = ClosedInterval.of(-90, 2.976047);
     private static final ClosedInterval INTERVAL_FOR_DIAMETER = ClosedInterval.of(-2, 5);
     //private static final ClosedInterval INTERVAL_FOR_GREEN = ClosedInterval.of(0, 127);
-    private static final ClosedInterval INTERVAL_FOR_BLUE = ClosedInterval.of(0, 255);
-    private static final ClosedInterval INTERVAL_FOR_OPACITY = ClosedInterval.of(0, 1);
     private static final double TOLERANCE_CONSTANT = 1E12;
     //private static final Polynomial POLYNOMIAL_FOR_RED = Polynomial.of(-227d/16d, 227d/8, 2405d/16);
     //private static final Polynomial POLYNOMIAL_FOR_GREEN = Polynomial.of(-21d/2d, 21, 315d/2d);
@@ -37,7 +35,7 @@ public final class SkyCanvasPainter {
     private final Canvas canvas;
     private final GraphicsContext ctx;
 
-    private double sunAltDegBlue;
+    private SkyColorManager skyColorManager;
 
     /**
      * Initializes the sky painter
@@ -50,22 +48,15 @@ public final class SkyCanvasPainter {
     }
 
     /**
-     * Clears the canvas and sets its color to black
+     * Clears the canvas and sets the color of the sky
      *
-     * @param sky the current observed sky
+     * @param sky                the current observed sky
+     * @param allowDayNightCycle if the day night cycle is wanted
      */
     public void clear(ObservedSky sky, boolean allowDayNightCycle) {
         ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        if (allowDayNightCycle) {
-            sunAltDegBlue = INTERVAL_FOR_BLUE.clip(200 + 28 * sky.sunHorizontalCoordinates().altDeg()); //Each time clear is called, sunAltDegBlue is updated
-            int blue = (int) sunAltDegBlue;
-            int green = (int) (127 * sunAltDegBlue / 255d);
-            //RGB (0, 127, 255) is the color called Azure
-            ctx.setFill(Color.rgb(0, green, blue));
-            //System.out.printf("RGB : %.0f, alt : %.0f%n", INTERVAL_FOR_BLUE.clip(200 + 25 * sunAltDegBlue), sunAltDegBlue);
-        } else {
-            ctx.setFill(Color.BLACK);
-        }
+        skyColorManager = new SkyColorManager(sky, allowDayNightCycle);
+        ctx.setFill(skyColorManager.setSkyColor());
         ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
@@ -74,14 +65,10 @@ public final class SkyCanvasPainter {
      *
      * @param sky         the observed sky containing the asterisms
      * @param transformed the transformed coordinates of all
-     *                    the stars contained in the observed sky
      */
-    private void drawAsterisms(ObservedSky sky, double[] transformed, boolean allowDayNightCycle) {
+    private void drawAsterisms(ObservedSky sky, double[] transformed) {
         ctx.setLineWidth(1);
-        ctx.setStroke(Color.BLUE.deriveColor(0, 1, 1,
-                allowDayNightCycle
-                        ? INTERVAL_FOR_OPACITY.clip(1 - sunAltDegBlue / 255d)
-                        : 1));
+        ctx.setStroke(skyColorManager.deriveColor(Color.BLUE));
         List<Integer> asterismIndices;
         int currentStar, nextStar;
         for (Asterism asterism : sky.asterisms()) {
@@ -107,23 +94,18 @@ public final class SkyCanvasPainter {
      * @param sky           the observed sky
      * @param projection    the projection used
      * @param planeToCanvas the affine transformation to transform from
-     *                      cartesian coordinates to the coordinates of the screen
      */
-    public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms, boolean allowDayNightCycle) {
+    public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms) {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
 
-        if (drawAsterisms) drawAsterisms(sky, transformed, allowDayNightCycle);
+        if (drawAsterisms) drawAsterisms(sky, transformed);
 
         int i = 0;
         double starDiameter;
         for (Star star : sky.stars()) {
             starDiameter = planeToCanvas.deltaTransform(diameterFromMagnitude(star.magnitude(), projection), 0).getX();
-            ctx.setFill(BlackBodyColor.colorForTemperature(star.colorTemperature()).deriveColor(0, 1, 1,
-                    allowDayNightCycle
-                            ? INTERVAL_FOR_OPACITY.clip(1 - sunAltDegBlue / 255d)
-                            : 1));
-            //System.out.printf("RGB : %.0f, alt : %.0f%n", 200 + 4.5 * sky.sunHorizontalCoordinates().altDeg(), sky.sunHorizontalCoordinates().altDeg());
+            ctx.setFill(skyColorManager.deriveColor(BlackBodyColor.colorForTemperature(star.colorTemperature())));
             ctx.fillOval(transformed[i++] - starDiameter / 2, transformed[i++] - starDiameter / 2, starDiameter, starDiameter);
         }
     }
@@ -134,19 +116,15 @@ public final class SkyCanvasPainter {
      * @param sky           the observed sky
      * @param projection    the projection used
      * @param planeToCanvas the affine transformation to transform from
-     *                      cartesian coordinates to the coordinates of the screen
      */
-    public void drawPlanets(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas, boolean allowDayNightCycle) {
+    public void drawPlanets(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas) {
         double[] planetCoordinates = new double[sky.planetPositions().length];
         planeToCanvas.transform2DPoints(sky.planetPositions(), 0, planetCoordinates, 0, sky.planetPositions().length / 2);
 
         int i = 0;
         double diameter;
         for (Planet planet : sky.planets()) {
-            ctx.setFill(Color.web(planet.color).deriveColor(0, 1, 1,
-                    allowDayNightCycle
-                            ? INTERVAL_FOR_OPACITY.clip(1 - sunAltDegBlue / 255d)
-                            : 1));
+            ctx.setFill(skyColorManager.deriveColor(Color.web(planet.color)));
             diameter = planeToCanvas.deltaTransform(diameterFromMagnitude(planet.magnitude(), projection), 0).getX();
             ctx.fillOval(planetCoordinates[i++] - diameter / 2, planetCoordinates[i++] - diameter / 2, diameter, diameter);
         }
@@ -200,15 +178,12 @@ public final class SkyCanvasPainter {
         ctx.fillOval(moonX - diameter / 2, moonY - diameter / 2, diameter, diameter);
     }
 
-    public void drawGrid(StereographicProjection projection, Transform planeToCanvas, boolean allowDayNightCycle){
-        ctx.setStroke(Color.LIGHTGRAY.deriveColor(0, 1, 1,
-                allowDayNightCycle
-                        ? INTERVAL_FOR_OPACITY.clip(1 - sunAltDegBlue / 255d)
-                        : 1));
+    public void drawGrid(StereographicProjection projection, Transform planeToCanvas) {
+        ctx.setStroke(skyColorManager.deriveColor(Color.LIGHTGRAY));
         ctx.setLineWidth(0.15);
         // latitudes
-        for (int i = -9; i < 10; i++){
-            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(0, 10*i);
+        for (int i = -9; i < 10; i++) {
+            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(0, 10 * i);
             double circleRadiusForParallel = projection.circleRadiusForParallel(coordForHorizon);
             double circleRadius = planeToCanvas.deltaTransform(circleRadiusForParallel * 2, 0).getX();
             CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
@@ -276,9 +251,9 @@ public final class SkyCanvasPainter {
      */
     public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms, boolean allowDayNightCycle, boolean drawHorizontalGrid) {
         clear(observedSky, allowDayNightCycle);
-        if(drawHorizontalGrid) drawGrid(projection, planeToCanvas, allowDayNightCycle); //Draws a grid for horizontal coordinates
-        drawStars(observedSky, projection, planeToCanvas, drawAsterisms, allowDayNightCycle); //Draws the star and draws the asterisms if wanted
-        drawPlanets(observedSky, projection, planeToCanvas, allowDayNightCycle); //Draws the planets
+        if (drawHorizontalGrid) drawGrid(projection, planeToCanvas); //Draws a grid for horizontal coordinates if wanted
+        drawStars(observedSky, projection, planeToCanvas, drawAsterisms); //Draws the stars and draws the asterisms if wanted
+        drawPlanets(observedSky, projection, planeToCanvas); //Draws the planets
         drawSun(observedSky, projection, planeToCanvas); //Draws the sun
         drawMoon(observedSky, projection, planeToCanvas);//Draws the moon
         drawHorizon(projection, planeToCanvas); //Draws the horizon
