@@ -234,7 +234,9 @@ public final class SkyCanvasManager {
                 HorizontalCoordinates firstCoord = projection.get().inverseApply(CartesianCoordinates.of(firstInverse.getX(), firstInverse.getY()));
                 Point2D inverse = planeToCanvas.get().inverseTransform(dragX, dragY);
                 HorizontalCoordinates coord = projection.get().inverseApply(CartesianCoordinates.of(inverse.getX(), inverse.getY()));
-                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(firstCenter.get().azDeg() - coord.azDeg() + firstCoord.azDeg()), ALT_DEG_BOUNDS.clip(firstCenter.get().altDeg() - coord.altDeg() + firstCoord.altDeg())));
+                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(
+                        AZ_DEG_BOUNDS.reduce(firstCenter.get().azDeg() - coord.azDeg() + firstCoord.azDeg()),
+                        ALT_DEG_BOUNDS.clip(firstCenter.get().altDeg() - coord.altDeg() + firstCoord.altDeg())));
             } catch (NonInvertibleTransformException ignored) {
             }
         });
