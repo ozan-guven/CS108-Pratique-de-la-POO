@@ -13,12 +13,11 @@ import ch.epfl.rigel.math.RightOpenInterval;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Transform;
 
@@ -54,6 +53,10 @@ public final class SkyCanvasManager {
     private final ObjectBinding<List<HorizontalCoordinates>> planetsCoordinates;
 
     private final Canvas skyCanvas;
+
+
+    private final ObjectProperty<Point2D> firstDrag = new SimpleObjectProperty<>(new Point2D(0, 0));
+    private final ObjectProperty<HorizontalCoordinates> firstCenter = new SimpleObjectProperty<>(HorizontalCoordinates.of(0,0));
 
     /**
      * SkyCanvasManager constructor
@@ -194,9 +197,6 @@ public final class SkyCanvasManager {
 
     private Canvas initiateSkyCanvas(ViewingParametersBean viewingParametersBean) {
         Canvas skyCanvas = new Canvas();
-        double firstX;
-        double firstY;
-
 
         skyCanvas.setOnMouseMoved((mouse) -> mousePosition.set(new Point2D(mouse.getX(), mouse.getY())));
 
@@ -205,17 +205,24 @@ public final class SkyCanvasManager {
                 skyCanvas.requestFocus();
             //if(mousePress.getClickCount() == 2)
             //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(mouseAzDeg.get()), ALT_DEG_BOUNDS.clip(mouseAltDeg.get())));
+            firstDrag.set(new Point2D(mousePress.getX(), mousePress.getY()));
+            firstCenter.set(viewingParametersBean.getCenter());
+            canvas().setCursor(Cursor.MOVE);
+        });
 
+        skyCanvas.setOnMouseReleased(mouseRelease -> {
+            skyCanvas.setCursor(Cursor.DEFAULT);
         });
 
         skyCanvas.setOnMouseDragged(dragEvent -> {
             double dragX = dragEvent.getX();
             double dragY = dragEvent.getY();
-            HorizontalCoordinates currCoord = viewingParametersBean.getCenter();
             try {
+                Point2D firstInverse = planeToCanvas.get().inverseTransform(firstDrag.get().getX(), firstDrag.get().getY());
+                HorizontalCoordinates firstCoord = projection.get().inverseApply(CartesianCoordinates.of(firstInverse.getX(), firstInverse.getY()));
                 Point2D inverse = planeToCanvas.get().inverseTransform(dragX, dragY);
                 HorizontalCoordinates coord = projection.get().inverseApply(CartesianCoordinates.of(inverse.getX(), inverse.getY()));
-                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(currCoord.azDeg() - coord.azDeg()), ALT_DEG_BOUNDS.clip(currCoord.altDeg() - coord.altDeg())));
+                viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(firstCenter.get().azDeg() - coord.azDeg() + firstCoord.azDeg()), ALT_DEG_BOUNDS.clip(firstCenter.get().altDeg() - coord.altDeg() + firstCoord.altDeg())));
             } catch (NonInvertibleTransformException ignored) {
             }
 
@@ -315,5 +322,9 @@ public final class SkyCanvasManager {
 
     public List<HorizontalCoordinates> getPlanetsCoordinates() {
         return Collections.unmodifiableList(planetsCoordinates.get());
+    }
+
+    private void handle(MouseEvent mouseRelease) {
+        canvas().setCursor(Cursor.DEFAULT);
     }
 }
