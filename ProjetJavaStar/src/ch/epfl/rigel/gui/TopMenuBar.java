@@ -43,7 +43,7 @@ public final class TopMenuBar {
         Menu settingsMenu = createSettingsMenu();
 
         MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions, celestialMenu, settingsMenu);
-        mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white;");
+        mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white; -fx-border-style: solid hidden solid hidden; -fx-border-color: LightGrey; -fx-border-width: 1;");
 
         return mainMenu;
     }
