@@ -16,6 +16,7 @@ import java.util.StringJoiner;
 public final class Settings {
 
     private static final String SETTINGS_TEXT = "# drawAsterisms;showGrid;dayNight;currentCity;currentAccelerator\n";
+    private static final int NBR_OF_PARAMETERS = 5;
 
     private final boolean wasRead;
     private final boolean drawAsterisms;
@@ -47,12 +48,12 @@ public final class Settings {
         boolean allowDayNightCycle = false;
         String selectedCity = "EPFL";
         NamedTimeAccelerator selectedAccelerator = NamedTimeAccelerator.TIMES_300;
-        String[] settings = new String[5];
+        String[] settings = new String[NBR_OF_PARAMETERS];
         try(BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream("settings.txt")))) {
             stream.lines()
                     .skip(1)
                     .map(l -> l.split(";"))
-                    .forEachOrdered(l -> System.arraycopy(l, 0, settings, 0, 4));
+                    .forEachOrdered(l -> System.arraycopy(l, 0, settings, 0, NBR_OF_PARAMETERS));
             wasRead = true;
             drawAsterisms = Boolean.parseBoolean(settings[0]);
             showGrid = Boolean.parseBoolean(settings[1]);
