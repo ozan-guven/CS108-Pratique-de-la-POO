@@ -57,7 +57,7 @@ public final class SkyCanvasManager {
 
 
     private final ObjectProperty<Point2D> firstDrag = new SimpleObjectProperty<>(new Point2D(0, 0));
-    private final ObjectProperty<HorizontalCoordinates> firstCenter = new SimpleObjectProperty<>(HorizontalCoordinates.of(0,0));
+    private final ObjectProperty<HorizontalCoordinates> firstCenter = new SimpleObjectProperty<>(HorizontalCoordinates.of(0, 0));
 
     /**
      * SkyCanvasManager constructor
@@ -101,7 +101,7 @@ public final class SkyCanvasManager {
             }
         }, mouseHorizontalPosition);
 
-        drawAsterisms.addListener((o, oV, nV) ->  painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV, allowDayNightCycle.get(), drawHorizontalGrid.get()));
+        drawAsterisms.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), nV, allowDayNightCycle.get(), drawHorizontalGrid.get()));
         allowDayNightCycle.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), drawAsterisms.get(), nV, drawHorizontalGrid.get()));
         drawHorizontalGrid.addListener((o, oV, nV) -> painter.drawAll(observedSky.get(), projection.get(), planeToCanvas.get(), drawAsterisms.get(), allowDayNightCycle.get(), nV));
 
@@ -237,8 +237,6 @@ public final class SkyCanvasManager {
                 viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(firstCenter.get().azDeg() - coord.azDeg() + firstCoord.azDeg()), ALT_DEG_BOUNDS.clip(firstCenter.get().altDeg() - coord.altDeg() + firstCoord.altDeg())));
             } catch (NonInvertibleTransformException ignored) {
             }
-
-//            System.out.println("X : " + dragX + "; Y : " + dragY);
         });
 
         skyCanvas.setOnKeyPressed((key) -> {
@@ -262,12 +260,10 @@ public final class SkyCanvasManager {
 
         skyCanvas.setOnScroll((scroll) -> {
             double initFOW = viewingParametersBean.getFieldOfViewDeg();
-            if (Math.abs(scroll.getDeltaX()) >= Math.abs(scroll.getDeltaY())) {
+            if (Math.abs(scroll.getDeltaX()) >= Math.abs(scroll.getDeltaY()))
                 viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaX()));
-            }
-            else {
+            else
                 viewingParametersBean.setFieldOfViewDeg(FIELD_OF_VIEW_BOUNDS.clip(initFOW - scroll.getDeltaY()));
-            }
         });
 
         return skyCanvas;

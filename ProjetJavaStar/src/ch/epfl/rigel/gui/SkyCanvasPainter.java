@@ -15,6 +15,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Transform;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Class used to draw the sky on the screen
@@ -35,7 +36,7 @@ public final class SkyCanvasPainter {
     private final Canvas canvas;
     private final GraphicsContext ctx;
 
-    private SkyColorManager skyColorManager;
+    private SkyColorManager skyColorManager; //Initialized in clear as it's the first method called
 
     /**
      * Initializes the sky painter
@@ -58,6 +59,35 @@ public final class SkyCanvasPainter {
         skyColorManager = new SkyColorManager(sky, allowDayNightCycle);
         ctx.setFill(skyColorManager.setSkyColor());
         ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    /**
+     * Draws the grid of horizontal coordinates
+     *
+     * @param projection    the projection used
+     * @param planeToCanvas the affine transformation to transform from
+     *                      cartesian coordinates to the coordinates of the screen
+     */
+    public void drawGrid(StereographicProjection projection, Transform planeToCanvas) {
+        ctx.setStroke(skyColorManager.deriveColor(Color.LIGHTGRAY));
+        ctx.setLineWidth(0.15);
+        // latitudes
+        for (int i = -9; i < 10; i++) {
+            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(0, 10 * i);
+            drawGridLines(projection::circleRadiusForParallel, projection::circleCenterForParallel, coordForHorizon, planeToCanvas);
+        }
+        // longitudes
+        for (int j = 0; j < 36; j++) {
+            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(10 * j, 0);
+            drawGridLines(projection::circleRadiusForMeridian, projection::circleCenterForMeridian, coordForHorizon, planeToCanvas);
+        }
+    }
+
+    private void drawGridLines(Function<HorizontalCoordinates, Double> circleRadius, Function<HorizontalCoordinates, CartesianCoordinates> circleCenter, HorizontalCoordinates coordForHorizon, Transform planeToCanvas) {
+        double diameter = planeToCanvas.deltaTransform(circleRadius.apply(coordForHorizon) * 2, 0).getX();
+        CartesianCoordinates center = circleCenter.apply(coordForHorizon);
+        Point2D circlePoint = planeToCanvas.transform(center.x(), center.y());
+        ctx.strokeOval(circlePoint.getX() - diameter / 2, circlePoint.getY() - diameter / 2, diameter, diameter);
     }
 
     /**
@@ -176,29 +206,6 @@ public final class SkyCanvasPainter {
 
         ctx.setFill(Color.WHITE);
         ctx.fillOval(moonX - diameter / 2, moonY - diameter / 2, diameter, diameter);
-    }
-
-    public void drawGrid(StereographicProjection projection, Transform planeToCanvas) {
-        ctx.setStroke(skyColorManager.deriveColor(Color.LIGHTGRAY));
-        ctx.setLineWidth(0.15);
-        // latitudes
-        for (int i = -9; i < 10; i++) {
-            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(0, 10 * i);
-            double circleRadiusForParallel = projection.circleRadiusForParallel(coordForHorizon);
-            double circleRadius = planeToCanvas.deltaTransform(circleRadiusForParallel * 2, 0).getX();
-            CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
-            Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
-            ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
-        }
-        // longitudes
-        for (int j = 0; j < 36; j++) {
-            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(10 * j, 0);
-            double circleRadiusForMeridian = projection.circleRadiusForMeridian(coordForHorizon);
-            double circleRadius = planeToCanvas.deltaTransform(circleRadiusForMeridian * 2, 0).getX();
-            CartesianCoordinates circleCenter = projection.circleCenterForMeridian(coordForHorizon);
-            Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
-            ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
-        }
     }
 
     /**
