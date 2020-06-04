@@ -199,6 +199,33 @@ public final class SkyCanvasPainter {
         ctx.fillOval(moonX - diameter / 2, moonY - diameter / 2, diameter, diameter);
     }
 
+    public void drawGrid(StereographicProjection projection, Transform planeToCanvas){
+        ctx.setStroke(Color.LIGHTGRAY);
+        ctx.setLineWidth(0.2);
+        // latitudes
+        for (int i = -9; i < 10; i++){
+            HorizontalCoordinates coordForHorizon = HorizontalCoordinates.ofDeg(0, 10*i);
+            double circleRadiusForParallel = projection.circleRadiusForParallel(coordForHorizon);
+            double circleRadius = planeToCanvas.deltaTransform(circleRadiusForParallel * 2, 0).getX();
+            CartesianCoordinates circleCenter = projection.circleCenterForParallel(coordForHorizon);
+            Point2D circlePoint = planeToCanvas.transform(circleCenter.x(), circleCenter.y());
+            ctx.strokeOval(circlePoint.getX() - circleRadius / 2, circlePoint.getY() - circleRadius / 2, circleRadius, circleRadius);
+        }
+        // longitudes
+        for (int j = -18; j < 18; j++) {
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * Draws the horizon line and the cardinal and
      * intercardinal points onto the canvas
@@ -253,6 +280,7 @@ public final class SkyCanvasPainter {
         drawPlanets(observedSky, projection, planeToCanvas, allowDayNightCycle); //Draws the planets
         drawSun(observedSky, projection, planeToCanvas); //Draws the sun
         drawMoon(observedSky, projection, planeToCanvas);//Draws the moon
+        drawGrid(projection, planeToCanvas);
         drawHorizon(projection, planeToCanvas); //Draws the horizon
     }
 
