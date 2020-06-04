@@ -91,7 +91,9 @@ public class Main extends Application {
         TimeAnimator timeAnimator = new TimeAnimator(dateTimeBean);
 
         ObserverLocationBean observerLocationBean = new ObserverLocationBean();
-        observerLocationBean.setCoordinates(DEFAULT_OBSERVATION_COORDINATES);
+        observerLocationBean.setCoordinates(currentSettings.wasRead()
+                ? CityCoordinates.getCityMap().get(currentSettings.selectedCity())
+                : DEFAULT_OBSERVATION_COORDINATES);
 
         ViewingParametersBean viewingParametersBean = new ViewingParametersBean();
         viewingParametersBean.setCenter(DEFAULT_CENTER_FOR_VIEW);
@@ -271,85 +273,6 @@ public class Main extends Application {
         return speedControl;
     }
 
-    /*private Button createAsterismsButton(SkyCanvasManager canvasManager) {
-        Button asterismsButton = new Button(HIDE_ASTERISMS);
-
-        asterismsButton.setOnAction(action -> {
-            if (canvasManager.isDrawAsterisms()) {
-                asterismsButton.setText(SHOW_ASTERISMS);
-                canvasManager.setDrawAsterisms(false);
-            } else {
-                asterismsButton.setText(HIDE_ASTERISMS);
-                canvasManager.setDrawAsterisms(true);
-            }
-        });
-        return asterismsButton;
-    }*/
-
-    /*private MenuBar createMenuBar(SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean) {
-        Menu graphicsMenu = new Menu("_Graphismes");
-        //Menu items
-        CheckMenuItem asterismsOption = new CheckMenuItem("Afficher les astérismes");
-        asterismsOption.setSelected(canvasManager.isDrawAsterisms());
-        asterismsOption.setOnAction(action -> canvasManager.setDrawAsterisms(!canvasManager.isDrawAsterisms()));
-
-        CheckMenuItem dayNightMenu = new CheckMenuItem("Cycle jour/nuit");
-        canvasManager.allowDayNightCycleProperty().bind(dayNightMenu.selectedProperty());
-
-        graphicsMenu.getItems().addAll(asterismsOption, dayNightMenu);
-
-        Menu windowOptions = new Menu("_Fenêtre");
-        Text fullScreenText = new Text();
-        fullScreenText.textProperty().bind(Bindings.when(primaryStage.fullScreenProperty())
-                .then("Quitter le mode plein écran")
-                .otherwise("Passer en mode plein écran"));
-        //Menu items
-        MenuItem fullScreenOption = new MenuItem();
-        fullScreenOption.textProperty().bind(fullScreenText.textProperty());
-        fullScreenOption.setOnAction(action -> primaryStage.setFullScreen(!primaryStage.isFullScreen()));
-        windowOptions.getItems().add(fullScreenOption);
-
-        Menu celestialMenu = new Menu("_Astres");
-
-        MenuItem sunMenu = new MenuItem("_Soleil");
-        sunMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getSunCoordinates()));
-
-        MenuItem moonMenu = new MenuItem("_Lune");
-        moonMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getMoonCoordinates()));
-
-        //MenuItem planet = new MenuItem("Planets");
-        MenuItem mercuryMenu = new MenuItem("Mér_cure");
-        mercuryMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(0)));
-
-        MenuItem venusMenu = new MenuItem("_Vénus");
-        venusMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(1)));
-
-        MenuItem marsMenu = new MenuItem("_Mars");
-        marsMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(2)));
-
-        MenuItem jupiterMenu = new MenuItem("_Jupiter");
-        jupiterMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(3)));
-
-        MenuItem saturnMenu = new MenuItem("_Satrune");
-        saturnMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(4)));
-
-        MenuItem uranusMenu = new MenuItem("_Uranus");
-        uranusMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(5)));
-
-        MenuItem neptuneMenu = new MenuItem("_Néptune");
-        neptuneMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(6)));
-
-        MenuItem resetMenu = new MenuItem("_Reset");
-        resetMenu.setOnAction(action -> viewingParametersBean.setCenter(DEFAULT_CENTER_FOR_VIEW));
-
-        celestialMenu.getItems().addAll(sunMenu, moonMenu, mercuryMenu, venusMenu, marsMenu, jupiterMenu, saturnMenu, uranusMenu, neptuneMenu, resetMenu);//planet);
-
-        MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions, celestialMenu);
-        mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white;");
-
-        return mainMenu;
-    }*/
-
     private VBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean, Settings currentSettings) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean, currentSettings);
@@ -360,14 +283,11 @@ public class Main extends Application {
         //SPEED CONTROLLER
         HBox speedControl = createSpeedController(timeAnimator, dateTimeBean, fontForButtons, currentSettings);
 
-        //ASTERISMS BUTTON
-        //Button asterismsButton = createAsterismsButton(canvasManager);
-
         //TOP MENU BAR
         MenuBar mainMenu = TopMenuBar.createMenuBar(primaryStage, canvasManager, viewingParametersBean, currentSettings, selectedCity, selectedAccelerator);
 
         HBox controlBar = new HBox(coordControl, new Separator(Orientation.VERTICAL), dateControl,
-                new Separator(Orientation.VERTICAL), speedControl);//, new Separator(Orientation.VERTICAL), asterismsButton);
+                new Separator(Orientation.VERTICAL), speedControl);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4; -fx-background-color: white;");
 
         return new VBox( mainMenu, controlBar);

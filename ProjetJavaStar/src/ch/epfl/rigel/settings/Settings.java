@@ -15,6 +15,8 @@ import java.util.StringJoiner;
  */
 public final class Settings {
 
+    private static final String SETTINGS_TEXT = "# drawAsterisms;dayNight;currentCity;currentAccelerator\n";
+
     private final boolean wasRead;
     private final boolean drawAsterisms;
     private final boolean allowDayNightCycle;
@@ -54,6 +56,7 @@ public final class Settings {
             selectedCity = settings[2];
             selectedAccelerator = NamedTimeAccelerator.valueFromName(settings[3]);
         } catch (IOException e) {
+            //If the file wasn't read, the default settings will be used
             wasRead = false;
         }
 
@@ -62,7 +65,7 @@ public final class Settings {
 
     public static void writeSettings(BooleanProperty drawAsterisms, BooleanProperty dayNight, ObjectProperty<String> currentCity, ObjectProperty<NamedTimeAccelerator> currentAccelerator) {
         try (Writer w = new OutputStreamWriter(new FileOutputStream("settings.txt"))) {
-            w.write("# drawAsterisms;dayNight;currentCity;currentAccelerator\n");
+            w.write(SETTINGS_TEXT);
             StringJoiner joiner = new StringJoiner(";", "", "");
             joiner.add(Boolean.toString(drawAsterisms.get()));
             joiner.add(Boolean.toString(dayNight.get()));
