@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
  * @author Ozan Güven (297076)
  */
 public final class Planet extends CelestialObject {
-    public final Color color;
+    public final String color;
 
 
     /**
@@ -24,7 +24,7 @@ public final class Planet extends CelestialObject {
      * @throws NullPointerException     if the name is null
      * @throws NullPointerException     if the equatorialPos is null
      */
-    public Planet(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude, Color color) {
+    public Planet(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude, String color) {
         super(name, equatorialPos, angularSize, magnitude);
 
         this.color = color;

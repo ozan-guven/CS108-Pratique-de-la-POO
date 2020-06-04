@@ -142,7 +142,7 @@ public final class SkyCanvasPainter {
         int i = 0;
         double diameter;
         for (Planet planet : sky.planets()) {
-            ctx.setFill(planet.color.deriveColor(0, 1, 1,
+            ctx.setFill(Color.web(planet.color).deriveColor(0, 1, 1,
                     allowDayNightCycle
                             ? INTERVAL_FOR_OPACITY.clip(1 - sunAltDegBlue / 255d)
                             : 1));

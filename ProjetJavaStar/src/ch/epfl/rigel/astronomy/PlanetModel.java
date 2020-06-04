@@ -17,35 +17,35 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
     MERCURY("Mercure", 0.24085, 75.5671, 77.612,
             0.205627, 0.387098, 7.0051,
-            48.449, 6.74, -0.42, Color.GRAY),
+            48.449, 6.74, -0.42, "#A9A9A9"),
 
     VENUS("Vénus", 0.615207, 272.30044, 131.54,
             0.006812, 0.723329, 3.3947,
-            76.769, 16.92, -4.40, Color.YELLOW),
+            76.769, 16.92, -4.40, "#A52A2A"),
 
     EARTH("Terre", 0.999996, 99.556772, 103.2055,
             0.016671, 0.999985, 0,
-            0, 0, 0, Color.LIGHTBLUE),
+            0, 0, 0, "#00CED1"),
 
     MARS("Mars", 1.880765, 109.09646, 336.217,
             0.093348, 1.523689, 1.8497,
-            49.632, 9.36, -1.52, Color.DARKRED),
+            49.632, 9.36, -1.52, "#FF8C00"),
 
     JUPITER("Jupiter", 11.857911, 337.917132, 14.6633,
             0.048907, 5.20278, 1.3035,
-            100.595, 196.74, -9.40, Color.YELLOW),
+            100.595, 196.74, -9.40, "#DC143C"),
 
     SATURN("Saturne", 29.310579, 172.398316, 89.567,
             0.053853, 9.51134, 2.4873,
-            113.752, 165.60, -8.88, Color.YELLOW),
+            113.752, 165.60, -8.88, "#F5F5DC"),
 
     URANUS("Uranus", 84.039492, 356.135400, 172.884833,
             0.046321, 19.21814, 0.773059,
-            73.926961, 65.80, -7.19, Color.PALEGREEN),
+            73.926961, 65.80, -7.19, "#7CFC00"),
 
     NEPTUNE("Neptune", 165.84539, 326.895127, 23.07,
             0.010483, 30.1985, 1.7673,
-            131.879, 62.20, -6.87, Color.ROYALBLUE);
+            131.879, 62.20, -6.87, "#1E90FF");
 
     private static final double AVERAGE_ANGULAR_SPEED = Angle.TAU / 365.242191;
 
@@ -67,11 +67,11 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
     private final double lonOfAscendingNode; //The longitude of the ascending node
     private final double angularSize; //The angular size
     private final double magnitude; //The magnitude
-    public final Color color;
+    private final String color;
 
     PlanetModel(String frenchName, double orbitalRevolution, double lonAtJ2010Deg, double lonAtPerigeeDeg,
                 double orbitalEccentricity, double orbitalSemiMajorAxis, double orbitalInclinationAtEclipticDeg,
-                double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude, Color color) {
+                double lonOfAscendingNodeDeg, double angularSizeArcsec, double magnitude, String color) {
         this.frenchName = frenchName;
         this.orbitalRevolution = orbitalRevolution;
         lonAtJ2010 = Angle.ofDeg(lonAtJ2010Deg);
