@@ -49,6 +49,20 @@ public enum NamedTimeAccelerator {
     }
 
     /**
+     * Gets the enum from the name
+     *
+     * @param name the name
+     * @return the enum
+     */
+    public static NamedTimeAccelerator valueFromName(String name) {
+        for (NamedTimeAccelerator value : NamedTimeAccelerator.values()) {
+            if (value.getName().equals(name))
+                return value;
+        }
+        return NamedTimeAccelerator.TIMES_300; //Default return
+    }
+
+    /**
      * @see Object#toString()
      */
     @Override

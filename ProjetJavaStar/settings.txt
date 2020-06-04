@@ -1,2 +1,2 @@
-# drawAsterisms, dayNight
-false, true
+# drawAsterisms;dayNight;currentCity;currentAccelerator
+true;false;EPFL;300x

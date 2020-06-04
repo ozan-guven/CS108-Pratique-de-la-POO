@@ -1,9 +1,12 @@
 package ch.epfl.rigel.gui;
 
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
+import ch.epfl.rigel.settings.Settings;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -21,6 +24,8 @@ public final class TopMenuBar {
 
     private static final BooleanProperty DRAW_ASTERISIMS_SELECTED = new SimpleBooleanProperty(true);
     private static final BooleanProperty DAY_NIGHT_SELECTED = new SimpleBooleanProperty(false);
+    private static final ObjectProperty<String> CURRENT_CITY = new SimpleObjectProperty<>();
+    private static final ObjectProperty<NamedTimeAccelerator> CURRENT_ACCELERATOR = new SimpleObjectProperty<>();
 
     private static final HorizontalCoordinates DEFAULT_CENTER_FOR_VIEW =
             HorizontalCoordinates.ofDeg(180.000000000001, 15);
@@ -34,10 +39,13 @@ public final class TopMenuBar {
      * @param primaryStage the primary stag
      * @param canvasManager the canvas manager
      * @param viewingParametersBean the viewing parameter bean
+     * @param currentSettings the current settings
+     * @param selectedCity the selected city
+     * @param selectedAccelerator the selected accelerator
      * @return the top menu bar
      */
-    public static MenuBar createMenuBar(Stage primaryStage, SkyCanvasManager canvasManager, ViewingParametersBean viewingParametersBean) {
-        Menu graphicsMenu = createGraphicsMenu(canvasManager);
+    public static MenuBar createMenuBar(Stage primaryStage, SkyCanvasManager canvasManager, ViewingParametersBean viewingParametersBean, Settings currentSettings, ObjectProperty<String> selectedCity, ObjectProperty<NamedTimeAccelerator> selectedAccelerator) {
+        Menu graphicsMenu = createGraphicsMenu(canvasManager, currentSettings);
         Menu windowOptions = createWindowOptionsMenu(primaryStage);
         Menu celestialMenu = createCelestialMenu(canvasManager, viewingParametersBean);
         Menu settingsMenu = createSettingsMenu();
@@ -45,18 +53,25 @@ public final class TopMenuBar {
         MenuBar mainMenu = new MenuBar(graphicsMenu, windowOptions, celestialMenu, settingsMenu);
         mainMenu.setStyle("-fx-font-size: 11px; -fx-background-color: white; -fx-border-style: solid hidden solid hidden; -fx-border-color: LightGrey; -fx-border-width: 1;");
 
+        CURRENT_CITY.bind(selectedCity);
+        CURRENT_ACCELERATOR.bind(selectedAccelerator);
+
         return mainMenu;
     }
 
-    private static Menu createGraphicsMenu(SkyCanvasManager canvasManager) {
+    private static Menu createGraphicsMenu(SkyCanvasManager canvasManager, Settings currentSettings) {
         Menu graphicsMenu = new Menu("_Graphismes");
 
-        CheckMenuItem asterismsOption = new CheckMenuItem("Afficher les astérismes");
-        asterismsOption.setSelected(canvasManager.isDrawAsterisms());
-        asterismsOption.setOnAction(action -> canvasManager.setDrawAsterisms(!canvasManager.isDrawAsterisms()));
+        CheckMenuItem asterismsOption = new CheckMenuItem("_Afficher les astérismes");
+        asterismsOption.setSelected(
+                currentSettings.wasRead()
+                        ? currentSettings.drawAsterisms()
+                        : canvasManager.isDrawAsterisms());
+        canvasManager.drawAsterismsProperty().bind(asterismsOption.selectedProperty());
         DRAW_ASTERISIMS_SELECTED.bind(asterismsOption.selectedProperty());
 
-        CheckMenuItem dayNightMenu = new CheckMenuItem("Cycle jour/nuit");
+        CheckMenuItem dayNightMenu = new CheckMenuItem("_Cycle jour/nuit");
+        dayNightMenu.setSelected(currentSettings.wasRead() && currentSettings.allowDayNightCycle());
         canvasManager.allowDayNightCycleProperty().bind(dayNightMenu.selectedProperty());
         DAY_NIGHT_SELECTED.bind(dayNightMenu.selectedProperty());
 
@@ -120,7 +135,7 @@ public final class TopMenuBar {
         MenuItem saveCurrentState = new MenuItem("Enregister les choix actuelles");
 
         //Calls the settings to be updated and write the current settings
-        saveCurrentState.setOnAction(action -> Settings.writeSettings(DRAW_ASTERISIMS_SELECTED, DAY_NIGHT_SELECTED));
+        saveCurrentState.setOnAction(action -> Settings.writeSettings(DRAW_ASTERISIMS_SELECTED, DAY_NIGHT_SELECTED, CURRENT_CITY, CURRENT_ACCELERATOR));
 
         settingsMenu.getItems().add(saveCurrentState);
 
