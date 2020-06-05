@@ -104,6 +104,11 @@ public final class ObservedSky {
         return sun;
     }
 
+    /**
+     * Gets sun's horizontal coordinates
+     *
+     * @return sun's horizontal coordinates
+     */
     public HorizontalCoordinates sunHorizontalCoordinates() {
         return sunHorizontalCoordinates;
     }
