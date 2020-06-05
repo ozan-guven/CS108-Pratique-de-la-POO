@@ -295,19 +295,19 @@ public class Main extends Application {
 
     private BorderPane createBottomInfoBar(ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager) {
         Text fieldOfViewText = new Text();
-        fieldOfViewText.setStyle("-fx-padding: 4; -fx-background-color: white;");
         fieldOfViewText.textProperty().bind(Bindings.format("Champ de vue : %.1f°", viewingParametersBean.fieldOfViewDegProperty()));
 
         Text closestObject = new Text();
-        closestObject.setStyle("-fx-padding: 4; -fx-background-color: white;");
         closestObject.textProperty().bind(
                 Bindings.createStringBinding(() -> canvasManager.getObjectUnderMouse() == null
                         ? ""
                         : canvasManager.getObjectUnderMouse().toString(), canvasManager.objectUnderMouseProperty()));
 
         Text horCoord = new Text();
-        horCoord.setStyle("-fx-padding: 4; -fx-background-color: white;");
         horCoord.textProperty().bind(Bindings.format("Azimut : %.2f°, hauteur : %.2f°", canvasManager.mouseAzDegProperty(), canvasManager.mouseAltDegProperty()));
+
+        BorderPane bottomPane = new BorderPane(closestObject, null, horCoord, null, fieldOfViewText);
+        bottomPane.setStyle("-fx-padding: 4; -fx-background-color: white;");
 
         return new BorderPane(closestObject, null, horCoord, null, fieldOfViewText);
     }
