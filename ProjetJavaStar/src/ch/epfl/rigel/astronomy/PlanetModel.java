@@ -21,7 +21,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
     VENUS("Vénus", 0.615207, 272.30044, 131.54,
             0.006812, 0.723329, 3.3947,
-            76.769, 16.92, -4.40, "#A52A2A"),
+            76.769, 16.92, -4.40, "#D3A567"),
 
     EARTH("Terre", 0.999996, 99.556772, 103.2055,
             0.016671, 0.999985, 0,
@@ -33,7 +33,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
     JUPITER("Jupiter", 11.857911, 337.917132, 14.6633,
             0.048907, 5.20278, 1.3035,
-            100.595, 196.74, -9.40, "#DC143C"),
+            100.595, 196.74, -9.40, "#C99039"),
 
     SATURN("Saturne", 29.310579, 172.398316, 89.567,
             0.053853, 9.51134, 2.4873,
@@ -41,7 +41,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
     URANUS("Uranus", 84.039492, 356.135400, 172.884833,
             0.046321, 19.21814, 0.773059,
-            73.926961, 65.80, -7.19, "#7CFC00"),
+            73.926961, 65.80, -7.19, "#BBE1E4"),
 
     NEPTUNE("Neptune", 165.84539, 326.895127, 23.07,
             0.010483, 30.1985, 1.7673,
