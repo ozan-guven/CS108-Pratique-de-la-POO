@@ -37,7 +37,6 @@ public final class SkyCanvasManager {
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
-    //private static final ClosedInterval ALT_DEG_BOUNDS = ClosedInterval.of(5, 90);
     private static final ClosedInterval ALT_DEG_BOUNDS = ClosedInterval.of(-90, 90);
 
     private static final int MOVE_NORTH_SOUTH = 5;
@@ -164,40 +163,49 @@ public final class SkyCanvasManager {
         return objectUnderMouse.get();
     }
 
+    /**
+     * Getter for the draw asterisms boolean
+     *
+     * @return draw asterisms boolean
+     */
     public boolean isDrawAsterisms() {
         return drawAsterisms.get();
     }
 
+    /**
+     * Getter for the draw asterisms property
+     *
+     * @return the draw asterisms property
+     */
     public BooleanProperty drawAsterismsProperty() {
         return drawAsterisms;
     }
 
-    public void setDrawAsterisms(boolean drawAsterisms) {
-        this.drawAsterisms.set(drawAsterisms);
-    }
-
+    /**
+     * Getter for the draw horizontal grid boolean
+     *
+     * @return the draw horizontal grid boolean
+     */
     public boolean isDrawHorizontalGrid() {
         return drawHorizontalGrid.get();
     }
 
+    /**
+     * Getter for the draw horizontal grid property
+     *
+     * @return the draw horizontal grid property
+     */
     public BooleanProperty drawHorizontalGridProperty() {
         return drawHorizontalGrid;
     }
 
-    public void setDrawHorizontalGrid(boolean drawHorizontalGrid) {
-        this.drawHorizontalGrid.set(drawHorizontalGrid);
-    }
-
-    public boolean isAllowDayNightCycle() {
-        return allowDayNightCycle.get();
-    }
-
+    /**
+     * Getter for the day/night cycle property
+     *
+     * @return the day/night cycle property
+     */
     public BooleanProperty allowDayNightCycleProperty() {
         return allowDayNightCycle;
-    }
-
-    public void setAllowDayNightCycle(boolean allowDayNightCycle) {
-        this.allowDayNightCycle.set(allowDayNightCycle);
     }
 
     /**
@@ -209,6 +217,33 @@ public final class SkyCanvasManager {
         return objectUnderMouse;
     }
 
+    /**
+     * Gets sun's horizontal coordinate
+     *
+     * @return sun's horizontal coordinate
+     */
+    public HorizontalCoordinates getSunCoordinates() {
+        return sunCoordinates.get();
+    }
+
+    /**
+     * Gets Moon's horizontal coordinate
+     *
+     * @return Moon's horizontal coordinate
+     */
+    public HorizontalCoordinates getMoonCoordinates() {
+        return moonCoordinates.get();
+    }
+
+    /**
+     * Gets a list containing the horizontal coordinates of each planets
+     *
+     * @return a list containing the horizontal coordinates of each planet
+     */
+    public List<HorizontalCoordinates> getPlanetsCoordinates() {
+        return Collections.unmodifiableList(planetsCoordinates.get());
+    }
+
     private Canvas initiateSkyCanvas(ViewingParametersBean viewingParametersBean) {
         Canvas skyCanvas = new Canvas();
 
@@ -217,8 +252,6 @@ public final class SkyCanvasManager {
         skyCanvas.setOnMousePressed((mousePress) -> {
             if (mousePress.isPrimaryButtonDown())
                 skyCanvas.requestFocus();
-            //if(mousePress.getClickCount() == 2)
-            //    viewingParametersBean.setCenter(HorizontalCoordinates.ofDeg(AZ_DEG_BOUNDS.reduce(mouseAzDeg.get()), ALT_DEG_BOUNDS.clip(mouseAltDeg.get())));
             firstDrag.set(new Point2D(mousePress.getX(), mousePress.getY()));
             firstCenter.set(viewingParametersBean.getCenter());
             canvas().setCursor(Cursor.MOVE);
@@ -320,17 +353,5 @@ public final class SkyCanvasManager {
 
     private double dilatation(Canvas canvas, StereographicProjection projection, double fieldOfViewDeg) {
         return canvas.getWidth() / projection.applyToAngle(Angle.ofDeg(fieldOfViewDeg));
-    }
-
-    public HorizontalCoordinates getSunCoordinates() {
-        return sunCoordinates.get();
-    }
-
-    public HorizontalCoordinates getMoonCoordinates() {
-        return moonCoordinates.get();
-    }
-
-    public List<HorizontalCoordinates> getPlanetsCoordinates() {
-        return Collections.unmodifiableList(planetsCoordinates.get());
     }
 }
