@@ -8,6 +8,8 @@ public final class SkyColorManager {
 
     private static final ClosedInterval INTERVAL_FOR_BLUE = ClosedInterval.of(0, 255);
     private static final ClosedInterval INTERVAL_FOR_OPACITY = ClosedInterval.of(0, 1);
+    private static final int TRANSITION_LIMIT = 200; //Represents roughly the moment when the sky begins changing color
+    private static final int TRANSITION_FACTOR = 28; //Factor for the speed at which the transition from blue to black is made
 
     private final double sunAltDegBlue;
     private final boolean allowDayNightCycle;
@@ -19,7 +21,7 @@ public final class SkyColorManager {
      * @param allowDayNightCycle the boolean if the day night cycle is wanted
      */
     public SkyColorManager(ObservedSky sky, boolean allowDayNightCycle) {
-        sunAltDegBlue = INTERVAL_FOR_BLUE.clip(200 + 28 * sky.sunHorizontalCoordinates().altDeg()); //Each time clear is called, sunAltDegBlue is updated
+        sunAltDegBlue = INTERVAL_FOR_BLUE.clip(TRANSITION_LIMIT + TRANSITION_FACTOR * sky.sunHorizontalCoordinates().altDeg()); //Each time clear is called, sunAltDegBlue is updated
         this.allowDayNightCycle = allowDayNightCycle;
     }
 
