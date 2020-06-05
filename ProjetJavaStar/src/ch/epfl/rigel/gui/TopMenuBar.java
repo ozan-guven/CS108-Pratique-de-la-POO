@@ -37,12 +37,12 @@ public final class TopMenuBar {
     /**
      * Only public method of the class that is used to create the top menu bar
      *
-     * @param primaryStage the primary stag
-     * @param canvasManager the canvas manager
+     * @param primaryStage          the primary stag
+     * @param canvasManager         the canvas manager
      * @param viewingParametersBean the viewing parameter bean
-     * @param currentSettings the current settings
-     * @param selectedCity the selected city
-     * @param selectedAccelerator the selected accelerator
+     * @param currentSettings       the current settings
+     * @param selectedCity          the selected city
+     * @param selectedAccelerator   the selected accelerator
      * @return the top menu bar
      */
     public static MenuBar createMenuBar(Stage primaryStage, SkyCanvasManager canvasManager, ViewingParametersBean viewingParametersBean, Settings currentSettings, ObjectProperty<String> selectedCity, ObjectProperty<NamedTimeAccelerator> selectedAccelerator) {
@@ -132,7 +132,7 @@ public final class TopMenuBar {
         MenuItem neptuneMenu = new MenuItem("_Néptune");
         neptuneMenu.setOnAction(action -> viewingParametersBean.setCenter(canvasManager.getPlanetsCoordinates().get(6)));
 
-        MenuItem resetMenu = new MenuItem("_Défaut");
+        MenuItem resetMenu = new MenuItem("_Plein Sud");
         resetMenu.setOnAction(action -> viewingParametersBean.setCenter(DEFAULT_CENTER_FOR_VIEW));
 
         celestialMenu.getItems().addAll(sunMenu, moonMenu, mercuryMenu, venusMenu, marsMenu, jupiterMenu, saturnMenu, uranusMenu, neptuneMenu, resetMenu);
@@ -141,7 +141,7 @@ public final class TopMenuBar {
 
     private static Menu createSettingsMenu() {
         Menu settingsMenu = new Menu("_Paramètres");
-        MenuItem saveCurrentState = new MenuItem("Enregister les choix actuelles");
+        MenuItem saveCurrentState = new MenuItem("_Enregister les choix actuelles");
 
         //Calls the settings to be updated and write the current settings
         saveCurrentState.setOnAction(action -> Settings.writeSettings(DRAW_ASTERISIMS_SELECTED, SHOW_GRID, DAY_NIGHT_SELECTED, CURRENT_CITY, CURRENT_ACCELERATOR));
