@@ -68,6 +68,14 @@ public final class Settings {
         return new Settings(wasRead, drawAsterisms, showGrid, allowDayNightCycle, selectedCity, selectedAccelerator);
     }
 
+    /**
+     * Writes the current setting in the settings.txt file
+     * @param drawAsterisms (BooleanProperty)
+     * @param showGrid (BooleanProperty)
+     * @param dayNight (BooleanProperty)
+     * @param currentCity (ObjectProperty<String>)
+     * @param currentAccelerator (ObjectProperty<NamedTimeAccelerator>)
+     */
     public static void writeSettings(BooleanProperty drawAsterisms, BooleanProperty showGrid, BooleanProperty dayNight, ObjectProperty<String> currentCity, ObjectProperty<NamedTimeAccelerator> currentAccelerator) {
         try (Writer w = new OutputStreamWriter(new FileOutputStream("settings.txt"))) {
             w.write(SETTINGS_TEXT);
