@@ -11,9 +11,11 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Transform;
 
+import java.awt.*;
 import java.util.List;
 import java.util.function.Function;
 
@@ -85,9 +87,18 @@ public final class SkyCanvasPainter {
 
     private void drawGridLines(Function<HorizontalCoordinates, Double> circleRadius, Function<HorizontalCoordinates, CartesianCoordinates> circleCenter, HorizontalCoordinates coordForHorizon, Transform planeToCanvas) {
         double diameter = planeToCanvas.deltaTransform(circleRadius.apply(coordForHorizon) * 2, 0).getX();
-        CartesianCoordinates center = circleCenter.apply(coordForHorizon);
-        Point2D circlePoint = planeToCanvas.transform(center.x(), center.y());
-        ctx.strokeOval(circlePoint.getX() - diameter / 2, circlePoint.getY() - diameter / 2, diameter, diameter);
+        if (diameter < TOLERANCE_CONSTANT){
+            CartesianCoordinates center = circleCenter.apply(coordForHorizon);
+            Point2D circlePoint = planeToCanvas.transform(center.x(), center.y());
+            ctx.strokeOval(circlePoint.getX() - diameter / 2, circlePoint.getY() - diameter / 2, diameter, diameter);
+        } else {
+            HorizontalCoordinates north = HorizontalCoordinates.ofDeg(coordForHorizon.azDeg(), 90);
+            HorizontalCoordinates south = HorizontalCoordinates.ofDeg(coordForHorizon.azDeg(), -90);
+            Point2D northPole = planeToCanvas.transform(north.az(), north.alt());
+            Point2D southPole = planeToCanvas.transform(south.az(), south.alt());
+            ctx.strokeLine(northPole.getX(), northPole.getY(), southPole.getX(), southPole.getY());
+        }
+
     }
 
     /**
