@@ -2,7 +2,6 @@ package ch.epfl.sigcheck;
 
 import ch.epfl.rigel.astronomy.CelestialObject;
 import ch.epfl.rigel.astronomy.Moon;
-import ch.epfl.rigel.astronomy.Planet;
 import ch.epfl.rigel.astronomy.Sun;
 import ch.epfl.rigel.coordinates.*;
 

@@ -132,7 +132,7 @@ public class Main extends Application {
     /**
      * Creates the coordinates controller
      *
-     * @param locationBean the location bean to bind with
+     * @param locationBean    the location bean to bind with
      * @param currentSettings the current settings
      * @return the coordinates controller
      */
@@ -290,7 +290,7 @@ public class Main extends Application {
                 new Separator(Orientation.VERTICAL), speedControl);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4; -fx-background-color: white;");
 
-        return new VBox( mainMenu, controlBar);
+        return new VBox(mainMenu, controlBar);
     }
 
     private BorderPane createBottomInfoBar(ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager) {

@@ -1,12 +1,8 @@
 package ch.epfl.rigel.astronomy;
 
-import ch.epfl.rigel.coordinates.EquatorialCoordinates;
-import ch.epfl.test.TestRandomizer;
 import org.junit.jupiter.api.Test;
 
 import java.util.SplittableRandom;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PlanetTest {
     @Test

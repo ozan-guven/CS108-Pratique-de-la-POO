@@ -49,7 +49,7 @@ public final class Settings {
         String selectedCity = "EPFL";
         NamedTimeAccelerator selectedAccelerator = NamedTimeAccelerator.TIMES_300;
         String[] settings = new String[NBR_OF_PARAMETERS];
-        try(BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream("settings.txt")))) {
+        try (BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream("settings.txt")))) {
             stream.lines()
                     .skip(1)
                     .map(l -> l.split(";"))

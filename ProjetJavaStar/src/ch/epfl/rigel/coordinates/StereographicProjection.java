@@ -68,8 +68,8 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      * @return the coordinates of the center of the circle
      */
     public CartesianCoordinates circleCenterForMeridian(HorizontalCoordinates hor) {
-        double centerX = - 1d / (cosPhiCenter * Math.tan(hor.az() - azCenter));
-        double centerY = - tanPhiCenter;
+        double centerX = -1d / (cosPhiCenter * Math.tan(hor.az() - azCenter));
+        double centerY = -tanPhiCenter;
         return CartesianCoordinates.of(centerX, centerY);
     }
 

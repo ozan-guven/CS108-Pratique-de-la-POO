@@ -1,7 +1,6 @@
 package ch.epfl.rigel.astronomy;
 
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
-import javafx.scene.paint.Color;
 
 /**
  * Class that represents planets
