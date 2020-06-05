@@ -45,7 +45,7 @@ import java.util.function.UnaryOperator;
  */
 public class Main extends Application {
 
-    private static final int MIN_WIDTH_STAGE = 950;
+    private static final int MIN_WIDTH_STAGE = 1135;
     private static final int MIN_HEIGHT_STAGE = 600;
     private static final GeographicCoordinates DEFAULT_OBSERVATION_COORDINATES =
             GeographicCoordinates.ofDeg(6.57, 46.52);

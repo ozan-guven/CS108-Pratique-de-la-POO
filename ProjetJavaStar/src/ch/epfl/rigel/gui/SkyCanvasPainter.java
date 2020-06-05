@@ -11,11 +11,9 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Transform;
 
-import java.awt.*;
 import java.util.List;
 import java.util.function.Function;
 
@@ -28,12 +26,8 @@ import java.util.function.Function;
 public final class SkyCanvasPainter {
 
     private static final double SUN_HALO_OPACITY_FACTOR = 0.25;
-    //private static final ClosedInterval INTERVAL_FOR_DUSK_DAWN = ClosedInterval.of(-90, 2.976047);
     private static final ClosedInterval INTERVAL_FOR_DIAMETER = ClosedInterval.of(-2, 5);
-    //private static final ClosedInterval INTERVAL_FOR_GREEN = ClosedInterval.of(0, 127);
-    private static final double TOLERANCE_CONSTANT = 1E15;
-    //private static final Polynomial POLYNOMIAL_FOR_RED = Polynomial.of(-227d/16d, 227d/8, 2405d/16);
-    //private static final Polynomial POLYNOMIAL_FOR_GREEN = Polynomial.of(-21d/2d, 21, 315d/2d);
+    private static final double TOLERANCE_CONSTANT = 1E12;
 
     private final Canvas canvas;
     private final GraphicsContext ctx;
@@ -87,16 +81,12 @@ public final class SkyCanvasPainter {
 
     private void drawGridLines(Function<HorizontalCoordinates, Double> circleRadius, Function<HorizontalCoordinates, CartesianCoordinates> circleCenter, HorizontalCoordinates coordForHorizon, Transform planeToCanvas) {
         double diameter = planeToCanvas.deltaTransform(circleRadius.apply(coordForHorizon) * 2, 0).getX();
-        if (diameter < TOLERANCE_CONSTANT){
+        if (diameter < TOLERANCE_CONSTANT) {
             CartesianCoordinates center = circleCenter.apply(coordForHorizon);
             Point2D circlePoint = planeToCanvas.transform(center.x(), center.y());
             ctx.strokeOval(circlePoint.getX() - diameter / 2, circlePoint.getY() - diameter / 2, diameter, diameter);
         } else {
-            HorizontalCoordinates north = HorizontalCoordinates.ofDeg(0, 90);
-            HorizontalCoordinates south = HorizontalCoordinates.ofDeg(0, -90);
-            Point2D northPole = planeToCanvas.transform(north.az(), north.alt());
-            Point2D southPole = planeToCanvas.transform(south.az(), south.alt());
-            ctx.strokeLine(northPole.getX(), northPole.getY(), southPole.getX(), southPole.getY());
+            ctx.strokeLine(canvas.getWidth() / 2, 0, canvas.getWidth() / 2, canvas.getHeight());
         }
 
     }
@@ -135,12 +125,14 @@ public final class SkyCanvasPainter {
      * @param sky           the observed sky
      * @param projection    the projection used
      * @param planeToCanvas the affine transformation to transform from
+     * @param drawAsterisms if asterisms have to be drawn
      */
     public void drawStars(ObservedSky sky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms) {
         double[] transformed = new double[sky.starPositions().length];
         planeToCanvas.transform2DPoints(sky.starPositions(), 0, transformed, 0, sky.starPositions().length / 2);
 
-        if (drawAsterisms) drawAsterisms(sky, transformed);
+        if (drawAsterisms)
+            drawAsterisms(sky, transformed);
 
         int i = 0;
         double starDiameter;
@@ -263,9 +255,12 @@ public final class SkyCanvasPainter {
     /**
      * Draws all of the sky (drawStar, drawPlanets, drawSun, drawMoon, drawHorizon)
      *
-     * @param observedSky   the observed sky
-     * @param projection    the projection used
-     * @param planeToCanvas the plane to canvas transform used
+     * @param observedSky        the observed sky
+     * @param projection         the projection used
+     * @param planeToCanvas      the plane to canvas transform used
+     * @param drawAsterisms      if asterisms have to be drawn
+     * @param allowDayNightCycle if day/night cycle is wanted
+     * @param drawHorizontalGrid if the horizontal coordinates grid has to be shown
      */
     public void drawAll(ObservedSky observedSky, StereographicProjection projection, Transform planeToCanvas, boolean drawAsterisms, boolean allowDayNightCycle, boolean drawHorizontalGrid) {
         clear(observedSky, allowDayNightCycle);
