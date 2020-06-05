@@ -10,8 +10,8 @@ import javafx.scene.paint.Color;
  * @author Ozan Güven (297076)
  */
 public final class Planet extends CelestialObject {
-    public final String color;
 
+    private final String color;
 
     /**
      * Constructor of a planet
@@ -28,5 +28,14 @@ public final class Planet extends CelestialObject {
         super(name, equatorialPos, angularSize, magnitude);
 
         this.color = color;
+    }
+
+    /**
+     * Gets the RGB string color of the planet
+     *
+     * @return the rgb string color
+     */
+    public String color() {
+        return color;
     }
 }
