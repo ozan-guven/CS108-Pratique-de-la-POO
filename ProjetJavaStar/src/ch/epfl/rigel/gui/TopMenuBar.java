@@ -71,7 +71,7 @@ public final class TopMenuBar {
         canvasManager.drawAsterismsProperty().bind(asterismsOption.selectedProperty());
         DRAW_ASTERISIMS_SELECTED.bind(asterismsOption.selectedProperty());
 
-        CheckMenuItem horizontalGridOption = new CheckMenuItem("Afficher la grille de coordonées horizontales");
+        CheckMenuItem horizontalGridOption = new CheckMenuItem("Afficher la _grille de coordonées horizontales");
         horizontalGridOption.setSelected(
                 currentSettings.wasRead()
                         ? currentSettings.showGrid()
@@ -92,8 +92,8 @@ public final class TopMenuBar {
         Menu windowOptions = new Menu("_Fenêtre");
         Text fullScreenText = new Text();
         fullScreenText.textProperty().bind(Bindings.when(primaryStage.fullScreenProperty())
-                .then("Quitter le mode plein écran")
-                .otherwise("Passer en mode plein écran"));
+                .then("_Quitter le mode plein écran")
+                .otherwise("_Passer en mode plein écran"));
         //Menu items
         MenuItem fullScreenOption = new MenuItem();
         fullScreenOption.textProperty().bind(fullScreenText.textProperty());
