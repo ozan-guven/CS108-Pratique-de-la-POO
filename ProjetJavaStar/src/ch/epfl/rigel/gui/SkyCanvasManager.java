@@ -31,13 +31,18 @@ import java.util.Optional;
  */
 public final class SkyCanvasManager {
 
+    /**
+     * DoubleBinding for the mouse azimuth
+     */
     public final DoubleBinding mouseAzDeg;
+    /**
+     * DoubleBinding for the mouse altitude
+     */
     public final DoubleBinding mouseAltDeg;
+    /**
+     * ObjectBinding for the object under the mouse
+     */
     public final ObjectBinding<CelestialObject> objectUnderMouse;
-
-    public final BooleanProperty drawAsterisms = new SimpleBooleanProperty(true);
-    public final BooleanProperty allowDayNightCycle = new SimpleBooleanProperty(false);
-    public final BooleanProperty drawHorizontalGrid = new SimpleBooleanProperty(false);
 
     private static final ClosedInterval FIELD_OF_VIEW_BOUNDS = ClosedInterval.of(30, 150);
     private static final RightOpenInterval AZ_DEG_BOUNDS = RightOpenInterval.of(0, 360);
@@ -45,6 +50,10 @@ public final class SkyCanvasManager {
 
     private static final int MOVE_NORTH_SOUTH = 5;
     private static final int MOVE_EAST_WEST = 10;
+
+    private final BooleanProperty drawAsterisms = new SimpleBooleanProperty(true);
+    private final BooleanProperty allowDayNightCycle = new SimpleBooleanProperty(false);
+    private final BooleanProperty drawHorizontalGrid = new SimpleBooleanProperty(false);
 
     private final ObjectBinding<StereographicProjection> projection;
     private final ObjectBinding<Transform> planeToCanvas;

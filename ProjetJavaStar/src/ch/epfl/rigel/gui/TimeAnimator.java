@@ -20,6 +20,11 @@ public final class TimeAnimator extends AnimationTimer {
     private final ObjectProperty<TimeAccelerator> accelerator = new SimpleObjectProperty<>(null);
     private final BooleanProperty running = new SimpleBooleanProperty();
 
+    /**
+     * Creates a time animator given the time bean
+     *
+     * @param timeBean the time animator given the time bean
+     */
     public TimeAnimator(DateTimeBean timeBean) {
         this.timeBean = timeBean;
     }
