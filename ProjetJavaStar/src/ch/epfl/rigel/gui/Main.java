@@ -109,7 +109,7 @@ public class Main extends Application {
         sky.heightProperty().bind(skyPane.heightProperty());
 
         //------------------------------------------------TOP CONTROL BAR-----------------------------------------------
-        VBox controlBar = createTopControlBar(observerLocationBean, dateTimeBean, timeAnimator, fontForButtons, canvasManager, primaryStage, viewingParametersBean, currentSettings);
+        VBox controlBar = createTopControlBar(primaryStage, fontForButtons, currentSettings, timeAnimator, observerLocationBean, viewingParametersBean, canvasManager, dateTimeBean);
 
         //------------------------------------------------BOTTOM INFORMATION BAR----------------------------------------
         BorderPane infoBar = createBottomInfoBar(viewingParametersBean, canvasManager);
@@ -273,7 +273,7 @@ public class Main extends Application {
         return speedControl;
     }
 
-    private VBox createTopControlBar(ObserverLocationBean observerLocationBean, DateTimeBean dateTimeBean, TimeAnimator timeAnimator, Font fontForButtons, SkyCanvasManager canvasManager, Stage primaryStage, ViewingParametersBean viewingParametersBean, Settings currentSettings) {
+    private VBox createTopControlBar(Stage primaryStage, Font fontForButtons, Settings currentSettings, TimeAnimator timeAnimator, ObserverLocationBean observerLocationBean, ViewingParametersBean viewingParametersBean, SkyCanvasManager canvasManager, DateTimeBean dateTimeBean) {
         //COORDINATES CONTROL
         HBox coordControl = createCoordinatesController(observerLocationBean, currentSettings);
 
