@@ -19,6 +19,7 @@ public final class Planet extends CelestialObject {
      * @param equatorialPos the equatorial position of the planet
      * @param angularSize   the angular size of the planet
      * @param magnitude     the magnitude of the planet
+     * @param color         the hexadecimal RGB color of the planet
      * @throws IllegalArgumentException if the angularSize is negative
      * @throws NullPointerException     if the name is null
      * @throws NullPointerException     if the equatorialPos is null

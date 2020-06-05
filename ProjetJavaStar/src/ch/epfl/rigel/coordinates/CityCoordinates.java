@@ -28,6 +28,15 @@ public final class CityCoordinates {
     }
 
     /**
+     * Gets the map containing city names with their corresponding geographic coordinates
+     *
+     * @return map of coordinates
+     */
+    public static Map<String, GeographicCoordinates> getCityMap() {
+        return Collections.unmodifiableMap(CITY_MAP);
+    }
+
+    /**
      * Initiates the map
      *
      * @return the map
@@ -64,15 +73,6 @@ public final class CityCoordinates {
      */
     private static double toDouble(String number) {
         return Double.parseDouble(number.replace(",", "."));
-    }
-
-    /**
-     * Gets the map containing city names with their corresponding geographic coordinates
-     *
-     * @return map of coordinates
-     */
-    public static Map<String, GeographicCoordinates> getCityMap() {
-        return Collections.unmodifiableMap(CITY_MAP);
     }
 
     private enum Column {
