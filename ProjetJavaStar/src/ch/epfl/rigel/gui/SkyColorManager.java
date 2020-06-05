@@ -4,6 +4,12 @@ import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.math.ClosedInterval;
 import javafx.scene.paint.Color;
 
+/**
+ * Class offering methods to get the sky color and modify colors accordingly
+ *
+ * @author Robin Goumaz (301420)
+ * @author Ozan Güven (297076)
+ */
 public final class SkyColorManager {
 
     private static final ClosedInterval INTERVAL_FOR_BLUE = ClosedInterval.of(0, 255);
