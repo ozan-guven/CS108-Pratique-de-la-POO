@@ -83,26 +83,56 @@ public final class Settings {
         }
     }
 
+    /**
+     * Gets the boolean telling if reading the file was successful
+     *
+     * @return true if the file was read successfully
+     */
     public boolean wasRead() {
         return wasRead;
     }
 
+    /**
+     * The value to use for drawing asterisms when opening the program
+     *
+     * @return the value to use for drawing the asterisms
+     */
     public boolean drawAsterisms() {
         return drawAsterisms;
     }
 
+    /**
+     * The value to use for drawing the grid when opening the program
+     *
+     * @return the value to use for drawing the grid
+     */
     public boolean showGrid() {
         return showGrid;
     }
 
+    /**
+     * The value to use for enabling day/night cycle when opening the program
+     *
+     * @return the value to use for enabling day/night cycle
+     */
     public boolean allowDayNightCycle() {
         return allowDayNightCycle;
     }
 
+    /**
+     * The value to use for the first city when opening the program
+     *
+     * @return the value to use for the first city
+     */
     public String selectedCity() {
         return selectedCity;
     }
 
+    /**
+     * The value to use for the first time accelerator when opening the program
+     *
+     * @return the value to use for the first time accelerator
+     */
     public NamedTimeAccelerator selectedAccelerator() {
         return selectedAccelerator;
     }
