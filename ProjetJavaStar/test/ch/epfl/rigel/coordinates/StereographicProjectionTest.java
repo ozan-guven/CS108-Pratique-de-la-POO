@@ -64,7 +64,7 @@ class StereographicProjectionTest {
         var h5 = HorizontalCoordinates.ofDeg(0, 60.92);
 
         assertEquals(0.1282862205640954, p.circleRadiusForParallel(h1), 1e-8);
-        assertEquals(-3.7411249651227934, p.circleRadiusForParallel(h2), 1e-8);
+        assertEquals(3.7411249651227934, p.circleRadiusForParallel(h2), 1e-8);
         assertEquals(0.45182127263573607, p.circleRadiusForParallel(h3), 1e-8);
         assertEquals(0.23012889503059386, p.circleRadiusForParallel(h4), 1e-8);
         assertEquals(0.30276687752311254, p.circleRadiusForParallel(h5), 1e-8);
