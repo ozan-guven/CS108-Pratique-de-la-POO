@@ -2,6 +2,7 @@ package ch.epfl.sigcheck;
 
 import ch.epfl.rigel.astronomy.CelestialObject;
 import ch.epfl.rigel.astronomy.Moon;
+import ch.epfl.rigel.astronomy.Planet;
 import ch.epfl.rigel.astronomy.Sun;
 import ch.epfl.rigel.coordinates.*;
 
@@ -60,13 +61,13 @@ final class SignatureChecks_4 {
         c = m;
     }
 
-//    void checkPlanet() {
-//        CelestialObject c;
-//        Planet m;
-//        EquatorialCoordinates e = null;
-//        String s = null;
-//        float f = 0f;
-//        m = new Planet(s, e, f, f);
-//        c = m;
-//    }
+    void checkPlanet() {
+        CelestialObject c;
+        Planet m;
+        EquatorialCoordinates e = null;
+        String s = null;
+        float f = 0f;
+        m = new Planet(s, e, f, f, null);
+        c = m;
+    }
 }
