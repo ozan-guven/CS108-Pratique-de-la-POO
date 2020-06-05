@@ -31,7 +31,7 @@ public final class SkyCanvasPainter {
     //private static final ClosedInterval INTERVAL_FOR_DUSK_DAWN = ClosedInterval.of(-90, 2.976047);
     private static final ClosedInterval INTERVAL_FOR_DIAMETER = ClosedInterval.of(-2, 5);
     //private static final ClosedInterval INTERVAL_FOR_GREEN = ClosedInterval.of(0, 127);
-    private static final double TOLERANCE_CONSTANT = 1E12;
+    private static final double TOLERANCE_CONSTANT = 1E15;
     //private static final Polynomial POLYNOMIAL_FOR_RED = Polynomial.of(-227d/16d, 227d/8, 2405d/16);
     //private static final Polynomial POLYNOMIAL_FOR_GREEN = Polynomial.of(-21d/2d, 21, 315d/2d);
 
@@ -92,8 +92,8 @@ public final class SkyCanvasPainter {
             Point2D circlePoint = planeToCanvas.transform(center.x(), center.y());
             ctx.strokeOval(circlePoint.getX() - diameter / 2, circlePoint.getY() - diameter / 2, diameter, diameter);
         } else {
-            HorizontalCoordinates north = HorizontalCoordinates.ofDeg(coordForHorizon.azDeg(), 90);
-            HorizontalCoordinates south = HorizontalCoordinates.ofDeg(coordForHorizon.azDeg(), -90);
+            HorizontalCoordinates north = HorizontalCoordinates.ofDeg(0, 90);
+            HorizontalCoordinates south = HorizontalCoordinates.ofDeg(0, -90);
             Point2D northPole = planeToCanvas.transform(north.az(), north.alt());
             Point2D southPole = planeToCanvas.transform(south.az(), south.alt());
             ctx.strokeLine(northPole.getX(), northPole.getY(), southPole.getX(), southPole.getY());
