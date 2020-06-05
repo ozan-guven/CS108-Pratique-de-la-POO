@@ -1,6 +1,4 @@
-package ch.epfl.rigel.gui;
-
-import ch.epfl.rigel.coordinates.GeographicCoordinates;
+package ch.epfl.rigel.coordinates;
 
 import java.io.BufferedReader;
 import java.io.IOException;
