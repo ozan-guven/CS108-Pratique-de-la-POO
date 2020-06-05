@@ -36,7 +36,6 @@ public final class CityCoordinates {
      */
     private static Map<String, GeographicCoordinates> initializeMap() {
         Map<String, GeographicCoordinates> map = new HashMap<>();
-        int i = 0;
         try (BufferedReader stream = new BufferedReader(
                 new InputStreamReader(CityCoordinates.class.getResourceAsStream(CITY_CATALOGUE_NAME)))) {
             stream.lines()
