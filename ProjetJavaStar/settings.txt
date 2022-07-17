@@ -1,2 +1,0 @@
-# drawAsterisms;showGrid;dayNight;currentCity;currentAccelerator
-true;false;false;EPFL;300x
